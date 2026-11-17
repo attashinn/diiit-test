@@ -1,0 +1,1031 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>{% block title %}Dashboard · Daffodil Institute of Engineering & Technology{% endblock %}</title>
+  
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Lucide & Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <!-- Critical Inlined Design System (prevents browser cache mismatch) -->
+  <style>
+    :root {
+      --royal-blue: #123DB8;
+      --royal-blue-hover: #0E3197;
+      --royal-blue-light: #EFF4FE;
+      --deep-navy: #10245A;
+      --golden-yellow: #F4B51B;
+      --golden-yellow-light: #FEF8E7;
+      --golden-yellow-border: #FDE68A;
+      --golden-yellow-text: #B45309;
+      --surface: #FFFFFF;
+      --bg-app: #F7F8FA;
+      --bg-subtle: #F4F5F8;
+      --text-primary: #171C2B;
+      --text-secondary: #687386;
+      --text-muted: #9AA2B1;
+      --border-color: #E7EAF0;
+      --sidebar-width: 246px;
+      --topbar-height: 68px;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+      background-color: #F7F8FA !important;
+      color: #171C2B !important;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Plus Jakarta Sans', 'Inter', sans-serif !important;
+      color: #171C2B !important;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    .app {
+      display: flex;
+      min-height: 100vh;
+      background-color: #F7F8FA;
+    }
+
+    /* ---------- SIDEBAR ---------- */
+    .sidebar {
+      width: var(--sidebar-width) !important;
+      background: #FFFFFF !important;
+      border-right: 1px solid #E7EAF0 !important;
+      position: fixed !important;
+      top: 0 !important;
+      bottom: 0 !important;
+      left: 0 !important;
+      display: flex !important;
+      flex-direction: column !important;
+      z-index: 1040 !important;
+      overflow-y: auto !important;
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    }
+    .sidebar .sidebar-brand {
+      padding: 24px 18px 18px !important;
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: center !important;
+      text-align: center !important;
+      border-bottom: 1px solid #F0F2F6 !important;
+      text-decoration: none !important;
+    }
+    .sidebar .sidebar-brand img.brand-logo-img {
+      width: 172px !important;
+      max-width: 100% !important;
+      height: auto !important;
+      max-height: 80px !important;
+      display: block !important;
+      margin: 0 auto !important;
+    }
+    .sidebar .sidebar-nav {
+      padding: 16px 12px !important;
+      flex: 1 !important;
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 3px !important;
+    }
+    .sidebar a.nav-link-item,
+    .sidebar a.item {
+      display: flex !important;
+      align-items: center !important;
+      gap: 12px !important;
+      padding: 10px 14px !important;
+      border-radius: 8px !important;
+      font-size: 0.88rem !important;
+      font-weight: 500 !important;
+      color: #687386 !important;
+      text-decoration: none !important;
+      transition: all 0.15s ease !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
+    }
+    .sidebar a.nav-link-item svg,
+    .sidebar a.nav-link-item i,
+    .sidebar a.item svg,
+    .sidebar a.item i {
+      width: 18px !important;
+      height: 18px !important;
+      color: #687386 !important;
+      flex-shrink: 0 !important;
+      transition: color 0.15s ease !important;
+    }
+    .sidebar a.nav-link-item:hover,
+    .sidebar a.item:hover {
+      background-color: #F7F8FA !important;
+      color: #171C2B !important;
+    }
+    .sidebar a.nav-link-item:hover svg,
+    .sidebar a.nav-link-item:hover i {
+      color: #123DB8 !important;
+    }
+    .sidebar a.nav-link-item.active,
+    .sidebar a.item.active {
+      background-color: #123DB8 !important;
+      color: #FFFFFF !important;
+      font-weight: 600 !important;
+      box-shadow: 0 2px 8px rgba(18, 61, 184, 0.22) !important;
+    }
+    .sidebar a.nav-link-item.active svg,
+    .sidebar a.nav-link-item.active i {
+      color: #FFFFFF !important;
+    }
+    .sidebar .nav-badge {
+      margin-left: auto;
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 9999px;
+      background: #FEF8E7;
+      color: #B45309;
+      border: 1px solid #FDE68A;
+    }
+    .sidebar a.nav-link-item.active .nav-badge {
+      background: rgba(255, 255, 255, 0.25);
+      color: #FFFFFF;
+      border-color: transparent;
+    }
+    .sidebar .sidebar-footer {
+      padding: 14px !important;
+      border-top: 1px solid #E7EAF0 !important;
+      background: #FFFFFF !important;
+      margin-top: auto !important;
+    }
+    .sidebar .campus-badge-card {
+      display: flex !important;
+      align-items: center !important;
+      gap: 10px !important;
+      padding: 10px 12px !important;
+      border-radius: 10px !important;
+      background: #F7F8FA !important;
+      border: 1px solid #E7EAF0 !important;
+      cursor: pointer !important;
+      transition: all 0.15s ease !important;
+    }
+    .sidebar .campus-badge-card:hover {
+      background: #EFF4FE !important;
+      border-color: #BFDBFE !important;
+    }
+    .sidebar .campus-thumb {
+      width: 32px !important;
+      height: 32px !important;
+      border-radius: 8px !important;
+      background: #EFF4FE !important;
+      color: #123DB8 !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      flex-shrink: 0 !important;
+    }
+    .sidebar .campus-meta {
+      flex: 1 !important;
+      min-width: 0 !important;
+      line-height: 1.2 !important;
+    }
+    .sidebar .campus-title {
+      font-size: 0.82rem !important;
+      font-weight: 700 !important;
+      color: #171C2B !important;
+    }
+    .sidebar .campus-sub {
+      font-size: 0.72rem !important;
+      color: #687386 !important;
+    }
+
+    /* ---------- MAIN & TOPBAR ---------- */
+    .main {
+      flex: 1 !important;
+      margin-left: var(--sidebar-width) !important;
+      min-width: 0 !important;
+      display: flex !important;
+      flex-direction: column !important;
+      background-color: #F7F8FA !important;
+      min-height: 100vh !important;
+    }
+    .topbar {
+      height: var(--topbar-height) !important;
+      background: #FFFFFF !important;
+      border-bottom: 1px solid #E7EAF0 !important;
+      padding: 0 32px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      gap: 20px !important;
+      position: sticky !important;
+      top: 0 !important;
+      z-index: 1030 !important;
+    }
+    .topbar-left {
+      display: flex !important;
+      align-items: center !important;
+      gap: 16px !important;
+      flex: 1 !important;
+      max-width: 440px !important;
+    }
+    .topbar-search {
+      position: relative !important;
+      width: 100% !important;
+    }
+    .topbar-search input {
+      width: 100% !important;
+      height: 38px !important;
+      background: #F7F8FA !important;
+      border: 1px solid #E7EAF0 !important;
+      border-radius: 8px !important;
+      padding: 8px 14px 8px 38px !important;
+      font-size: 0.85rem !important;
+      color: #171C2B !important;
+      outline: none !important;
+      transition: all 0.15s ease !important;
+    }
+    .topbar-search input:focus {
+      background: #FFFFFF !important;
+      border-color: #123DB8 !important;
+      box-shadow: 0 0 0 3px rgba(18, 61, 184, 0.1) !important;
+    }
+    .topbar-search .search-icon {
+      position: absolute !important;
+      left: 12px !important;
+      top: 50% !important;
+      transform: translateY(-50%) !important;
+      color: #9AA2B1 !important;
+      width: 16px !important;
+      height: 16px !important;
+      pointer-events: none !important;
+    }
+    .topbar-right {
+      display: flex !important;
+      align-items: center !important;
+      gap: 12px !important;
+    }
+    .topbar-btn {
+      width: 38px !important;
+      height: 38px !important;
+      border-radius: 8px !important;
+      background: #FFFFFF !important;
+      border: 1px solid #E7EAF0 !important;
+      color: #687386 !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      cursor: pointer !important;
+      position: relative !important;
+      transition: all 0.15s ease !important;
+      text-decoration: none !important;
+    }
+    .topbar-btn:hover {
+      background: #F7F8FA !important;
+      color: #123DB8 !important;
+      border-color: #CBD5E1 !important;
+    }
+    .topbar-btn .unread-dot {
+      position: absolute !important;
+      top: 7px !important;
+      right: 7px !important;
+      width: 8px !important;
+      height: 8px !important;
+      border-radius: 50% !important;
+      background-color: #F4B51B !important;
+      box-shadow: 0 0 0 2px #FFFFFF !important;
+    }
+    .user-profile-pill {
+      display: flex !important;
+      align-items: center !important;
+      gap: 10px !important;
+      padding: 4px 12px 4px 6px !important;
+      background: #FFFFFF !important;
+      border: 1px solid #E7EAF0 !important;
+      border-radius: 9999px !important;
+      cursor: pointer !important;
+      transition: all 0.15s ease !important;
+      text-decoration: none !important;
+    }
+    .user-profile-pill:hover {
+      background: #F7F8FA !important;
+      border-color: #CBD5E1 !important;
+    }
+    .user-profile-avatar {
+      width: 30px !important;
+      height: 30px !important;
+      border-radius: 50% !important;
+      object-fit: cover !important;
+    }
+    .user-profile-info {
+      display: flex !important;
+      flex-direction: column !important;
+      line-height: 1.15 !important;
+      text-align: left !important;
+    }
+    .user-profile-name {
+      font-size: 0.82rem !important;
+      font-weight: 600 !important;
+      color: #171C2B !important;
+    }
+    .user-profile-role {
+      font-size: 0.70rem !important;
+      color: #687386 !important;
+    }
+    .user-profile-chevron {
+      color: #9AA2B1 !important;
+      width: 14px !important;
+      height: 14px !important;
+    }
+
+    /* ---------- CONTENT AREA ---------- */
+    .content-wrapper {
+      padding: 28px 32px 48px !important;
+      flex: 1 !important;
+      min-width: 0 !important;
+    }
+    .dashboard-page-header {
+      display: flex !important;
+      align-items: flex-start !important;
+      justify-content: space-between !important;
+      flex-wrap: wrap !important;
+      gap: 16px !important;
+      margin-bottom: 24px !important;
+    }
+    .dashboard-title-box h2 {
+      font-size: 1.62rem !important;
+      font-weight: 800 !important;
+      color: #171C2B !important;
+      margin: 0 0 4px !important;
+      letter-spacing: -0.02em !important;
+    }
+    .dashboard-title-box p {
+      font-size: 0.88rem !important;
+      color: #687386 !important;
+      margin: 0 !important;
+    }
+    .date-filter-pill {
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 8px !important;
+      background: #FFFFFF !important;
+      border: 1px solid #E7EAF0 !important;
+      border-radius: 8px !important;
+      padding: 8px 14px !important;
+      font-size: 0.84rem !important;
+      font-weight: 600 !important;
+      color: #171C2B !important;
+      box-shadow: 0 1px 2px rgba(16, 36, 90, 0.04) !important;
+      cursor: pointer !important;
+    }
+
+    /* ---------- STAT CARDS ---------- */
+    .stat-card-clean {
+      background: #FFFFFF !important;
+      border: 1px solid #E7EAF0 !important;
+      border-radius: 14px !important;
+      padding: 20px !important;
+      position: relative !important;
+      box-shadow: 0 1px 3px rgba(16, 36, 90, 0.04), 0 2px 6px rgba(16, 36, 90, 0.02) !important;
+      transition: transform 0.15s ease, box-shadow 0.15s ease !important;
+      height: 100% !important;
+      display: flex !important;
+      flex-direction: column !important;
+    }
+    .stat-card-clean:hover {
+      box-shadow: 0 6px 16px rgba(16, 36, 90, 0.07) !important;
+      border-color: #CBD5E1 !important;
+    }
+    .stat-card-header {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      margin-bottom: 12px !important;
+    }
+    .stat-icon-wrapper {
+      width: 40px !important;
+      height: 40px !important;
+      border-radius: 10px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      font-size: 1.15rem !important;
+      flex-shrink: 0 !important;
+    }
+    .stat-icon-wrapper.blue {
+      background: #EFF4FE !important;
+      color: #123DB8 !important;
+    }
+    .stat-icon-wrapper.gold {
+      background: #FEF8E7 !important;
+      color: #B45309 !important;
+    }
+    .stat-card-label {
+      font-size: 0.82rem !important;
+      font-weight: 600 !important;
+      color: #687386 !important;
+      margin-bottom: 4px !important;
+    }
+    .stat-card-value {
+      font-size: 1.85rem !important;
+      font-weight: 800 !important;
+      color: #171C2B !important;
+      line-height: 1.15 !important;
+      letter-spacing: -0.02em !important;
+      margin-bottom: 8px !important;
+    }
+    .stat-card-comparison {
+      display: flex !important;
+      align-items: center !important;
+      gap: 6px !important;
+      font-size: 0.78rem !important;
+      margin-top: auto !important;
+    }
+    .stat-badge-trend {
+      font-weight: 600 !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 3px !important;
+    }
+    .stat-badge-trend.up {
+      color: #059669 !important;
+    }
+    .stat-badge-trend.down {
+      color: #DC2626 !important;
+    }
+    .stat-comparison-subtext {
+      color: #9AA2B1 !important;
+    }
+
+    /* ---------- SAAS CARD ---------- */
+    .saas-card {
+      background: #FFFFFF !important;
+      border: 1px solid #E7EAF0 !important;
+      border-radius: 14px !important;
+      box-shadow: 0 1px 3px rgba(16, 36, 90, 0.04), 0 2px 6px rgba(16, 36, 90, 0.02) !important;
+      overflow: hidden !important;
+      height: 100% !important;
+      display: flex !important;
+      flex-direction: column !important;
+    }
+    .saas-card-header {
+      padding: 18px 22px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      border-bottom: 1px solid #F0F2F6 !important;
+      background: #FFFFFF !important;
+    }
+    .saas-card-title {
+      font-size: 0.96rem !important;
+      font-weight: 700 !important;
+      color: #171C2B !important;
+      margin: 0 !important;
+      display: flex !important;
+      align-items: center !important;
+      gap: 8px !important;
+    }
+    .saas-card-subtitle {
+      font-size: 0.78rem !important;
+      color: #687386 !important;
+      margin: 2px 0 0 !important;
+      font-weight: 400 !important;
+    }
+    .saas-card-body {
+      padding: 20px 22px !important;
+      flex: 1 !important;
+    }
+    .header-filter-pill {
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 6px !important;
+      background: #FFFFFF !important;
+      border: 1px solid #E7EAF0 !important;
+      border-radius: 8px !important;
+      padding: 5px 10px !important;
+      font-size: 0.78rem !important;
+      font-weight: 600 !important;
+      color: #171C2B !important;
+      cursor: pointer !important;
+    }
+    .card-link-action {
+      font-size: 0.82rem !important;
+      font-weight: 600 !important;
+      color: #123DB8 !important;
+      text-decoration: none !important;
+    }
+    .card-link-action:hover {
+      text-decoration: underline !important;
+    }
+
+    /* ---------- UPCOMING EVENTS ---------- */
+    .event-row-item {
+      display: flex !important;
+      align-items: center !important;
+      gap: 12px !important;
+      padding: 10px 0 !important;
+      border-bottom: 1px solid #F0F2F6 !important;
+    }
+    .event-row-item:last-child {
+      border-bottom: none !important;
+    }
+    .event-date-pill {
+      width: 46px !important;
+      height: 46px !important;
+      border-radius: 8px !important;
+      background: #FEF8E7 !important;
+      border: 1px solid #FDE68A !important;
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: center !important;
+      line-height: 1.1 !important;
+      flex-shrink: 0 !important;
+    }
+    .event-date-month {
+      font-size: 0.65rem !important;
+      font-weight: 700 !important;
+      color: #B45309 !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.04em !important;
+    }
+    .event-date-day {
+      font-size: 1.05rem !important;
+      font-weight: 800 !important;
+      color: #B45309 !important;
+    }
+    .event-meta {
+      flex: 1 !important;
+      min-width: 0 !important;
+    }
+    .event-title {
+      font-size: 0.86rem !important;
+      font-weight: 600 !important;
+      color: #171C2B !important;
+      white-space: nowrap !important;
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+    }
+    .event-time-loc {
+      font-size: 0.74rem !important;
+      color: #687386 !important;
+      display: flex !important;
+      align-items: center !important;
+      gap: 4px !important;
+      margin-top: 2px !important;
+    }
+    .event-meatball-btn {
+      background: none !important;
+      border: none !important;
+      color: #9AA2B1 !important;
+      cursor: pointer !important;
+      padding: 4px !important;
+      border-radius: 4px !important;
+    }
+    .event-meatball-btn:hover {
+      background: #F4F5F8 !important;
+      color: #171C2B !important;
+    }
+
+    /* ---------- TABLES ---------- */
+    .table-responsive-clean {
+      width: 100%;
+      overflow-x: auto;
+    }
+    .table-ums {
+      width: 100% !important;
+      border-collapse: separate !important;
+      border-spacing: 0 !important;
+      margin: 0 !important;
+    }
+    .table-ums thead th {
+      font-size: 0.74rem !important;
+      font-weight: 600 !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.05em !important;
+      color: #687386 !important;
+      background-color: #F8FAFC !important;
+      border-bottom: 1px solid #E7EAF0 !important;
+      padding: 10px 14px !important;
+      text-align: left !important;
+    }
+    .table-ums tbody td {
+      padding: 12px 14px !important;
+      font-size: 0.84rem !important;
+      color: #171C2B !important;
+      border-bottom: 1px solid #F0F2F6 !important;
+      vertical-align: middle !important;
+      background: #FFFFFF !important;
+    }
+    .table-ums tbody tr:hover td {
+      background-color: #F9FAFC !important;
+    }
+    .table-user-cell {
+      display: flex !important;
+      align-items: center !important;
+      gap: 10px !important;
+    }
+    .table-user-cell img {
+      width: 32px !important;
+      height: 32px !important;
+      border-radius: 50% !important;
+      object-fit: cover !important;
+      background: #EFF4FE !important;
+    }
+    .table-user-cell .user-name {
+      font-weight: 600 !important;
+      color: #171C2B !important;
+      font-size: 0.85rem !important;
+    }
+    .table-user-cell .user-subtext {
+      font-size: 0.72rem !important;
+      color: #687386 !important;
+    }
+    .badge-status {
+      display: inline-flex !important;
+      align-items: center !important;
+      padding: 3px 10px !important;
+      border-radius: 9999px !important;
+      font-size: 0.74rem !important;
+      font-weight: 600 !important;
+    }
+    .badge-status.enrolled {
+      background: #ECFDF5 !important;
+      color: #059669 !important;
+    }
+    .badge-dept {
+      display: inline-flex !important;
+      align-items: center !important;
+      padding: 3px 9px !important;
+      border-radius: 6px !important;
+      font-size: 0.74rem !important;
+      font-weight: 700 !important;
+      background: #EFF4FE !important;
+      color: #123DB8 !important;
+    }
+    .badge-dept.bba {
+      background: #FEF8E7 !important;
+      color: #B45309 !important;
+    }
+    .badge-dept.eee {
+      background: #F0F9FF !important;
+      color: #0284C7 !important;
+    }
+    .badge-dept.civil {
+      background: #F1F5F9 !important;
+      color: #475569 !important;
+    }
+
+    /* ---------- QUICK ACTIONS ---------- */
+    .quick-action-grid {
+      display: grid !important;
+      grid-template-columns: repeat(2, 1fr) !important;
+      gap: 10px !important;
+    }
+    .quick-action-btn {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: center !important;
+      padding: 16px 10px !important;
+      background: #FFFFFF !important;
+      border: 1px solid #E7EAF0 !important;
+      border-radius: 10px !important;
+      text-decoration: none !important;
+      transition: all 0.15s ease !important;
+      text-align: center !important;
+    }
+    .quick-action-btn:hover {
+      background: #F7F8FA !important;
+      border-color: #123DB8 !important;
+      box-shadow: 0 4px 12px rgba(18, 61, 184, 0.08) !important;
+      transform: translateY(-1px) !important;
+    }
+    .quick-action-icon {
+      width: 36px !important;
+      height: 36px !important;
+      border-radius: 8px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      margin-bottom: 6px !important;
+      color: #123DB8 !important;
+    }
+    .quick-action-btn:hover .quick-action-icon {
+      background: #EFF4FE !important;
+    }
+    .quick-action-label {
+      font-size: 0.78rem !important;
+      font-weight: 600 !important;
+      color: #171C2B !important;
+    }
+
+    /* Floating AI Button */
+    .ai-fab-btn {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: #123DB8;
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 16px rgba(18, 61, 184, 0.35);
+      z-index: 1050;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+    .ai-fab-btn:hover {
+      background: #0E3197;
+      color: #FFFFFF;
+      transform: scale(1.06);
+    }
+
+    @media (max-width: 991.98px) {
+      .sidebar { transform: translateX(-100%); }
+      .sidebar.open { transform: translateX(0); }
+      .main { margin-left: 0 !important; }
+      .topbar { padding: 0 16px !important; }
+      .content-wrapper { padding: 20px 16px !important; }
+    }
+  </style>
+
+  <!-- Complete Design System External Sheet -->
+  <link href="{% static 'css/ums.css' %}?v=20261110_v3" rel="stylesheet">
+  
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+{% with url_name=request.resolver_match.url_name %}
+<div class="app">
+  <!-- Sidebar Navigation -->
+  <aside class="sidebar" id="appSidebar">
+    <!-- University Branding -->
+    <a href="{% url 'university:dashboard' %}" class="sidebar-brand">
+      <img src="{% static 'img/daffodil-vertical-logo.svg' %}?v=20261110_v2" alt="Daffodil Institute of Engineering & Technology" class="brand-logo-img">
+    </a>
+
+    <!-- Navigation Links -->
+    <div class="sidebar-nav">
+      <a class="nav-link-item {% if url_name == 'dashboard' %}active{% endif %}" href="{% url 'university:dashboard' %}">
+        <i data-lucide="layout-dashboard"></i>
+        <span>Dashboard</span>
+      </a>
+
+      {% if user.is_admin_role or user.is_superuser %}
+        <a class="nav-link-item {% if 'student' in url_name %}active{% endif %}" href="{% url 'university:admin_students' %}">
+          <i data-lucide="users"></i>
+          <span>Students</span>
+        </a>
+        <a class="nav-link-item {% if 'faculty' in url_name and url_name != 'faculty_courses' %}active{% endif %}" href="{% url 'university:admin_faculty' %}">
+          <i data-lucide="graduation-cap"></i>
+          <span>Faculty</span>
+        </a>
+        <a class="nav-link-item {% if 'department' in url_name or 'program' in url_name %}active{% endif %}" href="{% url 'university:admin_departments' %}">
+          <i data-lucide="building-2"></i>
+          <span>Departments</span>
+        </a>
+        <a class="nav-link-item {% if 'course' in url_name %}active{% endif %}" href="{% url 'university:admin_courses' %}">
+          <i data-lucide="book-open"></i>
+          <span>Courses</span>
+        </a>
+
+        <!-- Academics Dropdown / Menu -->
+        <a class="nav-link-item {% if 'ai' in url_name %}active{% endif %}" href="{% url 'university:ai_insights' %}" style="justify-content: space-between;">
+          <div class="d-flex align-items-center gap-2">
+            <i data-lucide="sparkles"></i>
+            <span>Academics</span>
+          </div>
+          <i data-lucide="chevron-down" style="width:14px;height:14px;opacity:0.6;"></i>
+        </a>
+
+        <a class="nav-link-item {% if 'report' in url_name or 'exam' in url_name %}active{% endif %}" href="{% url 'university:reports' %}">
+          <i data-lucide="clipboard-check"></i>
+          <span>Examinations</span>
+        </a>
+
+        <a class="nav-link-item {% if 'fee' in url_name %}active{% endif %}" href="{% url 'university:admin_fees' %}">
+          <i data-lucide="coins"></i>
+          <span>Finance</span>
+        </a>
+
+      {% elif user.is_faculty %}
+        <a class="nav-link-item {% if url_name == 'faculty_courses' %}active{% endif %}" href="{% url 'university:faculty_courses' %}">
+          <i data-lucide="book-open"></i>
+          <span>My Courses</span>
+        </a>
+        <a class="nav-link-item {% if 'assignment' in url_name or 'grade' in url_name %}active{% endif %}" href="{% url 'university:faculty_assignments' %}">
+          <i data-lucide="clipboard-check"></i>
+          <span>Assignments</span>
+        </a>
+        <a class="nav-link-item" href="{% url 'university:admin_courses' %}">
+          <i data-lucide="library"></i>
+          <span>Course Catalog</span>
+        </a>
+
+      {% else %}
+        <a class="nav-link-item {% if url_name == 'student_courses' %}active{% endif %}" href="{% url 'university:student_courses' %}">
+          <i data-lucide="book-open"></i>
+          <span>My Courses</span>
+        </a>
+        <a class="nav-link-item {% if url_name == 'student_attendance' %}active{% endif %}" href="{% url 'university:student_attendance' %}">
+          <i data-lucide="calendar-check"></i>
+          <span>Attendance</span>
+        </a>
+        <a class="nav-link-item {% if url_name == 'student_results' %}active{% endif %}" href="{% url 'university:student_results' %}">
+          <i data-lucide="award"></i>
+          <span>Results & GPA</span>
+        </a>
+        <a class="nav-link-item {% if url_name == 'student_assignments' %}active{% endif %}" href="{% url 'university:student_assignments' %}">
+          <i data-lucide="clipboard-list"></i>
+          <span>Assignments</span>
+        </a>
+        <a class="nav-link-item {% if url_name == 'student_fees' %}active{% endif %}" href="{% url 'university:student_fees' %}">
+          <i data-lucide="wallet"></i>
+          <span>Fee Invoices</span>
+        </a>
+      {% endif %}
+
+      <a class="nav-link-item {% if url_name == 'reports' %}active{% endif %}" href="{% url 'university:reports' %}">
+        <i data-lucide="bar-chart-2"></i>
+        <span>Reports</span>
+      </a>
+      <a class="nav-link-item {% if url_name == 'events' %}active{% endif %}" href="{% url 'university:events' %}">
+        <i data-lucide="calendar"></i>
+        <span>Events</span>
+      </a>
+      <a class="nav-link-item {% if url_name == 'profile' %}active{% endif %}" href="{% url 'accounts:profile' %}">
+        <i data-lucide="settings"></i>
+        <span>Settings</span>
+      </a>
+    </div>
+
+    <!-- Campus Footer Card -->
+    <div class="sidebar-footer">
+      <div class="campus-badge-card">
+        <div class="campus-thumb">
+          <i data-lucide="building"></i>
+        </div>
+        <div class="campus-meta">
+          <div class="campus-title">{{ campus_name|default:"Main Campus" }}</div>
+          <div class="campus-sub">{{ campus_location|default:"Dhanmondi, Dhaka" }}</div>
+        </div>
+        <i data-lucide="chevron-right" style="width:14px;height:14px;color:var(--text-muted)"></i>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content Wrapper -->
+  <div class="main">
+    <!-- Top Navigation Bar -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="topbar-btn d-lg-none" type="button" onclick="toggleSidebar()" aria-label="Toggle navigation">
+          <i data-lucide="menu"></i>
+        </button>
+
+        <div class="topbar-search">
+          <i data-lucide="search" class="search-icon"></i>
+          <input type="text" id="globalSearchInput" placeholder="Search students, courses, invoices..." autocomplete="off">
+        </div>
+      </div>
+
+      <div class="topbar-right">
+        <!-- Notification Center -->
+        <div class="dropdown">
+          <button class="topbar-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="Notifications">
+            <i data-lucide="bell"></i>
+            {% if notice_count %}<span class="unread-dot"></span>{% endif %}
+          </button>
+          <div class="dropdown-menu dropdown-menu-end shadow-sm border" style="width: 320px; border-radius: 12px;">
+            <div class="d-flex justify-content-between align-items-center px-3 py-2 border-bottom">
+              <span class="fw-bold small">Notifications & Notices</span>
+              <a href="{% url 'university:notices' %}" class="small text-decoration-none">View all</a>
+            </div>
+            <div class="p-2">
+              <div class="p-2 small text-muted">
+                <i data-lucide="info" class="me-1 d-inline" style="width:14px;height:14px;"></i>
+                {{ notice_count }} notice(s) currently active for your portal.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Help / Support -->
+        <a class="topbar-btn" href="{% url 'university:about' %}" title="Help & Information">
+          <i data-lucide="help-circle"></i>
+        </a>
+
+        <!-- User Profile Dropdown Pill -->
+        <div class="dropdown">
+          <div class="user-profile-pill" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="{{ user.avatar }}" alt="{{ user.display_name }}" class="user-profile-avatar">
+            <div class="user-profile-info d-none d-sm-flex">
+              <span class="user-profile-name">{{ user.display_name }}</span>
+              <span class="user-profile-role">{{ user.get_role_display|default:'Admin' }}</span>
+            </div>
+            <i data-lucide="chevron-down" class="user-profile-chevron"></i>
+          </div>
+          <ul class="dropdown-menu dropdown-menu-end shadow-sm border" style="border-radius: 12px; min-width: 200px;">
+            <li class="px-3 py-2 border-bottom">
+              <div class="fw-bold text-dark">{{ user.display_name }}</div>
+              <div class="small text-muted">{{ user.email|default:user.username }}</div>
+            </li>
+            <li>
+              <a class="dropdown-item py-2 d-flex align-items-center gap-2" href="{% url 'accounts:profile' %}">
+                <i data-lucide="user" style="width:16px;height:16px;"></i> My Profile
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item py-2 d-flex align-items-center gap-2" href="{% url 'university:reports' %}">
+                <i data-lucide="file-text" style="width:16px;height:16px;"></i> Reports & Summary
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item py-2 d-flex align-items-center gap-2" href="{% url 'university:ai_assistant' %}">
+                <i data-lucide="bot" style="width:16px;height:16px;"></i> AI Assistant
+              </a>
+            </li>
+            <li><hr class="dropdown-divider my-1"></li>
+            <li>
+              <a class="dropdown-item py-2 d-flex align-items-center gap-2 text-danger" href="{% url 'accounts:logout' %}">
+                <i data-lucide="log-out" style="width:16px;height:16px;"></i> Logout
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </header>
+
+    <!-- System Messages / Alerts -->
+    {% if messages %}
+    <div class="px-4 pt-3">
+      {% for m in messages %}
+        <div class="alert alert-{{ m.tags|default:'info' }} alert-dismissible fade show rounded-3 mb-2" role="alert">
+          {{ m }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Page Content Slot -->
+    <main class="content-wrapper">
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+</div>
+{% endwith %}
+
+<!-- Floating AI Assistant Button -->
+<a href="{% url 'university:ai_assistant' %}" class="ai-fab-btn" title="Ask UMS AI">
+  <i data-lucide="bot"></i>
+</a>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  const AI_REPLY_URL = "{% url 'university:ai_reply' %}";
+  
+  // Initialize Lucide icons
+  document.addEventListener('DOMContentLoaded', function () {
+    if (window.lucide) {
+      lucide.createIcons();
+    }
+  });
+
+  // Mobile sidebar toggle
+  function toggleSidebar() {
+    const sidebar = document.getElementById('appSidebar');
+    if (sidebar) {
+      sidebar.classList.toggle('open');
+    }
+  }
+
+  // Close sidebar when clicking outside on mobile
+  document.addEventListener('click', function(e) {
+    const sidebar = document.getElementById('appSidebar');
+    const toggleBtn = e.target.closest('.topbar-btn');
+    if (sidebar && sidebar.classList.contains('open') && !sidebar.contains(e.target) && !toggleBtn) {
+      sidebar.classList.remove('open');
+    }
+  });
+</script>
+<script src="{% static 'js/ums.js' %}?v=20261110_v3"></script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>

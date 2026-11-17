@@ -1,0 +1,115 @@
+{% extends 'base_dashboard.html' %}
+{% block title %}{{ faculty.user.display_name }} · Faculty Profile{% endblock %}
+
+{% block content %}
+<div class="page-head-enterprise">
+  <div>
+    <h2 class="page-title">
+      <span class="stat-icon-wrapper blue" style="width:36px;height:36px;border-radius:10px;">
+        <i data-lucide="graduation-cap" style="width:20px;height:20px;"></i>
+      </span>
+      <span>{{ faculty.user.display_name }}</span>
+    </h2>
+    <div class="breadcrumb-nav mt-1">
+      <a href="{% url 'university:dashboard' %}">Dashboard</a>
+      <i data-lucide="chevron-right" style="width:12px;height:12px;"></i>
+      <a href="{% url 'university:admin_faculty' %}">Faculty</a>
+      <i data-lucide="chevron-right" style="width:12px;height:12px;"></i>
+      <span>{{ faculty.employee_id }}</span>
+    </div>
+  </div>
+
+  <div class="d-flex align-items-center gap-2">
+    <a href="{% url 'university:admin_faculty' %}" class="btn btn-secondary d-inline-flex align-items-center gap-2">
+      <i data-lucide="arrow-left" style="width:16px;height:16px;"></i>
+      <span>Back</span>
+    </a>
+    <a href="{% url 'university:faculty_edit' faculty.id %}" class="btn btn-primary d-inline-flex align-items-center gap-2">
+      <i data-lucide="pencil" style="width:16px;height:16px;"></i>
+      <span>Edit Faculty</span>
+    </a>
+  </div>
+</div>
+
+<div class="row g-4">
+  <div class="col-lg-4">
+    <div class="saas-card">
+      <div class="saas-card-body text-center p-4">
+        <img src="{{ faculty.user.avatar }}" class="rounded-circle border border-2 border-primary mb-3" width="90" height="90" alt="{{ faculty.user.display_name }}">
+        <h5 class="fw-bold text-dark mb-1">{{ faculty.user.display_name }}</h5>
+        <div class="text-secondary small mb-2">{{ faculty.designation }}</div>
+        <div class="badge-dept mb-3">{{ faculty.employee_id }}</div>
+
+        <div class="text-start border-top pt-3">
+          <div class="d-flex align-items-center gap-2 mb-2 small">
+            <i data-lucide="building-2" class="text-secondary" style="width:16px;height:16px;"></i>
+            <span class="text-secondary">Department:</span>
+            <span class="fw-semibold text-dark ms-auto">{{ faculty.department }}</span>
+          </div>
+          <div class="d-flex align-items-center gap-2 mb-2 small">
+            <i data-lucide="mail" class="text-secondary" style="width:16px;height:16px;"></i>
+            <span class="text-secondary">Email:</span>
+            <span class="fw-semibold text-dark ms-auto text-truncate" style="max-width:160px;">{{ faculty.user.email }}</span>
+          </div>
+          <div class="d-flex align-items-center gap-2 small">
+            <i data-lucide="phone" class="text-secondary" style="width:16px;height:16px;"></i>
+            <span class="text-secondary">Phone:</span>
+            <span class="fw-semibold text-dark ms-auto">{{ faculty.user.phone|default:"—" }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-8">
+    <div class="saas-card">
+      <div class="saas-card-header">
+        <div>
+          <div class="saas-card-title">
+            <i data-lucide="book-open" class="text-primary" style="width:18px;height:18px;"></i>
+            <span>Courses Taught</span>
+          </div>
+          <div class="saas-card-subtitle">Active and past courses assigned to this instructor</div>
+        </div>
+      </div>
+      <div class="table-responsive-clean">
+        <table class="table-ums">
+          <thead>
+            <tr>
+              <th>Course Code</th>
+              <th>Course Title</th>
+              <th>Credits</th>
+              <th>Enrolled Students</th>
+              <th class="text-end">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for c in courses %}
+            <tr>
+              <td><span class="badge-dept">{{ c.code }}</span></td>
+              <td><span class="fw-semibold text-dark">{{ c.title }}</span></td>
+              <td class="small">{{ c.credits }} credits</td>
+              <td>
+                <span class="badge-status enrolled">
+                  <i data-lucide="users" style="width:12px;height:12px;"></i>
+                  {{ c.enrolled_count }} enrolled
+                </span>
+              </td>
+              <td class="text-end">
+                <a href="{% url 'university:course_detail' c.id %}" class="btn btn-sm btn-secondary">
+                  View Course
+                </a>
+              </td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="5" class="text-center py-4 text-muted">No courses assigned.</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

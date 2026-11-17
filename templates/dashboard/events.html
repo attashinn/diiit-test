@@ -1,0 +1,78 @@
+{% extends 'base_dashboard.html' %}
+{% block title %}Campus Events · Daffodil Institute{% endblock %}
+
+{% block content %}
+<div class="page-head-enterprise">
+  <div>
+    <h2 class="page-title">
+      <span class="stat-icon-wrapper gold" style="width:36px;height:36px;border-radius:10px;">
+        <i data-lucide="calendar" style="width:20px;height:20px;"></i>
+      </span>
+      <span>Campus Events Calendar</span>
+    </h2>
+    <div class="breadcrumb-nav mt-1">
+      <a href="{% url 'university:dashboard' %}">Dashboard</a>
+      <i data-lucide="chevron-right" style="width:12px;height:12px;"></i>
+      <span>Events</span>
+    </div>
+  </div>
+
+  <div class="d-flex align-items-center gap-2">
+    {% if can_manage %}
+    <a href="{% url 'university:event_create' %}" class="btn btn-primary d-inline-flex align-items-center gap-2">
+      <i data-lucide="plus" style="width:16px;height:16px;"></i>
+      <span>Create Event</span>
+    </a>
+    {% endif %}
+  </div>
+</div>
+
+<div class="row g-4">
+  {% for e in events %}
+  <div class="col-md-6 col-xl-4">
+    <div class="saas-card">
+      <div class="saas-card-body p-4">
+        <div class="d-flex align-items-start gap-3 mb-3">
+          <div class="event-date-pill">
+            <span class="event-date-month">{{ e.date|date:'M' }}</span>
+            <span class="event-date-day">{{ e.date|date:'d' }}</span>
+          </div>
+          <div class="flex-grow-1">
+            <span class="badge-dept mb-1">{{ e.category }}</span>
+            <h5 class="fw-bold text-dark fs-6 mb-1">{{ e.title }}</h5>
+            <div class="small text-secondary d-flex align-items-center gap-1">
+              <i data-lucide="map-pin" style="width:13px;height:13px;" class="text-primary"></i>
+              <span>{{ e.location }}</span>
+            </div>
+          </div>
+        </div>
+
+        <p class="small text-secondary mb-3">{{ e.description|truncatewords:20 }}</p>
+
+        {% if can_manage %}
+        <div class="d-flex align-items-center justify-content-end gap-2 pt-2 border-top">
+          <a href="{% url 'university:event_edit' e.id %}" class="btn btn-sm btn-secondary d-inline-flex align-items-center gap-1">
+            <i data-lucide="pencil" style="width:13px;height:13px;"></i>
+            <span>Edit</span>
+          </a>
+          <a href="{% url 'university:event_delete' e.id %}" class="btn-table-icon delete" title="Delete event">
+            <i data-lucide="trash-2" style="width:14px;height:14px;"></i>
+          </a>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  {% empty %}
+  <div class="col-12">
+    <div class="saas-card p-5 text-center">
+      <div class="stat-icon-wrapper gold mx-auto mb-3" style="width:48px;height:48px;">
+        <i data-lucide="calendar" style="width:24px;height:24px;"></i>
+      </div>
+      <h6 class="fw-bold text-dark">No Events Scheduled</h6>
+      <p class="small text-secondary">Check back soon for university workshops, guest lectures and activities.</p>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

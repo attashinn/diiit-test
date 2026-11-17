@@ -1,0 +1,122 @@
+{% extends 'base_dashboard.html' %}
+{% load ums_extras %}
+{% block title %}Record Attendance · {{ course.code }}{% endblock %}
+
+{% block content %}
+<div class="page-head-enterprise">
+  <div>
+    <h2 class="page-title">
+      <span class="stat-icon-wrapper blue" style="width:36px;height:36px;border-radius:10px;">
+        <i data-lucide="calendar-check" style="width:20px;height:20px;"></i>
+      </span>
+      <span>Record Daily Attendance</span>
+    </h2>
+    <div class="breadcrumb-nav mt-1">
+      <a href="{% url 'university:dashboard' %}">Dashboard</a>
+      <i data-lucide="chevron-right" style="width:12px;height:12px;"></i>
+      <a href="{% url 'university:faculty_courses' %}">My Courses</a>
+      <i data-lucide="chevron-right" style="width:12px;height:12px;"></i>
+      <span>{{ course.code }}</span>
+    </div>
+  </div>
+
+  <div class="d-flex align-items-center gap-2 flex-wrap">
+    <form class="d-flex align-items-center gap-2" method="get">
+      <input type="date" name="date" value="{{ today|date:'Y-m-d' }}" class="form-control form-control-sm" style="width: 160px;" onchange="this.form.submit()">
+    </form>
+    <a href="{% url 'university:faculty_attendance_history' course.id %}" class="btn btn-secondary d-inline-flex align-items-center gap-2">
+      <i data-lucide="table-2" style="width:16px;height:16px;"></i>
+      <span>Full Register</span>
+    </a>
+    <a href="{% url 'university:faculty_courses' %}" class="btn btn-outline-secondary d-inline-flex align-items-center gap-2">
+      <i data-lucide="arrow-left" style="width:16px;height:16px;"></i>
+      <span>Back</span>
+    </a>
+  </div>
+</div>
+
+<div class="p-3 mb-4 rounded-3 bg-light border d-flex align-items-center justify-content-between flex-wrap gap-2">
+  <div class="d-flex align-items-center gap-2 small text-secondary">
+    <i data-lucide="info" class="text-primary" style="width:18px;height:18px;"></i>
+    <span>Marking attendance for <b>{{ course.code }} · {{ course.title }}</b> on <b>{{ today|date:'l, F d, Y' }}</b>.</span>
+  </div>
+  <button type="button" class="btn btn-sm btn-outline-primary" onclick="markAllPresent()">
+    <i data-lucide="check-check" style="width:14px;height:14px;" class="me-1"></i> Mark All Present
+  </button>
+</div>
+
+<form method="post">
+  {% csrf_token %}
+  <input type="hidden" name="date" value="{{ today|date:'Y-m-d' }}">
+  
+  <div class="saas-card mb-4">
+    <div class="saas-card-header">
+      <div>
+        <div class="saas-card-title">Student Class Roster</div>
+        <div class="saas-card-subtitle">Select status for each enrolled student</div>
+      </div>
+      <span class="small fw-semibold text-secondary">{{ roster.count }} Enrolled</span>
+    </div>
+
+    <div class="table-responsive-clean">
+      <table class="table-ums">
+        <thead>
+          <tr>
+            <th>Student</th>
+            <th>Roll Number</th>
+            <th class="text-end">Attendance Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for e in roster %}
+          <tr>
+            <td>
+              <div class="table-user-cell">
+                <img src="{{ e.student.user.avatar }}" alt="{{ e.student.user.display_name }}">
+                <span class="fw-semibold text-dark">{{ e.student.user.display_name }}</span>
+              </div>
+            </td>
+            <td><span class="badge-dept">{{ e.student.roll_no }}</span></td>
+            <td class="text-end">
+              {% with cur=existing|get_item:e.id %}
+              <div class="btn-group" role="group">
+                <input type="radio" class="btn-check radio-p" name="status_{{ e.id }}" id="p{{ e.id }}" value="P" {% if cur == 'P' or not cur %}checked{% endif %}>
+                <label class="btn btn-sm btn-outline-success" for="p{{ e.id }}">Present</label>
+
+                <input type="radio" class="btn-check radio-l" name="status_{{ e.id }}" id="l{{ e.id }}" value="L" {% if cur == 'L' %}checked{% endif %}>
+                <label class="btn btn-sm btn-outline-warning" for="l{{ e.id }}">Late</label>
+
+                <input type="radio" class="btn-check radio-a" name="status_{{ e.id }}" id="a{{ e.id }}" value="A" {% if cur == 'A' %}checked{% endif %}>
+                <label class="btn btn-sm btn-outline-danger" for="a{{ e.id }}">Absent</label>
+              </div>
+              {% endwith %}
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="3" class="text-center py-5 text-muted">No students currently enrolled in this course.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="saas-card-footer text-end p-3">
+      <button type="submit" class="btn btn-primary d-inline-flex align-items-center gap-2">
+        <i data-lucide="save" style="width:16px;height:16px;"></i>
+        <span>Save Attendance Records</span>
+      </button>
+    </div>
+  </div>
+</form>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function markAllPresent() {
+  document.querySelectorAll('.radio-p').forEach(radio => {
+    radio.checked = true;
+  });
+}
+</script>
+{% endblock %}

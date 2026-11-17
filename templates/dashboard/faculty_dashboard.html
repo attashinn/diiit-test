@@ -1,0 +1,179 @@
+{% extends 'base_dashboard.html' %}
+{% block title %}Faculty Dashboard · Daffodil Institute{% endblock %}
+
+{% block content %}
+<div class="dashboard-page-header">
+  <div class="dashboard-title-box">
+    <h2>Welcome back, {{ user.display_name }} 👋</h2>
+    <p>{{ faculty.designation }} · {{ faculty.department.name|default:"Faculty of Engineering" }}</p>
+  </div>
+  <div class="date-filter-pill">
+    <i data-lucide="calendar"></i>
+    <span>{{ today_formatted|default:'Nov 10, 2026' }}</span>
+  </div>
+</div>
+
+{% include 'dashboard/_cards.html' %}
+
+<div class="row g-4 mb-4">
+  <div class="col-lg-7">
+    <div class="saas-card">
+      <div class="saas-card-header">
+        <div>
+          <div class="saas-card-title">Attendance by Course (%)</div>
+          <div class="saas-card-subtitle">Average student attendance across assigned lectures</div>
+        </div>
+      </div>
+      <div class="saas-card-body">
+        <canvas id="attCourse" height="150"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-5">
+    <div class="saas-card">
+      <div class="saas-card-header">
+        <div>
+          <div class="saas-card-title">Grade Distribution</div>
+          <div class="saas-card-subtitle">Performance spread across examinations</div>
+        </div>
+      </div>
+      <div class="saas-card-body">
+        <canvas id="gradesChart" height="150"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-4">
+  <div class="col-lg-6">
+    <div class="saas-card">
+      <div class="saas-card-header">
+        <div>
+          <div class="saas-card-title">My Assigned Courses</div>
+          <div class="saas-card-subtitle">Courses currently taught this semester</div>
+        </div>
+        <a href="{% url 'university:faculty_courses' %}" class="card-link-action">View All</a>
+      </div>
+      <div class="table-responsive-clean">
+        <table class="table-ums">
+          <thead>
+            <tr>
+              <th>Course</th>
+              <th>Students</th>
+              <th class="text-end">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for c in courses %}
+            <tr>
+              <td>
+                <div class="fw-semibold text-dark">{{ c.code }}</div>
+                <div class="small text-secondary">{{ c.title }}</div>
+              </td>
+              <td>
+                <span class="badge-status enrolled">
+                  <i data-lucide="users" style="width:12px;height:12px;"></i>
+                  {{ c.enrolled_count }} enrolled
+                </span>
+              </td>
+              <td class="text-end">
+                <a href="{% url 'university:faculty_attendance' c.id %}" class="btn btn-sm btn-primary">
+                  <i data-lucide="calendar-check" style="width:14px;height:14px;" class="me-1"></i> Attendance
+                </a>
+              </td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="3" class="text-center py-4 text-muted">No courses currently assigned.</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-6">
+    <div class="saas-card">
+      <div class="saas-card-header">
+        <div>
+          <div class="saas-card-title">Recent Submissions</div>
+          <div class="saas-card-subtitle">Assignments turned in awaiting evaluation</div>
+        </div>
+        <a href="{% url 'university:faculty_assignments' %}" class="card-link-action">All Assignments</a>
+      </div>
+      <div class="saas-card-body p-0">
+        {% for s in recent_submissions %}
+        <div class="p-3 border-bottom d-flex align-items-center justify-content-between">
+          <div class="table-user-cell">
+            <img src="{{ s.student.user.avatar }}" alt="{{ s.student.user.display_name }}">
+            <div>
+              <div class="user-name">{{ s.student.user.display_name }}</div>
+              <div class="user-subtext">{{ s.assignment.title|truncatechars:30 }}</div>
+            </div>
+          </div>
+          <div class="d-flex align-items-center gap-2">
+            <span class="badge-status {{ s.status|lower }}">{{ s.get_status_display }}</span>
+            <a href="{% url 'university:faculty_grade' s.assignment.id %}" class="btn btn-sm btn-secondary">Grade</a>
+          </div>
+        </div>
+        {% empty %}
+        <div class="p-4 text-center text-muted small">No submissions pending grading.</div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const attCtx = document.getElementById('attCourse');
+  if (attCtx) {
+    new Chart(attCtx, {
+      type: 'bar',
+      data: {
+        labels: {{ course_labels|safe }},
+        datasets: [{
+          label: 'Attendance %',
+          data: {{ course_att|safe }},
+          backgroundColor: '#123DB8',
+          borderRadius: 6,
+          barPercentage: 0.6
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { max: 100, grid: { color: '#F1F4F9' }, ticks: { callback: v => v + '%' } },
+          x: { grid: { display: false } }
+        }
+      }
+    });
+  }
+
+  const gradesCtx = document.getElementById('gradesChart');
+  if (gradesCtx) {
+    new Chart(gradesCtx, {
+      type: 'polarArea',
+      data: {
+        labels: {{ grade_labels|safe }},
+        datasets: [{
+          data: {{ grade_values|safe }},
+          backgroundColor: ['#059669', '#10B981', '#123DB8', '#38BDF8', '#F4B51B', '#F97316', '#DC2626']
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { position: 'right', labels: { boxWidth: 12, font: { family: 'Inter', size: 11 } } }
+        }
+      }
+    });
+  }
+});
+</script>
+{% endblock %}

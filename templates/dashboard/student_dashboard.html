@@ -1,0 +1,189 @@
+{% extends 'base_dashboard.html' %}
+{% block title %}Student Dashboard · Daffodil Institute{% endblock %}
+
+{% block content %}
+<div class="dashboard-page-header">
+  <div class="dashboard-title-box">
+    <h2>Welcome back, {{ user.display_name }} 🎓</h2>
+    <p>{{ student.roll_no }} · {{ student.program.name|default:"Department of Computer Science & Engineering" }}</p>
+  </div>
+  <div class="date-filter-pill">
+    <i data-lucide="calendar"></i>
+    <span>{{ today_formatted|default:'Nov 10, 2026' }}</span>
+  </div>
+</div>
+
+{% include 'dashboard/_cards.html' %}
+
+<div class="row g-4 mb-4">
+  <div class="col-lg-7">
+    <div class="saas-card">
+      <div class="saas-card-header">
+        <div>
+          <div class="saas-card-title">Attendance Trajectory</div>
+          <div class="saas-card-subtitle">Session attendance percentage across recent lectures</div>
+        </div>
+      </div>
+      <div class="saas-card-body">
+        <canvas id="trendChart" height="150"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-5">
+    <div class="saas-card">
+      <div class="saas-card-header">
+        <div>
+          <div class="saas-card-title">
+            <i data-lucide="sparkles" class="text-primary" style="width:18px;height:18px;"></i>
+            <span>AI Projected Term Score</span>
+          </div>
+          <div class="saas-card-subtitle">Heuristic predictive model</div>
+        </div>
+      </div>
+      <div class="saas-card-body text-center">
+        <div class="position-relative d-inline-block my-2" style="width: 170px; height: 170px;">
+          <canvas id="gaugeChart" width="170" height="170"></canvas>
+          <div class="position-absolute top-50 start-50 translate-middle">
+            <div class="fw-bold" style="font-size: 1.85rem; line-height: 1; color: var(--text-primary);">
+              {{ prediction.projected }}%
+            </div>
+            <div class="small text-secondary fw-semibold">projected</div>
+          </div>
+        </div>
+        <div class="p-2 rounded-3 bg-light border my-2 small fw-semibold">
+          <i data-lucide="info" class="text-primary me-1 d-inline" style="width:14px;height:14px;"></i>
+          {{ prediction.band }}
+        </div>
+        <a href="{% url 'university:ai_insights' %}" class="btn btn-sm btn-secondary mt-1">View Full AI Study Insights</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-4">
+  <div class="col-lg-7">
+    <div class="saas-card">
+      <div class="saas-card-header">
+        <div>
+          <div class="saas-card-title">Academic Examination Scores</div>
+          <div class="saas-card-subtitle">Results breakdown by registered subject</div>
+        </div>
+        <a href="{% url 'university:student_results' %}" class="card-link-action">Detailed Results</a>
+      </div>
+      <div class="saas-card-body">
+        <canvas id="marksChart" height="150"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-5">
+    <div class="saas-card">
+      <div class="saas-card-header">
+        <div>
+          <div class="saas-card-title">Upcoming Campus Events</div>
+          <div class="saas-card-subtitle">Seminars, exams and activities</div>
+        </div>
+        <a href="{% url 'university:events' %}" class="card-link-action">View All</a>
+      </div>
+      <div class="saas-card-body p-0">
+        {% for e in upcoming_events %}
+        <div class="p-3 border-bottom d-flex align-items-center gap-3">
+          <div class="event-date-pill">
+            <span class="event-date-month">{{ e.date|date:'M' }}</span>
+            <span class="event-date-day">{{ e.date|date:'d' }}</span>
+          </div>
+          <div>
+            <div class="fw-semibold text-dark small">{{ e.title }}</div>
+            <div class="small text-secondary">
+              <i data-lucide="map-pin" style="width:12px;height:12px;" class="me-1 d-inline"></i>
+              {{ e.location }}
+            </div>
+          </div>
+        </div>
+        {% empty %}
+        <div class="p-4 text-center text-muted small">No upcoming events scheduled.</div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const trendCtx = document.getElementById('trendChart');
+  if (trendCtx) {
+    new Chart(trendCtx, {
+      type: 'line',
+      data: {
+        labels: {{ trend_labels|safe }},
+        datasets: [{
+          label: 'Attendance %',
+          data: {{ trend_values|safe }},
+          borderColor: '#123DB8',
+          borderWidth: 2.5,
+          backgroundColor: 'rgba(18, 61, 184, 0.1)',
+          fill: true,
+          tension: 0.35,
+          pointBackgroundColor: '#123DB8'
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { max: 100, grid: { color: '#F1F4F9' }, ticks: { callback: v => v + '%' } },
+          x: { grid: { display: false } }
+        }
+      }
+    });
+  }
+
+  const marksCtx = document.getElementById('marksChart');
+  if (marksCtx) {
+    new Chart(marksCtx, {
+      type: 'bar',
+      data: {
+        labels: {{ subj_labels|safe }},
+        datasets: [{
+          label: 'Score %',
+          data: {{ subj_values|safe }},
+          backgroundColor: '#123DB8',
+          borderRadius: 6,
+          barPercentage: 0.55
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { max: 100, grid: { color: '#F1F4F9' }, ticks: { callback: v => v + '%' } },
+          x: { grid: { display: false } }
+        }
+      }
+    });
+  }
+
+  const gaugeCtx = document.getElementById('gaugeChart');
+  if (gaugeCtx) {
+    const p = {{ prediction.projected }};
+    new Chart(gaugeCtx, {
+      type: 'doughnut',
+      data: {
+        datasets: [{
+          data: [p, 100 - p],
+          backgroundColor: ['#123DB8', '#EFF4FE'],
+          borderWidth: 0
+        }]
+      },
+      options: {
+        cutout: '76%',
+        plugins: { legend: { display: false }, tooltip: { enabled: false } }
+      }
+    });
+  }
+});
+</script>
+{% endblock %}

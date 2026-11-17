@@ -1,0 +1,445 @@
+{% extends 'base_dashboard.html' %}
+{% load humanize %}
+{% block title %}Admin Dashboard · Daffodil Institute of Engineering & Technology{% endblock %}
+
+{% block content %}
+<!-- Page Header Greeting & Filter -->
+<div class="dashboard-page-header">
+  <div class="dashboard-title-box">
+    <h2>Good morning, Administrator 👋</h2>
+    <p>Here's what's happening at Daffodil Institute today.</p>
+  </div>
+  <div class="date-filter-pill dropdown">
+    <div role="button" data-bs-toggle="dropdown" aria-expanded="false" class="d-flex align-items-center gap-2">
+      <i data-lucide="calendar"></i>
+      <span>{{ today_formatted|default:'Nov 9, 2026' }}</span>
+      <i data-lucide="chevron-down" style="width:14px;height:14px;color:var(--text-muted)"></i>
+    </div>
+    <ul class="dropdown-menu dropdown-menu-end shadow-sm border" style="border-radius: 10px;">
+      <li><a class="dropdown-item active" href="#">Today</a></li>
+      <li><a class="dropdown-item" href="#">This Week</a></li>
+      <li><a class="dropdown-item" href="#">This Semester</a></li>
+      <li><a class="dropdown-item" href="#">This Academic Year</a></li>
+    </ul>
+  </div>
+</div>
+
+<!-- 4 Restrained Stat Cards with Sparklines -->
+{% include 'dashboard/_cards.html' %}
+
+<!-- Top Visualizations Grid: 6 / 3 / 3 Split -->
+<div class="row g-4 mb-4">
+  <!-- Student Enrollment Trend -->
+  <div class="col-xl-6 col-lg-12">
+    <div class="saas-card">
+      <div class="saas-card-header">
+        <div>
+          <div class="saas-card-title">
+            <span class="stat-icon-wrapper blue" style="width:28px;height:28px;border-radius:6px;font-size:0.85rem">
+              <i data-lucide="line-chart" style="width:16px;height:16px;"></i>
+            </span>
+            <span>Student Enrollment Trend</span>
+          </div>
+          <div class="saas-card-subtitle">Total enrolled students over the year</div>
+        </div>
+        <div class="dropdown">
+          <button class="header-filter-pill" data-bs-toggle="dropdown" aria-expanded="false">
+            <span>This Year</span>
+            <i data-lucide="chevron-down" style="width:12px;height:12px;"></i>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end shadow-sm border" style="border-radius: 8px;">
+            <li><a class="dropdown-item active" href="#">This Year</a></li>
+            <li><a class="dropdown-item" href="#">Last Year</a></li>
+            <li><a class="dropdown-item" href="#">All Time</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="saas-card-body" style="height: 250px;">
+        <canvas id="enrollTrendChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Students by Department Donut -->
+  <div class="col-xl-3 col-lg-6">
+    <div class="saas-card">
+      <div class="saas-card-header">
+        <div>
+          <div class="saas-card-title">Students by Department</div>
+          <div class="saas-card-subtitle">Distribution across active faculties</div>
+        </div>
+      </div>
+      <div class="saas-card-body d-flex align-items-center justify-content-between gap-2 p-3">
+        <!-- Donut chart with centered text -->
+        <div class="position-relative" style="width: 140px; height: 140px; flex-shrink: 0;">
+          <canvas id="deptDonutChart" width="140" height="140"></canvas>
+          <div class="position-absolute top-50 start-50 translate-middle text-center" style="pointer-events: none;">
+            <div class="fw-bold" style="font-size: 1.15rem; line-height: 1.05; color: #171C2B;">
+              {{ student_count|default:"12,480" }}
+            </div>
+            <div style="font-size: 0.68rem; color: #687386; font-weight: 500;">Students</div>
+          </div>
+        </div>
+
+        <!-- Custom Department Legend -->
+        <div class="flex-grow-1 ps-2" style="max-height: 200px; overflow-y: auto;">
+          {% for d in dept_rows %}
+          <div class="d-flex align-items-center justify-content-between py-1 border-bottom border-light">
+            <div class="d-flex align-items-center gap-2">
+              <span style="width: 8px; height: 8px; border-radius: 50%; background-color: {{ d.color }}; display: inline-block;"></span>
+              <span class="small fw-semibold text-secondary" style="font-size: 0.76rem;">{{ d.code|default:d.name|truncatechars:8 }}</span>
+            </div>
+            <span class="small fw-bold text-dark" style="font-size: 0.76rem;">{{ d.pct }}%</span>
+          </div>
+          {% empty %}
+          <div class="small text-muted py-2">No department data.</div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Upcoming Events -->
+  <div class="col-xl-3 col-lg-6">
+    <div class="saas-card">
+      <div class="saas-card-header">
+        <div>
+          <div class="saas-card-title">
+            <span class="stat-icon-wrapper gold" style="width:26px;height:26px;border-radius:6px;">
+              <i data-lucide="calendar" style="width:14px;height:14px;"></i>
+            </span>
+            <span>Upcoming Events</span>
+          </div>
+        </div>
+        <a href="{% url 'university:events' %}" class="card-link-action">View All</a>
+      </div>
+      <div class="saas-card-body" style="padding-top: 10px; padding-bottom: 10px;">
+        {% for e in upcoming_events|slice:":3" %}
+        <div class="event-row-item">
+          <div class="event-date-pill">
+            <span class="event-date-month">{{ e.date|date:'M' }}</span>
+            <span class="event-date-day">{{ e.date|date:'d' }}</span>
+          </div>
+          <div class="event-meta">
+            <div class="event-title">{{ e.title }}</div>
+            <div class="event-time-loc">
+              <i data-lucide="clock" style="width:12px;height:12px;"></i>
+              <span>{{ e.location|default:"10:00 AM - 4:00 PM" }}</span>
+            </div>
+          </div>
+          <button class="event-meatball-btn" type="button" aria-label="Event options">
+            <i data-lucide="more-horizontal" style="width:16px;height:16px;"></i>
+          </button>
+        </div>
+        {% empty %}
+        <div class="text-center text-muted py-4 small">
+          <i data-lucide="calendar" class="mb-2" style="width:24px;height:24px;"></i>
+          <div>No upcoming events scheduled.</div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bottom Section: 6 / 3 / 3 Split -->
+<div class="row g-4">
+  <!-- Recent Admissions Table -->
+  <div class="col-xl-6 col-lg-12">
+    <div class="saas-card">
+      <div class="saas-card-header">
+        <div>
+          <div class="saas-card-title">
+            <span class="stat-icon-wrapper blue" style="width:26px;height:26px;border-radius:6px;">
+              <i data-lucide="users" style="width:14px;height:14px;"></i>
+            </span>
+            <span>Recent Admissions</span>
+          </div>
+          <div class="saas-card-subtitle">Latest students admitted to the university</div>
+        </div>
+        <a href="{% url 'university:admin_students' %}" class="card-link-action">View All</a>
+      </div>
+      <div class="table-responsive-clean">
+        <table class="table-ums">
+          <thead>
+            <tr>
+              <th>Student</th>
+              <th>Department</th>
+              <th>Program</th>
+              <th>Admission Date</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for s in recent_admissions %}
+            <tr>
+              <td>
+                <div class="table-user-cell">
+                  <img src="{{ s.user.avatar }}" alt="{{ s.user.display_name }}">
+                  <div>
+                    <div class="user-name">{{ s.user.display_name }}</div>
+                    <div class="user-subtext">{{ s.roll_no }}</div>
+                  </div>
+                </div>
+              </td>
+              <td>
+                {% with dept=s.program.department.code|default:"CSE" %}
+                  <span class="badge-dept {% if 'bba' in dept|lower %}bba{% elif 'eee' in dept|lower %}eee{% elif 'civil' in dept|lower %}civil{% endif %}">
+                    {{ dept }}
+                  </span>
+                {% endwith %}
+              </td>
+              <td class="small text-secondary">{{ s.program.name|default:"B.Sc. in CSE" }}</td>
+              <td class="small text-secondary">{{ s.admission_date|date:'M d, Y'|default:'Nov 8, 2026' }}</td>
+              <td>
+                <span class="badge-status enrolled">Enrolled</span>
+              </td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="5" class="text-center text-muted py-4">No recent admissions found.</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Attendance Overview -->
+  <div class="col-xl-3 col-lg-6">
+    <div class="saas-card">
+      <div class="saas-card-header">
+        <div>
+          <div class="saas-card-title">
+            <span class="stat-icon-wrapper blue" style="width:26px;height:26px;border-radius:6px;">
+              <i data-lucide="trending-up" style="width:14px;height:14px;"></i>
+            </span>
+            <span>Attendance Overview</span>
+          </div>
+          <div class="saas-card-subtitle">Average attendance this semester</div>
+        </div>
+      </div>
+      <div class="saas-card-body d-flex flex-column justify-content-between">
+        <div class="d-flex align-items-baseline gap-2 mb-2">
+          <div style="font-size: 2.1rem; font-weight: 800; color: #171C2B; line-height: 1;">
+            {{ overall_att }}%
+          </div>
+          <span class="stat-badge-trend up small">
+            <span>&uarr;</span> +1.8%
+          </span>
+        </div>
+        <div style="height: 130px;">
+          <canvas id="weeklyAttendanceChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="col-xl-3 col-lg-6">
+    <div class="saas-card">
+      <div class="saas-card-header">
+        <div>
+          <div class="saas-card-title">
+            <span class="stat-icon-wrapper gold" style="width:26px;height:26px;border-radius:6px;">
+              <i data-lucide="zap" style="width:14px;height:14px;"></i>
+            </span>
+            <span>Quick Actions</span>
+          </div>
+        </div>
+      </div>
+      <div class="saas-card-body d-flex align-items-center">
+        <div class="quick-action-grid w-100">
+          <a href="{% url 'university:student_create' %}" class="quick-action-btn">
+            <div class="quick-action-icon">
+              <i data-lucide="user-plus"></i>
+            </div>
+            <span class="quick-action-label">Add Student</span>
+          </a>
+          <a href="{% url 'university:course_create' %}" class="quick-action-btn">
+            <div class="quick-action-icon">
+              <i data-lucide="book-open"></i>
+            </div>
+            <span class="quick-action-label">Create Course</span>
+          </a>
+          <a href="{% url 'university:faculty_courses' %}" class="quick-action-btn">
+            <div class="quick-action-icon">
+              <i data-lucide="check-square"></i>
+            </div>
+            <span class="quick-action-label">Record Attendance</span>
+          </a>
+          <a href="{% url 'university:reports' %}" class="quick-action-btn">
+            <div class="quick-action-icon">
+              <i data-lucide="bar-chart-2"></i>
+            </div>
+            <span class="quick-action-label">Generate Report</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  // 1. Student Enrollment Trend Chart (Royal Blue line with gradient fill)
+  const enrollCtx = document.getElementById('enrollTrendChart');
+  if (enrollCtx) {
+    const ctx = enrollCtx.getContext('2d');
+    const gradient = ctx.createLinearGradient(0, 0, 0, 220);
+    gradient.addColorStop(0, 'rgba(18, 61, 184, 0.18)');
+    gradient.addColorStop(1, 'rgba(18, 61, 184, 0.00)');
+
+    const months = {{ months|safe }};
+    const enrollData = {{ enroll_trend|safe }};
+
+    new Chart(enrollCtx, {
+      type: 'line',
+      data: {
+        labels: months,
+        datasets: [{
+          label: 'Total Enrolled Students',
+          data: enrollData,
+          borderColor: '#123DB8',
+          borderWidth: 2.5,
+          backgroundColor: gradient,
+          fill: true,
+          tension: 0.35,
+          pointBackgroundColor: '#123DB8',
+          pointBorderColor: '#FFFFFF',
+          pointBorderWidth: 2,
+          pointRadius: 4,
+          pointHoverRadius: 6
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: '#10245A',
+            titleFont: { family: 'Inter', size: 12 },
+            bodyFont: { family: 'Inter', size: 12 },
+            padding: 10,
+            cornerRadius: 8
+          }
+        },
+        scales: {
+          y: {
+            grid: { color: '#F1F4F9' },
+            ticks: {
+              color: '#687386',
+              font: { family: 'Inter', size: 11 },
+              callback: function(v) { return v.toLocaleString(); }
+            },
+            border: { dash: [4, 4] }
+          },
+          x: {
+            grid: { display: false },
+            ticks: {
+              color: '#687386',
+              font: { family: 'Inter', size: 11 }
+            }
+          }
+        }
+      }
+    });
+  }
+
+  // 2. Department Donut Chart
+  const deptCtx = document.getElementById('deptDonutChart');
+  if (deptCtx) {
+    const deptLabels = [{% for d in dept_rows %}'{{ d.name }}',{% endfor %}];
+    const deptValues = [{% for d in dept_rows %}{{ d.n }},{% endfor %}];
+    const deptColors = [{% for d in dept_rows %}'{{ d.color }}',{% endfor %}];
+
+    new Chart(deptCtx, {
+      type: 'doughnut',
+      data: {
+        labels: deptLabels,
+        datasets: [{
+          data: deptValues,
+          backgroundColor: deptColors,
+          borderWidth: 3,
+          borderColor: '#FFFFFF',
+          hoverOffset: 4
+        }]
+      },
+      options: {
+        responsive: false,
+        cutout: '72%',
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: '#10245A',
+            padding: 10,
+            cornerRadius: 8,
+            callbacks: {
+              label: function(context) {
+                return ' ' + context.label + ': ' + context.raw + ' students';
+              }
+            }
+          }
+        }
+      }
+    });
+  }
+
+  // 3. Weekly Attendance Bar Chart (Friday highlighted in Royal Blue)
+  const attCtx = document.getElementById('weeklyAttendanceChart');
+  if (attCtx) {
+    new Chart(attCtx, {
+      type: 'bar',
+      data: {
+        labels: {{ weekly_days|safe }},
+        datasets: [{
+          label: 'Attendance %',
+          data: {{ weekly_att|safe }},
+          backgroundColor: ['#BFDBFE', '#BFDBFE', '#BFDBFE', '#BFDBFE', '#123DB8'],
+          borderRadius: 6,
+          barPercentage: 0.65
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: '#10245A',
+            cornerRadius: 8,
+            callbacks: {
+              label: function(context) { return ' ' + context.raw + '%'; }
+            }
+          }
+        },
+        scales: {
+          y: {
+            display: false,
+            min: 50,
+            max: 100
+          },
+          x: {
+            grid: { display: false },
+            border: { display: false },
+            ticks: {
+              color: '#687386',
+              font: { size: 11, weight: '500' }
+            }
+          }
+        }
+      }
+    });
+  }
+
+  // Re-run Lucide after rendering charts
+  if (window.lucide) {
+    lucide.createIcons();
+  }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 70" width="260" height="70" fill="none">
+  <defs>
+    <linearGradient id="crestShield" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#123DB8" />
+      <stop offset="100%" stop-color="#10245A" />
+    </linearGradient>
+    <linearGradient id="crestGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FCD34D" />
+      <stop offset="50%" stop-color="#F4B51B" />
+      <stop offset="100%" stop-color="#D97706" />
+    </linearGradient>
+  </defs>
+
+  <!-- Crest on the left -->
+  <g transform="translate(4, 2) scale(0.55)">
+    <!-- Laurel Wreath Behind -->
+    <g stroke="url(#crestGold)" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.9">
+      <path d="M 18 68 C 12 52 14 34 26 22" />
+      <path d="M 82 68 C 88 52 86 34 74 22" />
+      <path d="M 15 56 Q 8 50 14 44" />
+      <path d="M 17 42 Q 10 36 17 30" />
+      <path d="M 22 28 Q 18 20 27 18" />
+      <path d="M 85 56 Q 92 50 86 44" />
+      <path d="M 83 42 Q 90 36 83 30" />
+      <path d="M 78 28 Q 82 20 73 18" />
+    </g>
+
+    <!-- Outer Shield Border -->
+    <path d="M 50 8 L 84 20 C 84 54 70 82 50 96 C 30 82 16 54 16 20 Z" 
+          fill="url(#crestShield)" stroke="url(#crestGold)" stroke-width="3" stroke-linejoin="round" />
+
+    <!-- Inner Shield -->
+    <path d="M 50 14 L 79 24 C 79 52 67 76 50 89 C 33 76 21 52 21 24 Z" 
+          fill="#FFFFFF" />
+
+    <!-- Star -->
+    <polygon points="50,18 53,24 59,25 55,29 56,35 50,32 44,35 45,29 41,25 47,24" 
+             fill="url(#crestGold)" stroke="#B45309" stroke-width="0.5" />
+
+    <!-- Cap -->
+    <g transform="translate(50, 42)">
+      <polygon points="0,-8 18,-2 0,4 -18,-2" fill="url(#crestShield)" stroke="url(#crestGold)" stroke-width="1" />
+      <path d="M -10 0 C -10 6 10 6 10 0" fill="url(#crestShield)" />
+      <path d="M 0 -2 L 14 3 L 15 11" stroke="url(#crestGold)" stroke-width="1.2" stroke-linecap="round" fill="none" />
+      <circle cx="15" cy="12" r="1.5" fill="url(#crestGold)" />
+    </g>
+
+    <!-- Book -->
+    <g transform="translate(50, 64)" stroke="url(#crestShield)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none">
+      <path d="M 0 3 C -6 0 -13 0 -18 3 L -18 -8 C -13 -11 -6 -11 0 -8 C 6 -11 13 -11 18 -8 L 18 3 C 13 0 6 0 0 3 Z" fill="#FFFFFF" />
+      <line x1="0" y1="-8" x2="0" y2="3" stroke="url(#crestGold)" stroke-width="2" />
+    </g>
+
+    <circle cx="50" cy="79" r="3.5" fill="url(#crestGold)" />
+
+    <!-- Banner -->
+    <g transform="translate(0, 88)">
+      <path d="M 14 12 L 28 8 L 72 8 L 86 12 L 80 20 L 72 17 L 50 20 L 28 17 L 20 20 Z" 
+            fill="url(#crestGold)" stroke="#B45309" stroke-width="1" />
+    </g>
+  </g>
+
+  <!-- Typography Lockup -->
+  <g transform="translate(64, 18)">
+    <!-- Primary Title -->
+    <text x="0" y="16" font-family="'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" 
+          font-size="13.5" font-weight="800" fill="#10245A" letter-spacing="0.6">DAFFODIL INSTITUTE</text>
+    
+    <!-- Accent Line / Subtitle -->
+    <line x1="0" y1="23" x2="185" y2="23" stroke="#F4B51B" stroke-width="1" opacity="0.8" />
+    <text x="0" y="34" font-family="'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" 
+          font-size="7.5" font-weight="700" fill="#D97706" letter-spacing="1.2">OF ENGINEERING &amp; TECHNOLOGY</text>
+  </g>
+</svg>

@@ -1,0 +1,141 @@
+{% extends 'base_dashboard.html' %}
+{% block title %}AI Academic Insights · Daffodil Institute{% endblock %}
+
+{% block content %}
+<div class="page-head-enterprise">
+  <div>
+    <h2 class="page-title">
+      <span class="stat-icon-wrapper blue" style="width:36px;height:36px;border-radius:10px;">
+        <i data-lucide="sparkles" style="width:20px;height:20px;"></i>
+      </span>
+      <span>AI Academic Risk Detection & Insights</span>
+    </h2>
+    <div class="breadcrumb-nav mt-1">
+      <a href="{% url 'university:dashboard' %}">Dashboard</a>
+      <i data-lucide="chevron-right" style="width:12px;height:12px;"></i>
+      <span>AI Insights</span>
+    </div>
+  </div>
+
+  <div class="d-flex align-items-center gap-2">
+    <span class="badge-status {% if at_risk %}dropped{% else %}enrolled{% endif %}">
+      <i data-lucide="alert-triangle" style="width:12px;height:12px;"></i>
+      {{ at_risk|length }} Students Flagged At Risk
+    </span>
+  </div>
+</div>
+
+<div class="row g-4">
+  <div class="col-lg-8">
+    <div class="saas-card">
+      <div class="saas-card-header">
+        <div>
+          <div class="saas-card-title text-danger">
+            <i data-lucide="alert-circle" style="width:18px;height:18px;"></i>
+            <span>At-Risk Students Requiring Intervention</span>
+          </div>
+          <div class="saas-card-subtitle">Students flagged by the predictive weighted model (attendance &lt; 75% or scores &lt; 50%)</div>
+        </div>
+      </div>
+      <div class="table-responsive-clean">
+        <table class="table-ums">
+          <thead>
+            <tr>
+              <th>Student</th>
+              <th>Attendance Rate</th>
+              <th>Exam Average</th>
+              <th>Projected Term Score</th>
+              <th class="text-end">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for r in at_risk %}
+            <tr>
+              <td>
+                <div class="table-user-cell">
+                  <img src="{{ r.student.user.avatar }}" alt="{{ r.student.user.display_name }}">
+                  <div>
+                    <a href="{% url 'university:student_detail' r.student.id %}" class="user-name text-dark">
+                      {{ r.student.user.display_name }}
+                    </a>
+                    <div class="user-subtext">{{ r.student.roll_no }}</div>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <span class="fw-semibold {% if r.attendance < 75 %}text-danger{% else %}text-dark{% endif %}">
+                  {{ r.attendance }}%
+                </span>
+              </td>
+              <td>
+                <span class="fw-semibold {% if r.avg_marks < 50 %}text-danger{% else %}text-dark{% endif %}">
+                  {{ r.avg_marks }}%
+                </span>
+              </td>
+              <td>
+                <span class="badge-status dropped">
+                  {{ r.projected }}% ({{ r.band }})
+                </span>
+              </td>
+              <td class="text-end">
+                <a href="{% url 'university:student_detail' r.student.id %}" class="btn btn-sm btn-secondary">
+                  Review
+                </a>
+              </td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="5" class="text-center py-5 text-success">
+                <i data-lucide="check-circle" class="mb-2" style="width:32px;height:32px;"></i>
+                <h6 class="fw-bold">No Students Currently At Risk</h6>
+                <p class="small text-secondary mb-0">All students are maintaining healthy academic performance.</p>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-4">
+    <div class="saas-card mb-4">
+      <div class="saas-card-header">
+        <div class="saas-card-title fs-6">
+          <i data-lucide="trending-up" class="text-primary" style="width:16px;height:16px;"></i>
+          <span>Most In-Demand Courses</span>
+        </div>
+      </div>
+      <div class="saas-card-body p-0">
+        {% for c in top_courses %}
+        <div class="p-3 border-bottom d-flex align-items-center justify-content-between">
+          <div>
+            <div class="fw-semibold text-dark small">{{ c.code }} · {{ c.title|truncatechars:20 }}</div>
+            <div class="small text-secondary">{{ c.department.code }}</div>
+          </div>
+          <span class="badge-dept">{{ c.enrolled_count }} enrolled</span>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="saas-card">
+      <div class="saas-card-body p-4">
+        <h6 class="fw-bold text-dark mb-2">
+          <i data-lucide="cpu" class="text-primary me-1 d-inline" style="width:16px;height:16px;"></i>
+          Predictive Methodology
+        </h6>
+        <p class="small text-secondary mb-2">
+          The risk detector runs a deterministic weighted multi-variable model:
+        </p>
+        <div class="p-2 rounded bg-light border small text-secondary mb-2" style="font-family: monospace;">
+          Score = 0.35 × Attendance + 0.50 × Exam Average + 0.15 × Submission Rate
+        </div>
+        <p class="small text-muted mb-0">
+          Provides full academic transparency without algorithmic hallucination or privacy exposure.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

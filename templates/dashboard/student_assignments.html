@@ -1,0 +1,95 @@
+{% extends 'base_dashboard.html' %}
+{% block title %}Assignments · Daffodil Institute{% endblock %}
+
+{% block content %}
+<div class="page-head-enterprise">
+  <div>
+    <h2 class="page-title">
+      <span class="stat-icon-wrapper blue" style="width:36px;height:36px;border-radius:10px;">
+        <i data-lucide="clipboard-list" style="width:20px;height:20px;"></i>
+      </span>
+      <span>My Course Assignments</span>
+    </h2>
+    <div class="breadcrumb-nav mt-1">
+      <a href="{% url 'university:dashboard' %}">Dashboard</a>
+      <i data-lucide="chevron-right" style="width:12px;height:12px;"></i>
+      <span>Assignments</span>
+    </div>
+  </div>
+</div>
+
+<div class="row g-4">
+  {% for d in data %}
+  <div class="col-md-6 col-xl-4">
+    <div class="saas-card">
+      <div class="saas-card-header bg-light">
+        <div class="d-flex align-items-center justify-content-between w-100">
+          <span class="badge-dept">{{ d.assignment.course.code }}</span>
+          {% if d.submission and d.submission.status != 'PENDING' %}
+            <span class="badge-status enrolled">{{ d.submission.get_status_display }}</span>
+          {% elif d.assignment.is_open %}
+            <span class="badge-status pending">Open</span>
+          {% else %}
+            <span class="badge-status dropped">Closed</span>
+          {% endif %}
+        </div>
+      </div>
+      <div class="saas-card-body">
+        <h5 class="fw-bold text-dark mb-2 fs-6">
+          <a href="{% url 'university:assignment_detail' d.assignment.id %}" class="text-dark text-decoration-none">
+            {{ d.assignment.title }}
+          </a>
+        </h5>
+        <p class="small text-secondary mb-3">{{ d.assignment.description|truncatewords:16 }}</p>
+
+        <div class="d-flex align-items-center gap-2 small text-secondary mb-3">
+          <i data-lucide="clock" class="text-primary" style="width:15px;height:15px;"></i>
+          <span>Due: {{ d.assignment.due_date|date:'M d, Y' }}</span>
+          <span class="fw-bold text-dark ms-auto">{{ d.assignment.max_marks }} pts</span>
+        </div>
+
+        {% if d.submission and d.submission.status == 'GRADED' %}
+          <div class="alert alert-success py-2 px-3 small mb-0 d-flex align-items-center gap-2">
+            <i data-lucide="award" style="width:16px;height:16px;"></i>
+            <div>
+              <strong>Scored {{ d.submission.marks }}/{{ d.assignment.max_marks }}</strong>
+              {% if d.submission.feedback %}<div class="text-muted" style="font-size:0.75rem;">{{ d.submission.feedback }}</div>{% endif %}
+            </div>
+          </div>
+        {% else %}
+          <div class="d-flex align-items-center gap-2 pt-2 border-top">
+            <button class="btn btn-sm btn-primary flex-grow-1" type="button" data-bs-toggle="collapse" data-bs-target="#sub{{ d.assignment.id }}">
+              <i data-lucide="upload" style="width:14px;height:14px;" class="me-1 d-inline"></i>
+              {% if d.submission %}Update Submission{% else %}Turn in Work{% endif %}
+            </button>
+            <a href="{% url 'university:assignment_detail' d.assignment.id %}" class="btn-table-icon" title="View details">
+              <i data-lucide="eye" style="width:15px;height:15px;"></i>
+            </a>
+          </div>
+
+          <div class="collapse mt-3" id="sub{{ d.assignment.id }}">
+            <form method="post" action="{% url 'university:submit_assignment' d.assignment.id %}">
+              {% csrf_token %}
+              <div class="mb-2">
+                <textarea name="content" class="form-control form-control-sm" rows="3" placeholder="Type your answers or paste URL link...">{{ d.submission.content|default:'' }}</textarea>
+              </div>
+              <button class="btn btn-sm btn-success w-100">Submit Now</button>
+            </form>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  {% empty %}
+  <div class="col-12">
+    <div class="saas-card p-5 text-center">
+      <div class="stat-icon-wrapper blue mx-auto mb-3" style="width:48px;height:48px;">
+        <i data-lucide="clipboard-list" style="width:24px;height:24px;"></i>
+      </div>
+      <h6 class="fw-bold text-dark">No Assignments Due</h6>
+      <p class="small text-secondary">You have no pending assignments across your courses.</p>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

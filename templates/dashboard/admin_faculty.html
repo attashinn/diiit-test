@@ -1,0 +1,87 @@
+{% extends 'base_dashboard.html' %}
+{% block title %}Faculty Directory · Daffodil Institute of Engineering & Technology{% endblock %}
+
+{% block content %}
+<div class="page-head-enterprise">
+  <div>
+    <h2 class="page-title">
+      <span class="stat-icon-wrapper blue" style="width:36px;height:36px;border-radius:10px;">
+        <i data-lucide="graduation-cap" style="width:20px;height:20px;"></i>
+      </span>
+      <span>Faculty Members</span>
+    </h2>
+    <div class="breadcrumb-nav mt-1">
+      <a href="{% url 'university:dashboard' %}">Dashboard</a>
+      <i data-lucide="chevron-right" style="width:12px;height:12px;"></i>
+      <span>Faculty</span>
+    </div>
+  </div>
+
+  <div class="d-flex align-items-center gap-2">
+    <a href="{% url 'university:faculty_create' %}" class="btn btn-primary d-inline-flex align-items-center gap-2">
+      <i data-lucide="user-plus" style="width:16px;height:16px;"></i>
+      <span>Add Faculty Member</span>
+    </a>
+  </div>
+</div>
+
+<div class="row g-4">
+  {% for f in faculty %}
+  <div class="col-md-6 col-xl-4">
+    <div class="saas-card">
+      <div class="saas-card-body p-4">
+        <div class="d-flex align-items-center gap-3 mb-3">
+          <img src="{{ f.user.avatar }}" class="rounded-circle border border-2 border-primary" width="56" height="56" alt="{{ f.user.display_name }}">
+          <div>
+            <h6 class="fw-bold text-dark mb-0 fs-6">{{ f.user.display_name }}</h6>
+            <div class="small text-secondary">{{ f.designation }}</div>
+            <span class="badge-dept mt-1 d-inline-block">{{ f.employee_id }}</span>
+          </div>
+        </div>
+
+        <div class="border-top pt-3 mb-3">
+          <div class="d-flex align-items-center gap-2 small text-secondary mb-2">
+            <i data-lucide="building-2" class="text-primary" style="width:15px;height:15px;"></i>
+            <span>Department:</span>
+            <span class="fw-semibold text-dark ms-auto">{{ f.department.name|default:"General" }}</span>
+          </div>
+          <div class="d-flex align-items-center gap-2 small text-secondary mb-2">
+            <i data-lucide="award" class="text-primary" style="width:15px;height:15px;"></i>
+            <span>Specialization:</span>
+            <span class="fw-semibold text-dark ms-auto">{{ f.specialization|default:"General" }}</span>
+          </div>
+          <div class="d-flex align-items-center gap-2 small text-secondary">
+            <i data-lucide="book-open" class="text-primary" style="width:15px;height:15px;"></i>
+            <span>Courses Assigned:</span>
+            <span class="fw-bold text-dark ms-auto">{{ f.n_courses }} course(s)</span>
+          </div>
+        </div>
+
+        <div class="d-flex align-items-center gap-2 pt-2 border-top">
+          <a href="{% url 'university:faculty_detail' f.id %}" class="btn btn-sm btn-secondary flex-grow-1 text-center">
+            View Profile
+          </a>
+          <a href="{% url 'university:faculty_edit' f.id %}" class="btn-table-icon" title="Edit Faculty">
+            <i data-lucide="pencil" style="width:15px;height:15px;"></i>
+          </a>
+          <a href="{% url 'university:faculty_delete' f.id %}" class="btn-table-icon delete" title="Delete Faculty">
+            <i data-lucide="trash-2" style="width:15px;height:15px;"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% empty %}
+  <div class="col-12">
+    <div class="saas-card p-5 text-center">
+      <div class="stat-icon-wrapper blue mx-auto mb-3" style="width:48px;height:48px;">
+        <i data-lucide="graduation-cap" style="width:24px;height:24px;"></i>
+      </div>
+      <h6 class="fw-bold text-dark">No Faculty Found</h6>
+      <p class="small text-secondary mb-3">Add faculty members to assign courses and manage departments.</p>
+      <a href="{% url 'university:faculty_create' %}" class="btn btn-primary btn-sm mx-auto">Add Faculty Member</a>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

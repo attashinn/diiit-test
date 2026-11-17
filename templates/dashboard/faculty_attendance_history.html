@@ -1,0 +1,89 @@
+{% extends 'base_dashboard.html' %}
+{% block title %}Attendance Register · {{ course.code }}{% endblock %}
+
+{% block content %}
+<div class="page-head-enterprise">
+  <div>
+    <h2 class="page-title">
+      <span class="stat-icon-wrapper blue" style="width:36px;height:36px;border-radius:10px;">
+        <i data-lucide="table-2" style="width:20px;height:20px;"></i>
+      </span>
+      <span>Attendance Register Matrix</span>
+    </h2>
+    <div class="breadcrumb-nav mt-1">
+      <a href="{% url 'university:dashboard' %}">Dashboard</a>
+      <i data-lucide="chevron-right" style="width:12px;height:12px;"></i>
+      <a href="{% url 'university:faculty_courses' %}">My Courses</a>
+      <i data-lucide="chevron-right" style="width:12px;height:12px;"></i>
+      <span>{{ course.code }} Register</span>
+    </div>
+  </div>
+
+  <div class="d-flex align-items-center gap-2">
+    <a href="{% url 'university:faculty_attendance' course.id %}" class="btn btn-primary d-inline-flex align-items-center gap-2">
+      <i data-lucide="calendar-plus" style="width:16px;height:16px;"></i>
+      <span>Mark Today's Attendance</span>
+    </a>
+    <a href="{% url 'university:course_detail' course.id %}" class="btn btn-secondary d-inline-flex align-items-center gap-2">
+      <i data-lucide="arrow-left" style="width:16px;height:16px;"></i>
+      <span>Back</span>
+    </a>
+  </div>
+</div>
+
+<div class="d-flex align-items-center gap-3 mb-3 small p-2 px-3 rounded-3 bg-white border">
+  <span class="fw-semibold text-secondary">Legend:</span>
+  <span class="badge-status present"><i data-lucide="check" style="width:12px;height:12px;"></i> P = Present</span>
+  <span class="badge-status late"><i data-lucide="clock" style="width:12px;height:12px;"></i> L = Late</span>
+  <span class="badge-status absent"><i data-lucide="x" style="width:12px;height:12px;"></i> A = Absent</span>
+  <span class="text-muted"><span class="badge bg-light text-muted border">–</span> Unrecorded</span>
+</div>
+
+<div class="saas-card">
+  <div class="table-responsive-clean">
+    <table class="table-ums text-center" style="min-width: 680px;">
+      <thead>
+        <tr>
+          <th class="text-start" style="position: sticky; left: 0; background: #F8FAFC; z-index: 2; min-width: 200px;">Student</th>
+          {% for d in dates %}
+            <th style="white-space: nowrap; font-size: 0.7rem;">{{ d|date:'d M' }}</th>
+          {% endfor %}
+          <th>Attendance Rate</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in rows %}
+        <tr>
+          <td class="text-start" style="position: sticky; left: 0; background: #FFFFFF; z-index: 1;">
+            <div class="table-user-cell">
+              <img src="{{ row.enrollment.student.user.avatar }}" alt="{{ row.enrollment.student.user.display_name }}">
+              <div>
+                <div class="user-name">{{ row.enrollment.student.user.display_name }}</div>
+                <div class="user-subtext">{{ row.enrollment.student.roll_no }}</div>
+              </div>
+            </div>
+          </td>
+          {% for c in row.cells %}
+          <td>
+            {% if c.status == 'P' %}<span class="badge-status present py-0 px-2">P</span>
+            {% elif c.status == 'L' %}<span class="badge-status late py-0 px-2">L</span>
+            {% elif c.status == 'A' %}<span class="badge-status absent py-0 px-2">A</span>
+            {% else %}<span class="text-muted">–</span>{% endif %}
+          </td>
+          {% endfor %}
+          <td>
+            <span class="fw-bold {% if row.pct < 75 %}text-danger{% else %}text-success{% endif %}">
+              {{ row.pct }}%
+            </span>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="99" class="text-center py-5 text-muted">No attendance data recorded yet.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,95 @@
+{% extends 'base_dashboard.html' %}
+{% block title %}Grade · {{ assignment.title }}{% endblock %}
+
+{% block content %}
+<div class="page-head-enterprise">
+  <div>
+    <h2 class="page-title">
+      <span class="stat-icon-wrapper blue" style="width:36px;height:36px;border-radius:10px;">
+        <i data-lucide="check-square" style="width:20px;height:20px;"></i>
+      </span>
+      <span>Grade Submissions: {{ assignment.title }}</span>
+    </h2>
+    <div class="breadcrumb-nav mt-1">
+      <a href="{% url 'university:dashboard' %}">Dashboard</a>
+      <i data-lucide="chevron-right" style="width:12px;height:12px;"></i>
+      <a href="{% url 'university:faculty_assignments' %}">Assignments</a>
+      <i data-lucide="chevron-right" style="width:12px;height:12px;"></i>
+      <span>Grading</span>
+    </div>
+  </div>
+
+  <div class="d-flex align-items-center gap-2">
+    <a href="{% url 'university:faculty_assignments' %}" class="btn btn-secondary d-inline-flex align-items-center gap-2">
+      <i data-lucide="arrow-left" style="width:16px;height:16px;"></i>
+      <span>Back</span>
+    </a>
+  </div>
+</div>
+
+<div class="p-3 mb-4 rounded-3 bg-light border d-flex align-items-center justify-content-between flex-wrap gap-2">
+  <div class="small text-secondary">
+    Course: <b>{{ assignment.course.code }} · {{ assignment.course.title }}</b> · Max Marks: <b>{{ assignment.max_marks }} pts</b>
+  </div>
+  <span class="badge-dept">{{ subs.count }} Submissions Received</span>
+</div>
+
+<form method="post">
+  {% csrf_token %}
+  <div class="saas-card mb-4">
+    <div class="table-responsive-clean">
+      <table class="table-ums">
+        <thead>
+          <tr>
+            <th>Student</th>
+            <th>Submission Content</th>
+            <th>Status</th>
+            <th style="width: 130px;">Marks (Max {{ assignment.max_marks }})</th>
+            <th style="width: 260px;">Faculty Feedback</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for s in subs %}
+          <tr>
+            <td>
+              <div class="table-user-cell">
+                <img src="{{ s.student.user.avatar }}" alt="{{ s.student.user.display_name }}">
+                <div>
+                  <div class="user-name">{{ s.student.user.display_name }}</div>
+                  <div class="user-subtext">{{ s.student.roll_no }}</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <div class="small text-secondary text-truncate" style="max-width: 280px;">
+                {{ s.content|default:"—" }}
+              </div>
+            </td>
+            <td>
+              <span class="badge-status {{ s.status|lower }}">{{ s.get_status_display }}</span>
+            </td>
+            <td>
+              <input name="marks_{{ s.id }}" type="number" value="{{ s.marks|default:'' }}" max="{{ assignment.max_marks }}" class="form-control form-control-sm" placeholder="0-{{ assignment.max_marks }}">
+            </td>
+            <td>
+              <input name="feedback_{{ s.id }}" value="{{ s.feedback }}" class="form-control form-control-sm" placeholder="Add comment...">
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="5" class="text-center py-5 text-muted">No student submissions turned in yet.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="saas-card-footer text-end p-3">
+      <button type="submit" class="btn btn-primary d-inline-flex align-items-center gap-2">
+        <i data-lucide="save" style="width:16px;height:16px;"></i>
+        <span>Save All Grades & Feedback</span>
+      </button>
+    </div>
+  </div>
+</form>
+{% endblock %}

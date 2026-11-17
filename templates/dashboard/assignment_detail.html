@@ -1,0 +1,153 @@
+{% extends 'base_dashboard.html' %}
+{% block title %}{{ assignment.title }} · Assignment Overview{% endblock %}
+
+{% block content %}
+<div class="page-head-enterprise">
+  <div>
+    <h2 class="page-title">
+      <span class="stat-icon-wrapper blue" style="width:36px;height:36px;border-radius:10px;">
+        <i data-lucide="clipboard" style="width:20px;height:20px;"></i>
+      </span>
+      <span>{{ assignment.title }}</span>
+    </h2>
+    <div class="breadcrumb-nav mt-1">
+      <a href="{% url 'university:dashboard' %}">Dashboard</a>
+      <i data-lucide="chevron-right" style="width:12px;height:12px;"></i>
+      <span>{{ assignment.course.code }}</span>
+      <i data-lucide="chevron-right" style="width:12px;height:12px;"></i>
+      <span>Assignment</span>
+    </div>
+  </div>
+
+  <div class="d-flex align-items-center gap-2">
+    <span class="badge-status {% if assignment.is_open %}enrolled{% else %}dropped{% endif %}">
+      <i data-lucide="{% if assignment.is_open %}unlock{% else %}lock{% endif %}" style="width:12px;height:12px;"></i>
+      {% if assignment.is_open %}Open for Submissions{% else %}Closed{% endif %}
+    </span>
+  </div>
+</div>
+
+<div class="row g-4">
+  <div class="col-lg-5">
+    <div class="saas-card mb-4">
+      <div class="saas-card-body p-4">
+        <div class="badge-dept mb-2">{{ assignment.course.code }}</div>
+        <h5 class="fw-bold text-dark mb-2">{{ assignment.title }}</h5>
+        <p class="small text-secondary mb-3">{{ assignment.description|default:"Please review the course syllabus and complete the task as requested." }}</p>
+
+        <div class="border-top pt-3">
+          <div class="d-flex align-items-center gap-2 small text-secondary mb-2">
+            <i data-lucide="calendar" class="text-primary" style="width:15px;height:15px;"></i>
+            <span>Assigned On:</span>
+            <span class="fw-semibold text-dark ms-auto">{{ assignment.assigned_on|date:'M d, Y' }}</span>
+          </div>
+          <div class="d-flex align-items-center gap-2 small text-secondary mb-2">
+            <i data-lucide="clock" class="text-primary" style="width:15px;height:15px;"></i>
+            <span>Deadline:</span>
+            <span class="fw-bold {% if assignment.is_open %}text-success{% else %}text-danger{% endif %} ms-auto">
+              {{ assignment.due_date|date:'M d, Y' }}
+            </span>
+          </div>
+          <div class="d-flex align-items-center gap-2 small text-secondary">
+            <i data-lucide="award" class="text-primary" style="width:15px;height:15px;"></i>
+            <span>Maximum Score:</span>
+            <span class="fw-bold text-dark ms-auto">{{ assignment.max_marks }} Points</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-7">
+    {% if user.is_student %}
+      <div class="saas-card">
+        <div class="saas-card-header">
+          <div class="saas-card-title">
+            <i data-lucide="upload-cloud" class="text-primary" style="width:18px;height:18px;"></i>
+            <span>Your Assignment Submission</span>
+          </div>
+        </div>
+        <div class="saas-card-body">
+          {% if submission and submission.status == 'GRADED' %}
+            <div class="alert alert-success d-flex align-items-center gap-2 mb-3">
+              <i data-lucide="award" style="width:20px;height:20px;"></i>
+              <div>
+                <strong>Graded: {{ submission.marks }}/{{ assignment.max_marks }}</strong>
+                {% if submission.feedback %}<div class="small">{{ submission.feedback }}</div>{% endif %}
+              </div>
+            </div>
+          {% endif %}
+
+          {% if enrolled %}
+          <form method="post" action="{% url 'university:submit_assignment' assignment.id %}">
+            {% csrf_token %}
+            <div class="mb-3">
+              <label class="form-label">Submission Content / URL Link</label>
+              <textarea name="content" class="form-control" rows="6" placeholder="Paste your answers, project notes, or GitHub / Google Drive URL...">{{ submission.content|default:'' }}</textarea>
+            </div>
+            <div class="d-flex align-items-center justify-content-between">
+              <button class="btn btn-primary d-inline-flex align-items-center gap-2">
+                <i data-lucide="send" style="width:16px;height:16px;"></i>
+                <span>{% if submission %}Update Submission{% else %}Submit Work{% endif %}</span>
+              </button>
+              {% if submission.submitted_on %}
+                <span class="small text-muted">Submitted {{ submission.submitted_on|date:'M d, H:i' }}</span>
+              {% endif %}
+            </div>
+          </form>
+          {% else %}
+            <div class="text-center py-4 text-muted">You are not enrolled in this course.</div>
+          {% endif %}
+        </div>
+      </div>
+    {% else %}
+      <div class="saas-card">
+        <div class="saas-card-header">
+          <div class="saas-card-title">
+            <span>Student Submissions ({{ submissions|length }})</span>
+          </div>
+          <a href="{% url 'university:faculty_grade' assignment.id %}" class="card-link-action">Grade All</a>
+        </div>
+        <div class="table-responsive-clean">
+          <table class="table-ums">
+            <thead>
+              <tr>
+                <th>Student</th>
+                <th>Status</th>
+                <th>Marks Scored</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for s in submissions %}
+              <tr>
+                <td>
+                  <div class="table-user-cell">
+                    <img src="{{ s.student.user.avatar }}" alt="{{ s.student.user.display_name }}">
+                    <div>
+                      <div class="user-name">{{ s.student.user.display_name }}</div>
+                      <div class="user-subtext">{{ s.student.roll_no }}</div>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="badge-status {{ s.status|lower }}">{{ s.get_status_display }}</span></td>
+                <td>
+                  {% if s.marks is not None %}
+                    <span class="fw-bold text-success">{{ s.marks }} / {{ assignment.max_marks }}</span>
+                  {% else %}
+                    <span class="text-muted">—</span>
+                  {% endif %}
+                </td>
+              </tr>
+              {% empty %}
+              <tr>
+                <td colspan="3" class="text-center py-4 text-muted">No submissions received yet.</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,159 @@
+{% extends 'base_dashboard.html' %}
+{% load humanize %}
+{% block title %}Fees & Finance · Daffodil Institute of Engineering & Technology{% endblock %}
+
+{% block content %}
+<div class="page-head-enterprise">
+  <div>
+    <h2 class="page-title">
+      <span class="stat-icon-wrapper gold" style="width:36px;height:36px;border-radius:10px;">
+        <i data-lucide="coins" style="width:20px;height:20px;"></i>
+      </span>
+      <span>Fee Management & Invoices</span>
+    </h2>
+    <div class="breadcrumb-nav mt-1">
+      <a href="{% url 'university:dashboard' %}">Dashboard</a>
+      <i data-lucide="chevron-right" style="width:12px;height:12px;"></i>
+      <span>Fees & Invoices</span>
+    </div>
+  </div>
+
+  <div class="d-flex align-items-center gap-2">
+    <a href="{% url 'university:fee_create' %}" class="btn btn-primary d-inline-flex align-items-center gap-2">
+      <i data-lucide="plus" style="width:16px;height:16px;"></i>
+      <span>Issue New Invoice</span>
+    </a>
+  </div>
+</div>
+
+<!-- 3 Restrained Financial Stat Cards -->
+<div class="row g-3 mb-4">
+  <div class="col-md-4">
+    <div class="stat-card-clean">
+      <div class="stat-card-header">
+        <div class="stat-icon-wrapper blue">
+          <i data-lucide="check-circle"></i>
+        </div>
+        <span class="stat-badge-trend up small">
+          <i data-lucide="arrow-up-right" style="width:14px;height:14px;"></i> Received
+        </span>
+      </div>
+      <div class="stat-card-label">Fees Collected</div>
+      <div class="stat-card-value">৳ {{ collected|floatformat:0|intcomma }}</div>
+      <div class="stat-card-comparison">
+        <span class="stat-comparison-subtext">Total verified tuition payments</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="stat-card-clean">
+      <div class="stat-card-header">
+        <div class="stat-icon-wrapper gold">
+          <i data-lucide="file-text"></i>
+        </div>
+        <span class="stat-badge-trend small text-secondary">
+          <i data-lucide="receipt" style="width:14px;height:14px;"></i> Invoiced
+        </span>
+      </div>
+      <div class="stat-card-label">Total Billed</div>
+      <div class="stat-card-value">৳ {{ billed|floatformat:0|intcomma }}</div>
+      <div class="stat-card-comparison">
+        <span class="stat-comparison-subtext">Total invoice amount issued</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="stat-card-clean">
+      <div class="stat-card-header">
+        <div class="stat-icon-wrapper" style="background:#FEF2F2;color:#DC2626;">
+          <i data-lucide="clock"></i>
+        </div>
+        <span class="stat-badge-trend down small">
+          <i data-lucide="alert-circle" style="width:14px;height:14px;"></i> Outstanding
+        </span>
+      </div>
+      <div class="stat-card-label">Outstanding Balance</div>
+      <div class="stat-card-value" style="color:#DC2626;">৳ {{ unpaid|floatformat:0|intcomma }}</div>
+      <div class="stat-card-comparison">
+        <span class="stat-comparison-subtext">Pending student collection</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="saas-card">
+  <div class="saas-card-header">
+    <div>
+      <div class="saas-card-title">Student Fee Invoices</div>
+      <div class="saas-card-subtitle">Complete ledger of invoices and recorded payments</div>
+    </div>
+    <span class="small text-secondary fw-semibold">Total {{ invoices.count }} Invoices</span>
+  </div>
+
+  <div class="table-responsive-clean">
+    <table class="table-ums">
+      <thead>
+        <tr>
+          <th>Student</th>
+          <th>Invoice Description</th>
+          <th>Total Billed</th>
+          <th>Paid Amount</th>
+          <th>Balance Due</th>
+          <th>Status</th>
+          <th class="text-end">Record Payment</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for i in invoices %}
+        <tr>
+          <td>
+            <div class="table-user-cell">
+              <img src="{{ i.student.user.avatar }}" alt="{{ i.student.user.display_name }}">
+              <div>
+                <a href="{% url 'university:student_detail' i.student.id %}" class="user-name text-dark">
+                  {{ i.student.user.display_name }}
+                </a>
+                <div class="user-subtext">{{ i.student.roll_no }}</div>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div class="fw-semibold text-dark">{{ i.title }}</div>
+            <div class="small text-muted">Due: {{ i.due_date|date:'M d, Y' }}</div>
+          </td>
+          <td><span class="fw-semibold">৳ {{ i.amount|floatformat:0|intcomma }}</span></td>
+          <td><span class="text-secondary">৳ {{ i.amount_paid|floatformat:0|intcomma }}</span></td>
+          <td>
+            <span class="fw-bold {% if i.balance > 0 %}text-danger{% else %}text-success{% endif %}">
+              ৳ {{ i.balance|floatformat:0|intcomma }}
+            </span>
+          </td>
+          <td>
+            <span class="badge-status {{ i.status|lower }}">{{ i.get_status_display }}</span>
+          </td>
+          <td class="text-end">
+            {% if i.balance > 0 %}
+            <form method="post" action="{% url 'university:record_payment' i.id %}" class="d-inline-flex align-items-center justify-content-end gap-1">
+              {% csrf_token %}
+              <input name="amount" type="number" step="any" min="1" max="{{ i.balance }}" class="form-control form-control-sm" style="width: 100px;" placeholder="Amount" required>
+              <button class="btn btn-sm btn-primary">Pay</button>
+            </form>
+            {% else %}
+            <span class="badge-status paid">
+              <i data-lucide="check" style="width:12px;height:12px;"></i> Cleared
+            </span>
+            {% endif %}
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="7" class="text-center py-5 text-muted">No invoices found.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

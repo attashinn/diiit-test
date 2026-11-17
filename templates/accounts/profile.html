@@ -1,0 +1,166 @@
+{% extends 'base_dashboard.html' %}
+{% block title %}Settings & Profile · Daffodil Institute{% endblock %}
+
+{% block content %}
+<div class="page-head-enterprise">
+  <div>
+    <h2 class="page-title">
+      <span class="stat-icon-wrapper blue" style="width:36px;height:36px;border-radius:10px;">
+        <i data-lucide="settings" style="width:20px;height:20px;"></i>
+      </span>
+      <span>Account Settings & Profile</span>
+    </h2>
+    <div class="breadcrumb-nav mt-1">
+      <a href="{% url 'university:dashboard' %}">Dashboard</a>
+      <i data-lucide="chevron-right" style="width:12px;height:12px;"></i>
+      <span>Settings</span>
+    </div>
+  </div>
+
+  <div class="d-flex align-items-center gap-2">
+    <a href="{% url 'accounts:logout' %}" class="btn btn-outline-danger d-inline-flex align-items-center gap-2">
+      <i data-lucide="log-out" style="width:16px;height:16px;"></i>
+      <span>Sign Out</span>
+    </a>
+  </div>
+</div>
+
+<div class="row g-4">
+  <!-- Profile Sidebar Card -->
+  <div class="col-lg-4">
+    <div class="saas-card mb-4 text-center p-4">
+      <div class="position-relative d-inline-block mx-auto mb-3">
+        <img src="{{ user.avatar }}" class="rounded-circle border border-3 border-primary" width="96" height="96" alt="{{ user.display_name }}">
+      </div>
+      <h5 class="fw-bold text-dark mb-1">{{ user.display_name }}</h5>
+      <div class="text-secondary small mb-2">@{{ user.username }}</div>
+      <span class="badge-dept mb-3">{{ user.get_role_display }}</span>
+
+      <div class="text-start border-top pt-3">
+        <div class="d-flex align-items-center gap-2 mb-2 small text-secondary">
+          <i data-lucide="mail" class="text-primary" style="width:15px;height:15px;"></i>
+          <span>Email:</span>
+          <span class="fw-semibold text-dark ms-auto">{{ user.email|default:"—" }}</span>
+        </div>
+        <div class="d-flex align-items-center gap-2 mb-2 small text-secondary">
+          <i data-lucide="phone" class="text-primary" style="width:15px;height:15px;"></i>
+          <span>Phone:</span>
+          <span class="fw-semibold text-dark ms-auto">{{ user.phone|default:"—" }}</span>
+        </div>
+        <div class="d-flex align-items-center gap-2 small text-secondary">
+          <i data-lucide="shield" class="text-primary" style="width:15px;height:15px;"></i>
+          <span>Status:</span>
+          <span class="badge-status enrolled ms-auto">Verified Active</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Settings Tabs & Panels -->
+  <div class="col-lg-8">
+    <div class="saas-card mb-4">
+      <div class="saas-card-header">
+        <div class="saas-card-title">
+          <i data-lucide="user-check" class="text-primary" style="width:18px;height:18px;"></i>
+          <span>Academic & Personal Details</span>
+        </div>
+      </div>
+      <div class="saas-card-body p-4">
+        <div class="row g-3">
+          <div class="col-sm-6">
+            <div class="p-3 rounded-3 bg-light border">
+              <div class="small text-muted mb-1">Full Legal Name</div>
+              <div class="fw-semibold text-dark">{{ user.display_name }}</div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="p-3 rounded-3 bg-light border">
+              <div class="small text-muted mb-1">User Identifier</div>
+              <div class="fw-semibold text-dark">{{ user.username }}</div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="p-3 rounded-3 bg-light border">
+              <div class="small text-muted mb-1">System Role</div>
+              <div class="fw-semibold text-dark">{{ user.get_role_display }}</div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="p-3 rounded-3 bg-light border">
+              <div class="small text-muted mb-1">Registered Contact</div>
+              <div class="fw-semibold text-dark">{{ user.phone|default:"0000" }}</div>
+            </div>
+          </div>
+
+          {% if user.is_student %}
+          <div class="col-sm-6">
+            <div class="p-3 rounded-3 bg-light border">
+              <div class="small text-muted mb-1">Student Roll Number</div>
+              <div class="fw-bold text-primary">{{ user.student_profile.roll_no }}</div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="p-3 rounded-3 bg-light border">
+              <div class="small text-muted mb-1">Degree Program</div>
+              <div class="fw-semibold text-dark">{{ user.student_profile.program }}</div>
+            </div>
+          </div>
+          {% elif user.is_faculty %}
+          <div class="col-sm-6">
+            <div class="p-3 rounded-3 bg-light border">
+              <div class="small text-muted mb-1">Employee ID</div>
+              <div class="fw-bold text-primary">{{ user.faculty_profile.employee_id }}</div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="p-3 rounded-3 bg-light border">
+              <div class="small text-muted mb-1">Academic Department</div>
+              <div class="fw-semibold text-dark">{{ user.faculty_profile.department }}</div>
+            </div>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Preferences & Security -->
+    <div class="saas-card">
+      <div class="saas-card-header">
+        <div class="saas-card-title">
+          <i data-lucide="sliders" class="text-primary" style="width:18px;height:18px;"></i>
+          <span>Portal Preferences</span>
+        </div>
+      </div>
+      <div class="saas-card-body p-4">
+        <div class="d-flex align-items-center justify-content-between py-2 border-bottom">
+          <div>
+            <div class="fw-semibold text-dark small">Official Institutional Theme</div>
+            <div class="text-secondary small">Daffodil Royal Blue (#123DB8) & Golden Yellow</div>
+          </div>
+          <span class="badge-status enrolled">Default Enabled</span>
+        </div>
+
+        <div class="d-flex align-items-center justify-content-between py-2 border-bottom">
+          <div>
+            <div class="fw-semibold text-dark small">Notice Board Email Notifications</div>
+            <div class="text-secondary small">Receive urgent campus notices to your inbox</div>
+          </div>
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" checked>
+          </div>
+        </div>
+
+        <div class="d-flex align-items-center justify-content-between py-2">
+          <div>
+            <div class="fw-semibold text-dark small">AI Assistant Smart Suggestions</div>
+            <div class="text-secondary small">Enable predictive prompts in the local AI assistant</div>
+          </div>
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" checked>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

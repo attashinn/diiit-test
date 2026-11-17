@@ -1,0 +1,113 @@
+{% extends 'base_dashboard.html' %}
+{% block title %}AI Campus Assistant · Daffodil Institute{% endblock %}
+
+{% block content %}
+<div class="page-head-enterprise">
+  <div>
+    <h2 class="page-title">
+      <span class="stat-icon-wrapper blue" style="width:36px;height:36px;border-radius:10px;">
+        <i data-lucide="bot" style="width:20px;height:20px;"></i>
+      </span>
+      <span>AI Campus Assistant</span>
+    </h2>
+    <div class="breadcrumb-nav mt-1">
+      <a href="{% url 'university:dashboard' %}">Dashboard</a>
+      <i data-lucide="chevron-right" style="width:12px;height:12px;"></i>
+      <span>AI Assistant</span>
+    </div>
+  </div>
+
+  <div class="d-flex align-items-center gap-2">
+    <span class="badge-status enrolled">
+      <i data-lucide="shield-check" style="width:12px;height:12px;"></i>
+      Local Database AI · Fully Private
+    </span>
+  </div>
+</div>
+
+<div class="row g-4">
+  <div class="col-lg-8">
+    <div class="saas-card">
+      <div class="saas-card-header bg-light">
+        <div class="d-flex align-items-center gap-2">
+          <div class="stat-icon-wrapper blue" style="width:30px;height:30px;border-radius:6px;">
+            <i data-lucide="sparkles" style="width:16px;height:16px;"></i>
+          </div>
+          <div>
+            <div class="fw-bold text-dark small">Daffodil Campus Intelligence</div>
+            <div class="small text-secondary" style="font-size: 0.72rem;">Ask about attendance, courses, grades, or faculty</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="ai-chat-container" id="aiMessages">
+        <div class="ai-bubble bot">
+          <div class="d-flex align-items-center gap-2 mb-1 fw-semibold text-primary">
+            <i data-lucide="bot" style="width:16px;height:16px;"></i>
+            <span>Daffodil AI</span>
+          </div>
+          <div>Hello {{ user.display_name }}! I am your real-time campus assistant connected to our live university database. How can I assist your academic work today?</div>
+        </div>
+      </div>
+
+      <div class="p-3 border-top bg-white">
+        <form onsubmit="aiFormSubmit(event,'aiInput','aiMessages')" class="d-flex align-items-center gap-2">
+          <div class="topbar-search flex-grow-1">
+            <i data-lucide="message-square" class="search-icon"></i>
+            <input id="aiInput" class="form-control" placeholder="Ask about student attendance, results, fees, or course schedules..." autocomplete="off">
+          </div>
+          <button type="submit" class="btn btn-primary d-inline-flex align-items-center justify-content-center" style="width: 44px; height: 40px; padding: 0;">
+            <i data-lucide="send" style="width:16px;height:16px;"></i>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-4">
+    <div class="saas-card mb-4">
+      <div class="saas-card-header">
+        <div class="saas-card-title fs-6">
+          <i data-lucide="lightbulb" class="text-warning" style="width:16px;height:16px;"></i>
+          <span>Suggested Questions</span>
+        </div>
+      </div>
+      <div class="saas-card-body p-3">
+        <div id="startChips" class="d-flex flex-wrap gap-1">
+          {% for s in suggestions %}
+            <span class="ai-prompt-chip" onclick="aiSend('{{ s }}','aiMessages','aiInput')">
+              {{ s }}
+            </span>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <div class="saas-card">
+      <div class="saas-card-body p-4">
+        <h6 class="fw-bold text-dark mb-2">
+          <i data-lucide="shield" class="text-primary me-1 d-inline" style="width:16px;height:16px;"></i>
+          Privacy & Security
+        </h6>
+        <p class="small text-secondary mb-3">
+          This intelligent assistant queries local SQLite relational records deterministically. No prompt or university data is ever transmitted outside your institution.
+        </p>
+        <div class="small fw-semibold text-secondary">
+          <i data-lucide="check" class="text-success me-1 d-inline" style="width:14px;height:14px;"></i>
+          Zero External API Cost / Dependency
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  if (window.renderChips) {
+    renderChips({{ suggestions|safe }}, 'aiMessages', 'aiInput');
+  }
+});
+</script>
+{% endblock %}

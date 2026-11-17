@@ -1,0 +1,573 @@
+/* ==========================================================================
+   DAFFODIL INSTITUTE OF ENGINEERING & TECHNOLOGY
+   Premium Public Website & Marketing Theme (Pixel-Accurate SaaS)
+   ========================================================================== */
+
+:root {
+  --royal-blue: #123DB8;
+  --royal-blue-hover: #0E3197;
+  --royal-blue-light: #EFF4FE;
+  --deep-navy: #09285F;
+  --deep-navy-hover: #061B42;
+  --golden-yellow: #F4B51B;
+  --golden-yellow-hover: #E0A312;
+  --golden-yellow-light: #FEF8E7;
+  --surface-white: #FFFFFF;
+  --bg-neutral: #F7F8FA;
+  --text-primary: #101828;
+  --text-secondary: #667085;
+  --text-muted: #9AA2B1;
+  --border-color: #E7EAF0;
+}
+
+body.public-theme {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  background-color: #FFFFFF !important;
+  color: var(--text-primary) !important;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ---------- FLOATING NAVBAR ---------- */
+.diet-navbar-wrapper {
+  position: absolute;
+  top: 18px;
+  left: 0;
+  right: 0;
+  z-index: 1040;
+  padding: 0 20px;
+}
+
+.diet-floating-navbar {
+  max-width: 1340px;
+  margin: 0 auto;
+  background: #FFFFFF;
+  border-radius: 18px;
+  padding: 10px 20px 10px 22px;
+  box-shadow: 0 10px 32px -4px rgba(9, 40, 95, 0.12), 0 2px 6px rgba(9, 40, 95, 0.04);
+  border: 1px solid rgba(231, 234, 240, 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+/* Left Brand Lockup */
+.diet-nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.diet-nav-crest {
+  height: 42px;
+  width: auto;
+  display: block;
+}
+
+.diet-nav-brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+
+.diet-nav-brand-title {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.90rem;
+  font-weight: 800;
+  color: var(--royal-blue);
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.diet-nav-brand-sub {
+  font-size: 0.58rem;
+  font-weight: 700;
+  color: var(--royal-blue);
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+/* Center Menu Links */
+.diet-nav-menu {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  margin: 0;
+  padding: 0;
+}
+
+.diet-nav-link {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #101828;
+  text-decoration: none;
+  transition: color 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  position: relative;
+  padding: 6px 0;
+  white-space: nowrap;
+}
+
+.diet-nav-link:hover {
+  color: var(--royal-blue);
+}
+
+.diet-nav-link.active {
+  color: var(--royal-blue);
+}
+
+.diet-nav-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 2.5px;
+  background-color: var(--royal-blue);
+  border-radius: 9999px;
+}
+
+.diet-nav-chevron {
+  width: 13px;
+  height: 13px;
+  opacity: 0.65;
+  transition: transform 0.15s ease;
+}
+
+/* Dropdown Hover Panels */
+.diet-nav-dropdown {
+  position: relative;
+}
+
+.diet-dropdown-panel {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(12px);
+  background: #FFFFFF;
+  border-radius: 14px;
+  min-width: 230px;
+  padding: 8px;
+  box-shadow: 0 14px 35px -5px rgba(9, 40, 95, 0.16), 0 4px 8px rgba(9, 40, 95, 0.04);
+  border: 1px solid #E7EAF0;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 1050;
+}
+
+.diet-nav-dropdown:hover .diet-dropdown-panel {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(4px);
+}
+
+.diet-nav-dropdown:hover .diet-nav-chevron {
+  transform: rotate(180deg);
+  color: var(--royal-blue);
+}
+
+.diet-dropdown-item {
+  display: block;
+  padding: 9px 14px;
+  border-radius: 8px;
+  font-size: 0.84rem;
+  font-weight: 500;
+  color: #101828;
+  text-decoration: none;
+  transition: all 0.12s ease;
+}
+
+.diet-dropdown-item:hover {
+  background-color: var(--royal-blue-light);
+  color: var(--royal-blue);
+}
+
+/* Right Actions */
+.diet-nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.diet-nav-search-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  border: 1px solid #E7EAF0;
+  color: #101828;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.diet-nav-search-btn:hover {
+  background: #F7F8FA;
+  color: var(--royal-blue);
+  border-color: #CBD5E1;
+}
+
+.diet-nav-search-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.diet-nav-apply-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: var(--golden-yellow);
+  color: var(--deep-navy);
+  font-weight: 700;
+  font-size: 0.88rem;
+  padding: 10px 18px;
+  border-radius: 10px;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(244, 181, 27, 0.28);
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.diet-nav-apply-btn:hover {
+  background-color: var(--golden-yellow-hover);
+  color: var(--deep-navy);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(244, 181, 27, 0.38);
+}
+
+.diet-nav-apply-btn svg {
+  width: 15px;
+  height: 15px;
+}
+
+.diet-nav-burger {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: #FFFFFF;
+  border: 1px solid #E7EAF0;
+  color: #101828;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+/* ---------- HERO SECTION ---------- */
+.diet-hero {
+  position: relative;
+  background-color: var(--deep-navy);
+  background-image: 
+    linear-gradient(90deg, 
+      rgba(9, 40, 95, 0.97) 0%, 
+      rgba(9, 40, 95, 0.91) 36%, 
+      rgba(18, 61, 184, 0.46) 60%, 
+      rgba(9, 40, 95, 0.10) 100%
+    ),
+    url('/static/img/diet-bg.png');
+  background-size: cover;
+  background-position: right center;
+  background-repeat: no-repeat;
+  min-height: 840px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-top: 130px;
+  overflow: hidden;
+}
+
+.diet-hero-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.diet-hero-content {
+  padding: 24px 0 36px;
+}
+
+/* Positioning Badge */
+.diet-badge-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 22px;
+}
+
+.diet-positioning-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  border-radius: 9999px;
+  background: rgba(9, 40, 95, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(10px);
+  color: #FFFFFF;
+  font-size: 0.86rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+.diet-badge-icon {
+  font-size: 0.95rem;
+  line-height: 1;
+}
+
+.diet-gold-text {
+  color: var(--golden-yellow);
+  font-weight: 700;
+}
+
+.diet-badge-trailing-line {
+  width: 56px;
+  height: 1.5px;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 2px;
+}
+
+/* Main Headline */
+.diet-hero-title {
+  font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+  font-size: clamp(2.35rem, 4.4vw, 3.75rem);
+  font-weight: 800;
+  line-height: 1.15;
+  color: #FFFFFF;
+  letter-spacing: -0.025em;
+  margin-bottom: 20px;
+}
+
+.diet-gold-highlight {
+  color: var(--golden-yellow);
+}
+
+/* Subtext */
+.diet-hero-description {
+  font-size: 1.08rem;
+  line-height: 1.62;
+  color: rgba(255, 255, 255, 0.9);
+  max-width: 510px;
+  margin-bottom: 34px;
+  font-weight: 400;
+}
+
+/* CTAs */
+.diet-hero-btn-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 46px;
+}
+
+.diet-hero-primary-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background-color: var(--golden-yellow);
+  color: var(--deep-navy);
+  font-weight: 700;
+  font-size: 0.96rem;
+  padding: 13px 26px;
+  border-radius: 10px;
+  text-decoration: none;
+  box-shadow: 0 4px 18px rgba(244, 181, 27, 0.35);
+  transition: all 0.15s ease;
+}
+
+.diet-hero-primary-btn:hover {
+  background-color: var(--golden-yellow-hover);
+  color: var(--deep-navy);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(244, 181, 27, 0.45);
+}
+
+.diet-hero-primary-btn svg {
+  width: 18px;
+  height: 18px;
+  transition: transform 0.15s ease;
+}
+
+.diet-hero-primary-btn:hover svg {
+  transform: translateX(3px);
+}
+
+.diet-hero-secondary-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: transparent;
+  color: #FFFFFF;
+  font-weight: 600;
+  font-size: 0.94rem;
+  padding: 12px 24px;
+  border-radius: 10px;
+  border: 1.5px solid rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(6px);
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.diet-hero-secondary-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: #FFFFFF;
+  color: #FFFFFF;
+  transform: translateY(-2px);
+}
+
+.diet-play-icon-circle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.diet-play-icon-circle svg {
+  width: 14px;
+  height: 14px;
+  fill: #FFFFFF;
+}
+
+/* 4 Feature Highlights */
+.diet-hero-features-bar {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding-top: 22px;
+  border-top: 1px solid rgba(255, 255, 255, 0.18);
+  max-width: 640px;
+}
+
+.diet-feature-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.diet-feature-ico {
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.diet-feature-ico svg {
+  width: 22px;
+  height: 22px;
+  stroke-width: 1.75;
+}
+
+.diet-feature-text {
+  color: #FFFFFF;
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1.25;
+  white-space: nowrap;
+}
+
+.diet-feature-sep {
+  width: 1px;
+  height: 28px;
+  background: rgba(255, 255, 255, 0.25);
+  flex-shrink: 0;
+}
+
+/* ---------- STATISTICS PANEL ---------- */
+.diet-stats-wrapper {
+  position: relative;
+  z-index: 20;
+  width: 100%;
+  margin-top: 40px;
+}
+
+.diet-stats-container {
+  max-width: 1340px;
+  padding: 0 20px;
+}
+
+.diet-stats-card {
+  background: #FFFFFF;
+  border-top-left-radius: 36px;
+  border-top-right-radius: 36px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  padding: 34px 28px 30px;
+  box-shadow: 0 -12px 35px rgba(9, 40, 95, 0.08);
+  border: 1px solid rgba(231, 234, 240, 0.95);
+  border-bottom: none;
+  position: relative;
+}
+
+.diet-stat-block {
+  padding: 8px 24px;
+  border-right: 1px solid var(--border-color);
+}
+
+.diet-stat-block:last-child {
+  border-right: none;
+}
+
+.diet-stat-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.diet-stat-svg-box {
+  color: var(--deep-navy);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.diet-stat-svg-box svg {
+  width: 34px;
+  height: 34px;
+  stroke-width: 1.6;
+}
+
+.diet-stat-data {
+  line-height: 1.15;
+}
+
+.diet-stat-val {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 2.15rem;
+  font-weight: 800;
+  color: var(--deep-navy);
+  letter-spacing: -0.02em;
+}
+
+.diet-stat-name {
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+/* Responsive */
+@media (max-width: 1199.98px) {
+  .diet-nav-menu { gap: 14px; }
+  .diet-nav-link { font-size: 0.84rem; }
+  .diet-hero-features-bar { flex-wrap: wrap; gap: 14px; }
+  .diet-feature-sep { display: none; }
+}
+
+@media (max-width: 991.98px) {
+  .diet-floating-navbar { padding: 10px 16px; }
+  .diet-hero { min-height: 720px; padding-top: 110px; }
+  .diet-stat-block { border-right: none; margin-bottom: 16px; }
+  .diet-stats-card { padding: 24px 16px 20px; border-top-left-radius: 24px; border-top-right-radius: 24px; }
+}

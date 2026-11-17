@@ -1,0 +1,74 @@
+{% extends 'base_dashboard.html' %}
+{% load humanize %}
+{% block title %}My Fee Invoices · Daffodil Institute{% endblock %}
+
+{% block content %}
+<div class="page-head-enterprise">
+  <div>
+    <h2 class="page-title">
+      <span class="stat-icon-wrapper gold" style="width:36px;height:36px;border-radius:10px;">
+        <i data-lucide="wallet" style="width:20px;height:20px;"></i>
+      </span>
+      <span>My Fee Invoices & Dues</span>
+    </h2>
+    <div class="breadcrumb-nav mt-1">
+      <a href="{% url 'university:dashboard' %}">Dashboard</a>
+      <i data-lucide="chevron-right" style="width:12px;height:12px;"></i>
+      <span>Fees</span>
+    </div>
+  </div>
+
+  <div class="date-filter-pill">
+    <span>Balance Due:</span>
+    <b class="text-danger ms-1">৳ {{ stats.fee_due|floatformat:0|intcomma }}</b>
+  </div>
+</div>
+
+<div class="saas-card">
+  <div class="saas-card-header">
+    <div>
+      <div class="saas-card-title">Fee Invoices & Payment Ledger</div>
+      <div class="saas-card-subtitle">Tuition fees, examinations and semester charges</div>
+    </div>
+  </div>
+
+  <div class="table-responsive-clean">
+    <table class="table-ums">
+      <thead>
+        <tr>
+          <th>Invoice Description</th>
+          <th>Issued Date</th>
+          <th>Due Date</th>
+          <th>Total Billed</th>
+          <th>Amount Paid</th>
+          <th>Balance Due</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for i in invoices %}
+        <tr>
+          <td class="fw-semibold text-dark">{{ i.title }}</td>
+          <td class="small text-secondary">{{ i.issued_on|date:'M d, Y' }}</td>
+          <td class="small text-secondary">{{ i.due_date|date:'M d, Y' }}</td>
+          <td><span class="fw-semibold">৳ {{ i.amount|floatformat:0|intcomma }}</span></td>
+          <td><span class="text-secondary">৳ {{ i.amount_paid|floatformat:0|intcomma }}</span></td>
+          <td>
+            <span class="fw-bold {% if i.balance > 0 %}text-danger{% else %}text-success{% endif %}">
+              ৳ {{ i.balance|floatformat:0|intcomma }}
+            </span>
+          </td>
+          <td>
+            <span class="badge-status {{ i.status|lower }}">{{ i.get_status_display }}</span>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="7" class="text-center py-5 text-muted">No fee invoices recorded.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

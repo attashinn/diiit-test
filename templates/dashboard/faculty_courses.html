@@ -1,0 +1,85 @@
+{% extends 'base_dashboard.html' %}
+{% block title %}My Courses · Daffodil Institute{% endblock %}
+
+{% block content %}
+<div class="page-head-enterprise">
+  <div>
+    <h2 class="page-title">
+      <span class="stat-icon-wrapper blue" style="width:36px;height:36px;border-radius:10px;">
+        <i data-lucide="book-open" style="width:20px;height:20px;"></i>
+      </span>
+      <span>My Teaching Courses</span>
+    </h2>
+    <div class="breadcrumb-nav mt-1">
+      <a href="{% url 'university:dashboard' %}">Dashboard</a>
+      <i data-lucide="chevron-right" style="width:12px;height:12px;"></i>
+      <span>My Courses</span>
+    </div>
+  </div>
+
+  <div class="d-flex align-items-center gap-2">
+    <a href="{% url 'university:faculty_assignments' %}" class="btn btn-primary d-inline-flex align-items-center gap-2">
+      <i data-lucide="clipboard-list" style="width:16px;height:16px;"></i>
+      <span>Manage Assignments</span>
+    </a>
+  </div>
+</div>
+
+<div class="row g-4">
+  {% for c in courses %}
+  <div class="col-md-6 col-xl-4">
+    <div class="saas-card">
+      <div class="saas-card-header bg-light">
+        <div class="d-flex align-items-center justify-content-between w-100">
+          <span class="badge-dept">{{ c.code }}</span>
+          <span class="small fw-semibold text-secondary">{{ c.credits }} credits</span>
+        </div>
+      </div>
+      <div class="saas-card-body">
+        <h5 class="fw-bold text-dark mb-2 fs-6">{{ c.title }}</h5>
+        <div class="d-flex align-items-center gap-2 small text-secondary mb-3">
+          <i data-lucide="users" class="text-primary" style="width:15px;height:15px;"></i>
+          <span>Enrolled Students:</span>
+          <span class="fw-bold text-dark ms-auto">{{ c.n }}</span>
+        </div>
+
+        <div class="d-flex align-items-center gap-2 pt-2 border-top">
+          <a href="{% url 'university:faculty_attendance' c.id %}" class="btn btn-sm btn-primary flex-grow-1 text-center d-inline-flex align-items-center justify-content-center gap-1">
+            <i data-lucide="calendar-check" style="width:14px;height:14px;"></i>
+            <span>Attendance</span>
+          </a>
+          <a href="{% url 'university:faculty_attendance_history' c.id %}" class="btn-table-icon" title="Register">
+            <i data-lucide="table-2" style="width:15px;height:15px;"></i>
+          </a>
+          <a href="{% url 'university:course_detail' c.id %}" class="btn-table-icon" title="View Course">
+            <i data-lucide="eye" style="width:15px;height:15px;"></i>
+          </a>
+        </div>
+
+        {% if c.assignments.all %}
+        <div class="mt-3 pt-2 border-top">
+          <div class="small fw-semibold text-secondary mb-1">Quick Grade:</div>
+          {% for a in c.assignments.all|slice:':2' %}
+            <a href="{% url 'university:faculty_grade' a.id %}" class="small d-block text-truncate text-decoration-none text-primary mb-1">
+              <i data-lucide="check-square" style="width:12px;height:12px;" class="me-1 d-inline"></i>
+              {{ a.title }}
+            </a>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  {% empty %}
+  <div class="col-12">
+    <div class="saas-card p-5 text-center">
+      <div class="stat-icon-wrapper blue mx-auto mb-3" style="width:48px;height:48px;">
+        <i data-lucide="book-open" style="width:24px;height:24px;"></i>
+      </div>
+      <h6 class="fw-bold text-dark">No Courses Assigned</h6>
+      <p class="small text-secondary">You currently have no teaching assignments for this semester.</p>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,151 @@
+{% extends 'base_dashboard.html' %}
+{% load humanize %}
+{% block title %}Institutional Reports · Daffodil Institute{% endblock %}
+
+{% block content %}
+<div class="page-head-enterprise">
+  <div>
+    <h2 class="page-title">
+      <span class="stat-icon-wrapper blue" style="width:36px;height:36px;border-radius:10px;">
+        <i data-lucide="bar-chart-3" style="width:20px;height:20px;"></i>
+      </span>
+      <span>Institutional Analytics & Reports</span>
+    </h2>
+    <div class="breadcrumb-nav mt-1">
+      <a href="{% url 'university:dashboard' %}">Dashboard</a>
+      <i data-lucide="chevron-right" style="width:12px;height:12px;"></i>
+      <span>Reports</span>
+    </div>
+  </div>
+
+  <div class="d-flex align-items-center gap-2">
+    <button class="btn btn-secondary d-inline-flex align-items-center gap-2" onclick="window.print()">
+      <i data-lucide="printer" style="width:16px;height:16px;"></i>
+      <span>Print Report</span>
+    </button>
+  </div>
+</div>
+
+<!-- Financial Summary Banner -->
+<div class="row g-3 mb-4">
+  <div class="col-md-3">
+    <div class="stat-card-clean">
+      <div class="stat-card-label">Total Invoiced Billed</div>
+      <div class="stat-card-value">৳ {{ fee_summary.billed|floatformat:0|intcomma }}</div>
+      <div class="small text-muted">{{ fee_summary.total_invoices }} invoices generated</div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="stat-card-clean">
+      <div class="stat-card-label">Revenue Collected</div>
+      <div class="stat-card-value text-success">৳ {{ fee_summary.paid|floatformat:0|intcomma }}</div>
+      <div class="small text-success fw-semibold">{{ fee_summary.collection_rate }}% collection rate</div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="stat-card-clean">
+      <div class="stat-card-label">Outstanding Balance</div>
+      <div class="stat-card-value text-danger">৳ {{ fee_summary.unpaid|floatformat:0|intcomma }}</div>
+      <div class="small text-danger fw-semibold">{{ fee_summary.unpaid_invoices }} unpaid invoices</div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="stat-card-clean">
+      <div class="stat-card-label">Overall University Attendance</div>
+      <div class="stat-card-value text-primary">{{ attendance_rate }}%</div>
+      <div class="small text-secondary">{{ present_attendance }} / {{ total_attendance }} recorded sessions</div>
+    </div>
+  </div>
+</div>
+
+<!-- Department Analytics Matrix -->
+<div class="saas-card mb-4">
+  <div class="saas-card-header">
+    <div>
+      <div class="saas-card-title">Department Enrollment & Capacity Matrix</div>
+      <div class="saas-card-subtitle">Course offerings, enrolled students, degree programs and faculty allocation</div>
+    </div>
+  </div>
+  <div class="table-responsive-clean">
+    <table class="table-ums">
+      <thead>
+        <tr>
+          <th>Department</th>
+          <th>Code</th>
+          <th>Degree Programs</th>
+          <th>Active Courses</th>
+          <th>Faculty Count</th>
+          <th>Enrolled Students</th>
+          <th class="text-end">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for d in dept_stats %}
+        <tr>
+          <td class="fw-semibold text-dark">{{ d.name }}</td>
+          <td><span class="badge-dept">{{ d.code }}</span></td>
+          <td>{{ d.n_programs }} Programs</td>
+          <td>{{ d.n_courses }} Courses</td>
+          <td>{{ d.n_faculty }} Faculty</td>
+          <td>
+            <span class="badge-status enrolled">
+              <i data-lucide="users" style="width:12px;height:12px;"></i>
+              {{ d.n_students }} Students
+            </span>
+          </td>
+          <td class="text-end">
+            <span class="badge-status enrolled">Active</span>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="7" class="text-center py-4 text-muted">No department statistics available.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Academic Terms Overview -->
+<div class="saas-card">
+  <div class="saas-card-header">
+    <div>
+      <div class="saas-card-title">Academic Terms & Calendars</div>
+      <div class="saas-card-subtitle">Semester start and conclusion intervals</div>
+    </div>
+  </div>
+  <div class="table-responsive-clean">
+    <table class="table-ums">
+      <thead>
+        <tr>
+          <th>Academic Term</th>
+          <th>Commencement Date</th>
+          <th>Conclusion Date</th>
+          <th class="text-end">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for t in terms %}
+        <tr>
+          <td class="fw-semibold text-dark">{{ t.name }}</td>
+          <td>{{ t.start_date|date:'M d, Y' }}</td>
+          <td>{{ t.end_date|date:'M d, Y' }}</td>
+          <td class="text-end">
+            {% if t.is_current %}
+              <span class="badge-status enrolled">Current Term</span>
+            {% else %}
+              <span class="badge-status pending">Term Archive</span>
+            {% endif %}
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="4" class="text-center py-4 text-muted">No academic terms recorded.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

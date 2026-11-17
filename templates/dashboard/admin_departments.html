@@ -1,0 +1,92 @@
+{% extends 'base_dashboard.html' %}
+{% block title %}Departments · Daffodil Institute of Engineering & Technology{% endblock %}
+
+{% block content %}
+<div class="page-head-enterprise">
+  <div>
+    <h2 class="page-title">
+      <span class="stat-icon-wrapper blue" style="width:36px;height:36px;border-radius:10px;">
+        <i data-lucide="building-2" style="width:20px;height:20px;"></i>
+      </span>
+      <span>Academic Departments</span>
+    </h2>
+    <div class="breadcrumb-nav mt-1">
+      <a href="{% url 'university:dashboard' %}">Dashboard</a>
+      <i data-lucide="chevron-right" style="width:12px;height:12px;"></i>
+      <span>Departments</span>
+    </div>
+  </div>
+
+  <div class="d-flex align-items-center gap-2">
+    <a href="{% url 'university:program_create' %}" class="btn btn-secondary d-inline-flex align-items-center gap-2">
+      <i data-lucide="graduation-cap" style="width:16px;height:16px;"></i>
+      <span>Add Program</span>
+    </a>
+    <a href="{% url 'university:department_create' %}" class="btn btn-primary d-inline-flex align-items-center gap-2">
+      <i data-lucide="plus" style="width:16px;height:16px;"></i>
+      <span>Add Department</span>
+    </a>
+  </div>
+</div>
+
+<div class="row g-4">
+  {% for d in departments %}
+  <div class="col-md-6 col-xl-4">
+    <div class="saas-card">
+      <div class="saas-card-header bg-light">
+        <div class="d-flex align-items-center gap-2">
+          <div class="stat-icon-wrapper blue" style="width:34px;height:34px;border-radius:8px;">
+            <i data-lucide="building" style="width:18px;height:18px;"></i>
+          </div>
+          <div>
+            <h6 class="fw-bold text-dark mb-0 fs-6">{{ d.name }}</h6>
+            <span class="badge-dept mt-1 d-inline-block">{{ d.code }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="saas-card-body">
+        <p class="small text-secondary mb-3" style="min-height: 40px;">
+          {{ d.description|default:"Leading academic faculty offering undergraduate and postgraduate education."|truncatewords:16 }}
+        </p>
+
+        <div class="p-3 rounded-3 bg-light border mb-3">
+          <div class="row text-center g-2">
+            <div class="col-6 border-end">
+              <div class="fs-5 fw-bold text-dark">{{ d.n_courses }}</div>
+              <div class="small text-muted" style="font-size: 0.72rem;">Active Courses</div>
+            </div>
+            <div class="col-6">
+              <div class="fs-5 fw-bold text-dark">{{ d.n_programs }}</div>
+              <div class="small text-muted" style="font-size: 0.72rem;">Degree Programs</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex align-items-center gap-2 pt-2 border-top">
+          <a href="{% url 'university:department_detail' d.id %}" class="btn btn-sm btn-secondary flex-grow-1 text-center">
+            Open Department
+          </a>
+          <a href="{% url 'university:department_edit' d.id %}" class="btn-table-icon" title="Edit">
+            <i data-lucide="pencil" style="width:15px;height:15px;"></i>
+          </a>
+          <a href="{% url 'university:department_delete' d.id %}" class="btn-table-icon delete" title="Delete">
+            <i data-lucide="trash-2" style="width:15px;height:15px;"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% empty %}
+  <div class="col-12">
+    <div class="saas-card p-5 text-center">
+      <div class="stat-icon-wrapper blue mx-auto mb-3" style="width:48px;height:48px;">
+        <i data-lucide="building-2" style="width:24px;height:24px;"></i>
+      </div>
+      <h6 class="fw-bold text-dark">No Departments Added</h6>
+      <p class="small text-secondary mb-3">Create your first university department to structure courses and programs.</p>
+      <a href="{% url 'university:department_create' %}" class="btn btn-primary btn-sm mx-auto">Add Department</a>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

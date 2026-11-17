@@ -1,0 +1,221 @@
+{% extends 'base_dashboard.html' %}
+{% block title %}{{ course.code }} · {{ course.title }}{% endblock %}
+
+{% block content %}
+{% with is_admin=user.is_admin_role %}
+<div class="page-head-enterprise">
+  <div>
+    <h2 class="page-title">
+      <span class="stat-icon-wrapper blue" style="width:36px;height:36px;border-radius:10px;">
+        <i data-lucide="book-open" style="width:20px;height:20px;"></i>
+      </span>
+      <span>{{ course.code }} · {{ course.title }}</span>
+    </h2>
+    <div class="breadcrumb-nav mt-1">
+      <a href="{% url 'university:dashboard' %}">Dashboard</a>
+      <i data-lucide="chevron-right" style="width:12px;height:12px;"></i>
+      <a href="{% url 'university:admin_courses' %}">Courses</a>
+      <i data-lucide="chevron-right" style="width:12px;height:12px;"></i>
+      <span>{{ course.code }}</span>
+    </div>
+  </div>
+
+  <div class="d-flex align-items-center gap-2 flex-wrap">
+    <a href="{% url 'university:faculty_attendance' course.id %}" class="btn btn-secondary d-inline-flex align-items-center gap-2">
+      <i data-lucide="calendar-check" style="width:16px;height:16px;"></i>
+      <span>Attendance</span>
+    </a>
+    <a href="{% url 'university:faculty_attendance_history' course.id %}" class="btn btn-secondary d-inline-flex align-items-center gap-2">
+      <i data-lucide="table-2" style="width:16px;height:16px;"></i>
+      <span>Register</span>
+    </a>
+    {% if is_admin or user.is_superuser %}
+    <a href="{% url 'university:course_edit' course.id %}" class="btn btn-secondary d-inline-flex align-items-center gap-2">
+      <i data-lucide="pencil" style="width:16px;height:16px;"></i>
+      <span>Edit</span>
+    </a>
+    <a href="{% url 'university:course_delete' course.id %}" class="btn btn-outline-danger d-inline-flex align-items-center gap-2">
+      <i data-lucide="trash-2" style="width:16px;height:16px;"></i>
+    </a>
+    {% endif %}
+  </div>
+</div>
+
+<div class="row g-4 mb-4">
+  <div class="col-lg-4">
+    <div class="saas-card mb-4">
+      <div class="saas-card-body p-4">
+        <div class="d-flex align-items-center justify-content-between mb-3">
+          <span class="badge-dept">{{ course.department.code }}</span>
+          <span class="small fw-semibold text-secondary">Semester {{ course.semester_no }}</span>
+        </div>
+        <h5 class="fw-bold text-dark mb-2">{{ course.title }}</h5>
+        <p class="small text-secondary mb-3">{{ course.description|default:"Comprehensive academic curriculum designed for mastery in engineering and technology principles." }}</p>
+
+        <div class="border-top pt-3">
+          <div class="d-flex align-items-center gap-2 small text-secondary mb-2">
+            <i data-lucide="award" class="text-primary" style="width:16px;height:16px;"></i>
+            <span>Credits:</span>
+            <span class="fw-bold text-dark ms-auto">{{ course.credits }} Credits</span>
+          </div>
+          <div class="d-flex align-items-center gap-2 small text-secondary">
+            <i data-lucide="user-check" class="text-primary" style="width:16px;height:16px;"></i>
+            <span>Instructor:</span>
+            <span class="fw-semibold text-dark ms-auto">
+              {% if course.faculty %}{{ course.faculty.user.display_name }}{% else %}Unassigned{% endif %}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Enroll Student -->
+    {% if is_admin or user.is_superuser %}
+    <div class="saas-card">
+      <div class="saas-card-header">
+        <div class="saas-card-title">
+          <i data-lucide="user-plus" class="text-primary" style="width:18px;height:18px;"></i>
+          <span>Enroll Student</span>
+        </div>
+      </div>
+      <div class="saas-card-body">
+        <form method="post" action="{% url 'university:course_enroll' course.id %}">
+          {% csrf_token %}
+          <div class="mb-3">
+            <select name="student" class="form-select" required>
+              <option value="">Select student...</option>
+              {% for s in available_students %}
+                <option value="{{ s.id }}">{{ s.roll_no }} — {{ s.user.display_name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <button class="btn btn-primary w-100 d-inline-flex align-items-center justify-content-center gap-2">
+            <i data-lucide="plus" style="width:16px;height:16px;"></i>
+            <span>Enroll to Course</span>
+          </button>
+        </form>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+
+  <div class="col-lg-8">
+    <!-- Student Roster -->
+    <div class="saas-card mb-4">
+      <div class="saas-card-header">
+        <div>
+          <div class="saas-card-title">
+            <i data-lucide="users" class="text-primary" style="width:18px;height:18px;"></i>
+            <span>Enrolled Students ({{ roster.count }})</span>
+          </div>
+          <div class="saas-card-subtitle">Active student enrollments for this term</div>
+        </div>
+      </div>
+      <div class="table-responsive-clean" style="max-height: 380px;">
+        <table class="table-ums">
+          <thead>
+            <tr>
+              <th>Student</th>
+              <th>Roll No</th>
+              <th>Status</th>
+              {% if is_admin or user.is_superuser %}<th class="text-end">Action</th>{% endif %}
+            </tr>
+          </thead>
+          <tbody>
+            {% for e in roster %}
+            <tr>
+              <td>
+                <div class="table-user-cell">
+                  <img src="{{ e.student.user.avatar }}" alt="{{ e.student.user.display_name }}">
+                  <span class="fw-semibold text-dark">{{ e.student.user.display_name }}</span>
+                </div>
+              </td>
+              <td><span class="badge-dept">{{ e.student.roll_no }}</span></td>
+              <td><span class="badge-status enrolled">{{ e.get_status_display }}</span></td>
+              {% if is_admin or user.is_superuser %}
+              <td class="text-end">
+                <form method="post" action="{% url 'university:enrollment_remove' e.id %}" onsubmit="return confirm('Remove student from course?')">
+                  {% csrf_token %}
+                  <button class="btn-table-icon delete" title="Remove from Course">
+                    <i data-lucide="user-minus" style="width:15px;height:15px;"></i>
+                  </button>
+                </form>
+              </td>
+              {% endif %}
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="4" class="text-center py-4 text-muted">No students currently enrolled.</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Course Assignments & Exams -->
+    <div class="row g-4">
+      <div class="col-md-6">
+        <div class="saas-card">
+          <div class="saas-card-header">
+            <div class="saas-card-title fs-6">Assignments ({{ assignments.count }})</div>
+            {% if is_admin or user.is_superuser %}
+              <a href="{% url 'university:assignment_create' %}" class="card-link-action">+ Add</a>
+            {% endif %}
+          </div>
+          <div class="saas-card-body p-0">
+            {% for a in assignments %}
+            <div class="p-3 border-bottom d-flex align-items-center justify-content-between">
+              <div>
+                <a href="{% url 'university:assignment_detail' a.id %}" class="fw-semibold text-dark text-decoration-none">
+                  {{ a.title }}
+                </a>
+                <div class="small text-secondary">Due: {{ a.due_date|date:'M d' }}</div>
+              </div>
+              <span class="badge-dept">{{ a.max_marks }} pts</span>
+            </div>
+            {% empty %}
+            <div class="p-3 text-center text-muted small">No assignments created.</div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="saas-card">
+          <div class="saas-card-header">
+            <div class="saas-card-title fs-6">Exams ({{ exams.count }})</div>
+            {% if is_admin or user.is_superuser %}
+              <a href="{% url 'university:exam_create' %}?course={{ course.id }}" class="card-link-action">+ Add</a>
+            {% endif %}
+          </div>
+          <div class="saas-card-body p-0">
+            {% for x in exams %}
+            <div class="p-3 border-bottom d-flex align-items-center justify-content-between">
+              <div>
+                <span class="fw-semibold text-dark">{{ x.name }}</span>
+                <div class="small text-secondary">{{ x.date|date:'M d, Y' }}</div>
+              </div>
+              <div class="d-flex align-items-center gap-1">
+                <span class="badge-dept">{{ x.max_marks }} pts</span>
+                {% if is_admin or user.is_superuser %}
+                <a href="{% url 'university:exam_edit' x.id %}" class="btn-table-icon" style="width:26px;height:26px;">
+                  <i data-lucide="pencil" style="width:13px;height:13px;"></i>
+                </a>
+                <a href="{% url 'university:exam_delete' x.id %}" class="btn-table-icon delete" style="width:26px;height:26px;">
+                  <i data-lucide="trash-2" style="width:13px;height:13px;"></i>
+                </a>
+                {% endif %}
+              </div>
+            </div>
+            {% empty %}
+            <div class="p-3 text-center text-muted small">No exams scheduled.</div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endwith %}
+{% endblock %}

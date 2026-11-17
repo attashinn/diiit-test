@@ -1,0 +1,125 @@
+{% extends 'base_dashboard.html' %}
+{% block title %}Course Catalog · Daffodil Institute of Engineering & Technology{% endblock %}
+
+{% block content %}
+<div class="page-head-enterprise">
+  <div>
+    <h2 class="page-title">
+      <span class="stat-icon-wrapper blue" style="width:36px;height:36px;border-radius:10px;">
+        <i data-lucide="book-open" style="width:20px;height:20px;"></i>
+      </span>
+      <span>Courses & Curriculum</span>
+    </h2>
+    <div class="breadcrumb-nav mt-1">
+      <a href="{% url 'university:dashboard' %}">Dashboard</a>
+      <i data-lucide="chevron-right" style="width:12px;height:12px;"></i>
+      <span>Courses</span>
+    </div>
+  </div>
+
+  <div class="d-flex align-items-center gap-2">
+    {% if user.is_admin_role or user.is_superuser %}
+    <a href="{% url 'university:course_create' %}" class="btn btn-primary d-inline-flex align-items-center gap-2">
+      <i data-lucide="plus" style="width:16px;height:16px;"></i>
+      <span>Create Course</span>
+    </a>
+    {% endif %}
+  </div>
+</div>
+
+<div class="saas-card">
+  <!-- Search & Filter Bar -->
+  <div class="p-3 border-bottom border-light bg-white d-flex align-items-center justify-content-between flex-wrap gap-3">
+    <form class="d-flex align-items-center gap-2 flex-grow-1" style="max-width: 420px;" method="get">
+      <div class="topbar-search w-100">
+        <i data-lucide="search" class="search-icon"></i>
+        <input name="q" value="{{ q }}" placeholder="Search courses by code or title..." class="form-control" autocomplete="off">
+      </div>
+      {% if q %}
+        <a href="{% url 'university:admin_courses' %}" class="btn btn-sm btn-outline-secondary">Clear</a>
+      {% endif %}
+    </form>
+
+    <div class="small text-secondary fw-semibold">
+      Total: {{ courses|length }} course(s)
+    </div>
+  </div>
+
+  <div class="table-responsive-clean">
+    <table class="table-ums">
+      <thead>
+        <tr>
+          <th>Course Code</th>
+          <th>Course Title</th>
+          <th>Department</th>
+          <th>Semester</th>
+          <th>Credits</th>
+          <th>Instructor</th>
+          <th>Enrolled</th>
+          <th class="text-end">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for c in courses %}
+        <tr>
+          <td><span class="badge-dept">{{ c.code }}</span></td>
+          <td>
+            <a href="{% url 'university:course_detail' c.id %}" class="fw-semibold text-dark text-decoration-none">
+              {{ c.title }}
+            </a>
+          </td>
+          <td>
+            <span class="small fw-semibold text-secondary">{{ c.department.code }}</span>
+          </td>
+          <td class="small text-secondary">Sem {{ c.semester_no }}</td>
+          <td>
+            <span class="small fw-semibold">{{ c.credits }} credits</span>
+          </td>
+          <td class="small">
+            {% if c.faculty %}
+              <div class="d-flex align-items-center gap-2">
+                <img src="{{ c.faculty.user.avatar }}" width="22" height="22" class="rounded-circle">
+                <span>{{ c.faculty.user.display_name }}</span>
+              </div>
+            {% else %}
+              <span class="text-muted">Unassigned</span>
+            {% endif %}
+          </td>
+          <td>
+            <span class="badge-status enrolled">
+              <i data-lucide="users" style="width:12px;height:12px;"></i>
+              {{ c.n|default:c.enrolled_count }}
+            </span>
+          </td>
+          <td>
+            <div class="table-actions">
+              <a href="{% url 'university:course_detail' c.id %}" class="btn-table-icon" title="View Details">
+                <i data-lucide="eye" style="width:15px;height:15px;"></i>
+              </a>
+              {% if user.is_admin_role or user.is_superuser %}
+              <a href="{% url 'university:course_edit' c.id %}" class="btn-table-icon" title="Edit Course">
+                <i data-lucide="pencil" style="width:15px;height:15px;"></i>
+              </a>
+              <a href="{% url 'university:course_delete' c.id %}" class="btn-table-icon delete" title="Delete Course">
+                <i data-lucide="trash-2" style="width:15px;height:15px;"></i>
+              </a>
+              {% endif %}
+            </div>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="8" class="text-center py-5">
+            <div class="stat-icon-wrapper blue mx-auto mb-3" style="width:48px;height:48px;">
+              <i data-lucide="book-open" style="width:24px;height:24px;"></i>
+            </div>
+            <h6 class="fw-bold text-dark">No Courses Found</h6>
+            <p class="small text-secondary">No courses match your query.</p>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

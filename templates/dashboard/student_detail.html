@@ -1,0 +1,170 @@
+{% extends 'base_dashboard.html' %}
+{% block title %}{{ student.user.display_name }} · Student Profile{% endblock %}
+
+{% block content %}
+<div class="page-head-enterprise">
+  <div>
+    <h2 class="page-title">
+      <span class="stat-icon-wrapper blue" style="width:36px;height:36px;border-radius:10px;">
+        <i data-lucide="user" style="width:20px;height:20px;"></i>
+      </span>
+      <span>{{ student.user.display_name }}</span>
+    </h2>
+    <div class="breadcrumb-nav mt-1">
+      <a href="{% url 'university:dashboard' %}">Dashboard</a>
+      <i data-lucide="chevron-right" style="width:12px;height:12px;"></i>
+      <a href="{% url 'university:admin_students' %}">Students</a>
+      <i data-lucide="chevron-right" style="width:12px;height:12px;"></i>
+      <span>{{ student.roll_no }}</span>
+    </div>
+  </div>
+
+  <div class="d-flex align-items-center gap-2">
+    <a href="{% url 'university:admin_students' %}" class="btn btn-secondary d-inline-flex align-items-center gap-2">
+      <i data-lucide="arrow-left" style="width:16px;height:16px;"></i>
+      <span>Back to Directory</span>
+    </a>
+    <a href="{% url 'university:student_edit' student.id %}" class="btn btn-primary d-inline-flex align-items-center gap-2">
+      <i data-lucide="pencil" style="width:16px;height:16px;"></i>
+      <span>Edit Student</span>
+    </a>
+  </div>
+</div>
+
+<div class="row g-4">
+  <!-- Left Column: Profile Card + AI Prediction -->
+  <div class="col-lg-4">
+    <!-- Student Profile Card -->
+    <div class="saas-card mb-4">
+      <div class="saas-card-body text-center p-4">
+        <div class="position-relative d-inline-block mb-3">
+          <img src="{{ student.user.avatar }}" class="rounded-circle border border-2 border-primary" width="92" height="92" alt="{{ student.user.display_name }}">
+        </div>
+        <h5 class="fw-bold text-dark mb-1">{{ student.user.display_name }}</h5>
+        <div class="badge-dept mb-3">{{ student.roll_no }}</div>
+
+        <div class="text-start border-top pt-3">
+          <div class="d-flex align-items-center gap-2 mb-2 small">
+            <i data-lucide="graduation-cap" class="text-secondary" style="width:16px;height:16px;"></i>
+            <span class="text-secondary">Program:</span>
+            <span class="fw-semibold text-dark ms-auto">{{ student.program.name|default:"B.Sc. in CSE" }}</span>
+          </div>
+          <div class="d-flex align-items-center gap-2 mb-2 small">
+            <i data-lucide="layers" class="text-secondary" style="width:16px;height:16px;"></i>
+            <span class="text-secondary">Semester:</span>
+            <span class="fw-semibold text-dark ms-auto">Semester {{ student.current_semester }}</span>
+          </div>
+          <div class="d-flex align-items-center gap-2 mb-2 small">
+            <i data-lucide="mail" class="text-secondary" style="width:16px;height:16px;"></i>
+            <span class="text-secondary">Email:</span>
+            <span class="fw-semibold text-dark ms-auto text-truncate" style="max-width:160px">{{ student.user.email|default:"—" }}</span>
+          </div>
+          <div class="d-flex align-items-center gap-2 mb-2 small">
+            <i data-lucide="phone" class="text-secondary" style="width:16px;height:16px;"></i>
+            <span class="text-secondary">Phone:</span>
+            <span class="fw-semibold text-dark ms-auto">{{ student.user.phone|default:"—" }}</span>
+          </div>
+          <div class="d-flex align-items-center gap-2 small">
+            <i data-lucide="map-pin" class="text-secondary" style="width:16px;height:16px;"></i>
+            <span class="text-secondary">Address:</span>
+            <span class="fw-semibold text-dark ms-auto text-truncate" style="max-width:160px">{{ student.address|default:"Campus Block" }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AI Performance Predictor -->
+    <div class="saas-card">
+      <div class="saas-card-header">
+        <div class="saas-card-title">
+          <i data-lucide="sparkles" class="text-primary" style="width:18px;height:18px;"></i>
+          <span>AI Academic Projection</span>
+        </div>
+      </div>
+      <div class="saas-card-body">
+        <div class="d-flex align-items-center justify-content-between mb-2">
+          <span class="small fw-semibold text-secondary">Predicted Score</span>
+          <span class="fw-bold text-dark fs-5">{{ prediction.projected }}%</span>
+        </div>
+        <div class="progress mb-3" style="height: 8px;">
+          <div class="progress-bar bg-primary" role="progressbar" style="width: {{ prediction.projected }}%"></div>
+        </div>
+        
+        <div class="p-2 rounded-3 bg-light border mb-3 small d-flex align-items-center gap-2">
+          <i data-lucide="info" class="text-primary" style="width:16px;height:16px;"></i>
+          <span class="fw-semibold">{{ prediction.band }}</span>
+        </div>
+
+        <div class="small fw-bold text-secondary mb-2">Smart Study Recommendations:</div>
+        {% for r in recommendations %}
+          <div class="d-flex align-items-start gap-2 mb-2 small text-secondary">
+            <i data-lucide="check-circle" class="text-success mt-1" style="width:14px;height:14px;flex-shrink:0;"></i>
+            <span>{{ r.text }}</span>
+          </div>
+        {% empty %}
+          <div class="small text-muted">All signals healthy for this student.</div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Column: Stats & Enrolled Courses -->
+  <div class="col-lg-8">
+    {% include 'dashboard/_cards.html' %}
+
+    <div class="saas-card">
+      <div class="saas-card-header">
+        <div>
+          <div class="saas-card-title">
+            <i data-lucide="book-open" class="text-primary" style="width:18px;height:18px;"></i>
+            <span>Enrolled Courses</span>
+          </div>
+          <div class="saas-card-subtitle">Current academic semester courses and instructors</div>
+        </div>
+      </div>
+      <div class="table-responsive-clean">
+        <table class="table-ums">
+          <thead>
+            <tr>
+              <th>Course Code & Title</th>
+              <th>Faculty Instructor</th>
+              <th>Credits</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for e in enrollments %}
+            <tr>
+              <td>
+                <div class="fw-semibold text-dark">{{ e.course.code }}</div>
+                <div class="small text-secondary">{{ e.course.title }}</div>
+              </td>
+              <td class="small">
+                {% if e.course.faculty %}
+                  <div class="d-flex align-items-center gap-2">
+                    <img src="{{ e.course.faculty.user.avatar }}" width="24" height="24" class="rounded-circle">
+                    <span>{{ e.course.faculty.user.display_name }}</span>
+                  </div>
+                {% else %}
+                  <span class="text-muted">—</span>
+                {% endif %}
+              </td>
+              <td>
+                <span class="badge-dept">{{ e.course.credits }} credits</span>
+              </td>
+              <td>
+                <span class="badge-status enrolled">{{ e.get_status_display }}</span>
+              </td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="4" class="text-center py-4 text-muted">No courses enrolled.</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

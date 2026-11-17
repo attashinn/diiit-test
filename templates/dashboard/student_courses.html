@@ -1,0 +1,63 @@
+{% extends 'base_dashboard.html' %}
+{% block title %}My Courses · Daffodil Institute{% endblock %}
+
+{% block content %}
+<div class="page-head-enterprise">
+  <div>
+    <h2 class="page-title">
+      <span class="stat-icon-wrapper blue" style="width:36px;height:36px;border-radius:10px;">
+        <i data-lucide="book-open" style="width:20px;height:20px;"></i>
+      </span>
+      <span>My Registered Courses</span>
+    </h2>
+    <div class="breadcrumb-nav mt-1">
+      <a href="{% url 'university:dashboard' %}">Dashboard</a>
+      <i data-lucide="chevron-right" style="width:12px;height:12px;"></i>
+      <span>My Courses</span>
+    </div>
+  </div>
+</div>
+
+<div class="row g-4">
+  {% for e in enrollments %}
+  <div class="col-md-6 col-xl-4">
+    <div class="saas-card">
+      <div class="saas-card-header bg-light">
+        <div class="d-flex align-items-center justify-content-between w-100">
+          <span class="badge-dept">{{ e.course.department.code }}</span>
+          <span class="small fw-semibold text-secondary">Sem {{ e.course.semester_no }}</span>
+        </div>
+      </div>
+      <div class="saas-card-body">
+        <h5 class="fw-bold text-dark mb-2 fs-6">{{ e.course.code }} · {{ e.course.title }}</h5>
+        
+        <div class="d-flex align-items-center gap-2 small text-secondary mb-3">
+          <i data-lucide="user" class="text-primary" style="width:15px;height:15px;"></i>
+          <span>Faculty:</span>
+          <span class="fw-semibold text-dark ms-auto">
+            {% if e.course.faculty %}{{ e.course.faculty.user.display_name }}{% else %}To Be Announced{% endif %}
+          </span>
+        </div>
+
+        <div class="d-flex align-items-center justify-content-between pt-2 border-top">
+          <span class="badge-status enrolled">{{ e.get_status_display }}</span>
+          <a href="{% url 'university:course_detail' e.course.id %}" class="btn btn-sm btn-secondary">
+            Course Details
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% empty %}
+  <div class="col-12">
+    <div class="saas-card p-5 text-center">
+      <div class="stat-icon-wrapper blue mx-auto mb-3" style="width:48px;height:48px;">
+        <i data-lucide="book-open" style="width:24px;height:24px;"></i>
+      </div>
+      <h6 class="fw-bold text-dark">No Courses Enrolled</h6>
+      <p class="small text-secondary">You are not registered in any active courses for this term.</p>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}
