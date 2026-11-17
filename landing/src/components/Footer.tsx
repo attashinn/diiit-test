@@ -184,7 +184,12 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <Link href="/vision" className="hover:text-white transition text-[#F4B51B] font-semibold">
+                <Link href="/faculty-members" className="hover:text-white transition text-[#F4B51B] font-semibold flex items-center gap-1.5">
+                  <span>Faculty Members Directory</span>
+                </Link>
+              </li>
+              <li>
+                <Link href="/vision" className="hover:text-white transition">
                   Our Vision &amp; Mission
                 </Link>
               </li>

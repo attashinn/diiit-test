@@ -24,6 +24,7 @@ const navItems: {
     href: "/vision",
     dropdown: [
       { name: "Overview & Vision", href: "/vision", desc: "Our history, mission and future trajectory" },
+      { name: "Faculty Members", href: "/faculty-members", desc: "Academic faculty, department heads and mentors" },
       { name: "DIET At A Glance", href: "/vision#at-a-glance-table", desc: "Institutional profile, facilities and partner matrix" },
       { name: "Leadership & Governance", href: "/vision#our-leadership", desc: "Chairman, CEO & Executive Director guidance" },
       { name: "Affiliations & Recognition", href: "/vision#affiliations", desc: "Accredited by BTEB & Ministry of Education" },
@@ -31,11 +32,12 @@ const navItems: {
   },
   {
     name: "Academics",
-    href: "#programs",
+    href: "/faculty-members",
     dropdown: [
-      { name: "Academic Programs", href: "#programs", desc: "Diploma & Bachelor degree programs" },
-      { name: "Academic Calendar", href: "#programs", desc: "Semester dates, midterm and final schedules" },
-      { name: "Curriculum & Syllabus", href: "#programs", desc: "Outcome-based education curriculum" },
+      { name: "Faculty Members", href: "/faculty-members", desc: "Meet our 22+ dedicated instructors and department heads" },
+      { name: "Academic Programs", href: "/#programs", desc: "Diploma engineering technologies & curricula" },
+      { name: "Academic Calendar", href: "/#programs", desc: "Semester dates, midterm and final schedules" },
+      { name: "Curriculum & Syllabus", href: "/#programs", desc: "Outcome-based education curriculum" },
     ],
   },
   {
