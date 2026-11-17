@@ -641,7 +641,7 @@ export default function AboutVisionPage() {
                 {/* 2 Buttons */}
                 <div className="flex flex-wrap items-center gap-3">
                   <Link
-                    href="/#admission"
+                    href="/apply"
                     className="inline-flex items-center gap-1.5 bg-[#F4B51B] hover:bg-[#eab01a] text-[#09285F] font-extrabold text-xs px-5 py-2.5 rounded-full transition-all active:scale-95 text-center cursor-pointer"
                   >
                     <span>Apply for Admission</span>

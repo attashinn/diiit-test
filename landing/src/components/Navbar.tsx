@@ -52,11 +52,11 @@ const navItems: {
   },
   {
     name: "Admission",
-    href: "#admission",
+    href: "/apply",
     dropdown: [
-      { name: "Admission Requirements", href: "#admission", desc: "Eligibility criteria & documentation" },
-      { name: "Tuition Fees & Scholarships", href: "#admission", desc: "Merit scholarships up to 100%" },
-      { name: "Online Application", href: "#admission", desc: "Direct online application portal" },
+      { name: "Apply for Admission", href: "/apply", desc: "Direct online application portal" },
+      { name: "Admission Requirements", href: "/apply#requirements", desc: "Eligibility criteria & documentation" },
+      { name: "Tuition Fees & Scholarships", href: "/#admission", desc: "Merit scholarships up to 100%" },
     ],
   },
   {
@@ -203,7 +203,7 @@ export default function Navbar({ onOpenSearch }: { onOpenSearch?: () => void }) 
               whileTap={{ scale: 0.96 }}
             >
               <Link
-                href="#admission"
+                href="/apply"
                 className="inline-flex items-center gap-1 sm:gap-1.5 bg-[#F4B51B] hover:bg-[#eab01a] text-[#09285F] font-bold text-[10.5px] min-[380px]:text-[11px] sm:text-[13px] px-2.5 min-[380px]:px-3 sm:px-4 py-1.5 sm:py-2 rounded-full transition-colors whitespace-nowrap flex-shrink-0 shadow-sm"
               >
                 <span className="hidden min-[420px]:inline">Apply for Admission</span>

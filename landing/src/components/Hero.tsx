@@ -123,7 +123,7 @@ export default function Hero({ onOpenTourModal }: HeroProps) {
               transition={{ duration: 0.18 }}
             >
               <Link
-                href="#admission"
+                href="/apply"
                 className="inline-flex w-full sm:w-auto items-center justify-center gap-2 bg-[#F4B51B] hover:bg-[#eab01a] text-[#09285F] font-bold text-[13.5px] sm:text-[14.5px] px-5 sm:px-7 py-2.5 sm:py-3.5 rounded-full shadow-[0_4px_16px_rgba(244,181,27,0.35)] transition-all duration-200 text-center"
               >
                 <span>Apply for Admission</span>

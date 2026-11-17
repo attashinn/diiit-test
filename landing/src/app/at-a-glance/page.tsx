@@ -569,7 +569,7 @@ export default function AtAGlancePage() {
 
             <div className="flex flex-wrap items-center justify-center gap-3">
               <Link
-                href="/#admission"
+                href="/apply"
                 className="bg-[#F4B51B] hover:bg-[#E5A812] text-[#09285F] px-6 py-2.5 rounded-full text-xs sm:text-sm font-extrabold transition shadow-sm inline-flex items-center gap-2"
               >
                 <span>Apply for Admission</span>

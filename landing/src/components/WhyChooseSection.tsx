@@ -190,10 +190,10 @@ export default function WhyChooseSection({ onOpenTourModal }: WhyChooseSectionPr
                 whileTap={{ scale: 0.96 }}
               >
                 <Link
-                  href="#admission"
+                  href="/apply"
                   className="inline-flex items-center gap-2 bg-[#09285F] hover:bg-[#123DB8] text-white rounded-full px-6 sm:px-7 py-3 sm:py-3.5 font-bold text-[13.5px] sm:text-[14px] shadow-[0_4px_16px_rgba(9,40,95,0.2)] transition-all duration-200 text-center"
                 >
-                  <span>Explore Admissions</span>
+                  <span>Apply for Admission</span>
                   <ArrowRight size={16} strokeWidth={2.4} />
                 </Link>
               </motion.div>

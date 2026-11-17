@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import {
   Code2,
   Cpu,
@@ -202,13 +203,13 @@ export default function Departments() {
               </div>
 
               <div className="flex flex-wrap items-center gap-4">
-                <a
-                  href="#admission"
+                <Link
+                  href="/apply"
                   className="inline-flex items-center gap-2 bg-[#F4B51B] hover:bg-[#eab01a] text-[#09285F] font-bold text-sm px-6 py-3 rounded-xl shadow-md transition active:scale-95"
                 >
                   <span>Apply for this Program</span>
                   <ArrowRight size={16} />
-                </a>
+                </Link>
                 <a
                   href="http://127.0.0.1:8000/courses/"
                   className="inline-flex items-center gap-2 bg-gray-50 hover:bg-gray-100 text-gray-700 font-semibold text-sm px-6 py-3 rounded-xl border border-gray-200 transition"

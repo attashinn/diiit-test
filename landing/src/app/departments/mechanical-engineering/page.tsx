@@ -689,7 +689,7 @@ export default function MechanicalEngineeringPage() {
               <aside className="lg:col-span-4 space-y-6 lg:sticky lg:top-[88px]">
                 {/* 1. Primary Action Button */}
                 <Link
-                  href="/#admission"
+                  href="/apply?dept=mechanical"
                   className="w-full flex items-center justify-center gap-2 bg-[#09285F] hover:bg-[#123DB8] text-white font-bold text-sm px-6 py-3.5 rounded-md shadow-sm transition-colors text-center"
                 >
                   <span>Apply Now for Admission</span>

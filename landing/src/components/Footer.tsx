@@ -194,8 +194,8 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="#admission" className="hover:text-white transition">
-                  Admissions Office
+                <Link href="/apply" className="hover:text-white transition">
+                  Apply for Admission
                 </Link>
               </li>
             </ul>
