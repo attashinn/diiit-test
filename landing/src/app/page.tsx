@@ -6,7 +6,6 @@ import Hero from "@/components/Hero";
 import ProgramsSection from "@/components/ProgramsSection";
 import WhyChooseSection from "@/components/WhyChooseSection";
 import CampusFacilitiesSection from "@/components/CampusFacilitiesSection";
-import AdmissionSection from "@/components/AdmissionSection";
 import EventsNoticeSection from "@/components/EventsNoticeSection";
 import PartnersMarquee from "@/components/PartnersMarquee";
 import Footer from "@/components/Footer";
@@ -34,10 +33,7 @@ export default function Home() {
       {/* 5. Section 4: Campus Facilities & Student Life (Real DIET Lab & Event Photos) */}
       <CampusFacilitiesSection />
 
-      {/* 6. Section 5: Admissions 2026-2027 (3 Steps, Eligibility, Immediate Inquiry) */}
-      <AdmissionSection />
-
-      {/* 7. Section 6: News, Events & Official Notice Bulletin */}
+      {/* 6. Section 5: News, Events & Official Notice Bulletin */}
       <EventsNoticeSection />
 
       {/* 8. Section 7: Government Affiliations & Global Partner Marquee */}
