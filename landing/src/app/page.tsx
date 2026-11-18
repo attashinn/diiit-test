@@ -34,7 +34,7 @@ export default function Home() {
       <WhyChooseSection onOpenTourModal={() => setTourOpen(true)} />
 
       {/* 6. Section 4: Campus Facilities & Student Life (Real DIET Lab & Event Photos) */}
-      <CampusFacilitiesSection />
+      <CampusFacilitiesSection onOpenTourModal={() => setTourOpen(true)} />
 
       {/* 7. Section 5: News, Events & Official Notice Bulletin */}
       <EventsNoticeSection />
