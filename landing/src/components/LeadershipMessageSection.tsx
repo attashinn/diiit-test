@@ -86,7 +86,7 @@ export default function LeadershipMessageSection() {
         
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-slate-200 text-[#09285F] text-[11px] font-bold uppercase tracking-wider mb-3 shadow-xs">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-slate-200 text-[#09285F] text-[11px] font-bold uppercase tracking-wider mb-3">
             <Award size={13} className="text-[#F4B51B]" />
             <span>Institutional Leadership</span>
           </div>
@@ -100,16 +100,16 @@ export default function LeadershipMessageSection() {
           </p>
         </div>
 
-        {/* 3 Refined Framed Portrait Executive Cards */}
+        {/* 3 Refined Framed Portrait Executive Cards (Flat, No Shadows) */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-7 lg:gap-8">
           {leaders.map((leader) => (
             <div
               key={leader.id}
-              className="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200/90 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group"
+              className="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200 hover:border-[#09285F]/30 transition-all duration-200 flex flex-col justify-between group"
             >
               <div>
                 {/* Framed Large Portrait Container */}
-                <div className="relative aspect-[4/3] w-full rounded-2xl overflow-hidden bg-slate-100 mb-5 shadow-xs border border-slate-100">
+                <div className="relative aspect-[4/3] w-full rounded-2xl overflow-hidden bg-slate-100 mb-5 border border-slate-100">
                   <Image
                     src={leader.image}
                     alt={leader.name}
@@ -120,7 +120,7 @@ export default function LeadershipMessageSection() {
                   {/* Subtle Role Tag */}
                   <div className="absolute top-3 left-3 z-10">
                     <span
-                      className={`text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full shadow-xs ${leader.badgeStyle}`}
+                      className={`text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full ${leader.badgeStyle}`}
                     >
                       {leader.roleBadge}
                     </span>
