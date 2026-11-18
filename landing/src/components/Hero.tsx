@@ -3,7 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import {
   Crown,
   ArrowRight,
@@ -17,6 +17,55 @@ import {
   Landmark,
   Award,
 } from "lucide-react";
+
+function CountUp({
+  to,
+  suffix = "",
+  duration = 1.8,
+}: {
+  to: number;
+  suffix?: string;
+  duration?: number;
+}) {
+  const [count, setCount] = React.useState(0);
+  const ref = React.useRef<HTMLSpanElement>(null);
+  const isInView = useInView(ref, { once: true, margin: "-10px" });
+
+  React.useEffect(() => {
+    if (!isInView) return;
+
+    let startTime: number | null = null;
+    let animationFrameId: number;
+
+    const animateCount = (now: number) => {
+      if (!startTime) startTime = now;
+      const elapsed = (now - startTime) / 1000;
+      const progress = Math.min(elapsed / duration, 1);
+
+      // easeOutExpo for dynamic counting
+      const ease = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+      const current = Math.floor(ease * to);
+
+      setCount(current);
+
+      if (progress < 1) {
+        animationFrameId = requestAnimationFrame(animateCount);
+      } else {
+        setCount(to);
+      }
+    };
+
+    animationFrameId = requestAnimationFrame(animateCount);
+    return () => cancelAnimationFrame(animationFrameId);
+  }, [isInView, to, duration]);
+
+  return (
+    <span ref={ref} className="tabular-nums">
+      {count.toLocaleString()}
+      {suffix}
+    </span>
+  );
+}
 
 interface HeroProps {
   onOpenTourModal: () => void;
@@ -116,7 +165,7 @@ export default function Hero({ onOpenTourModal }: HeroProps) {
             transition={{ duration: 0.6, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
             className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-4 mb-7 sm:mb-11"
           >
-            {/* Primary Golden CTA */}
+            {/* Primary Golden CTA (Clean, No Colored Glow Effect) */}
             <motion.div
               whileHover={{ scale: 1.03, y: -2 }}
               whileTap={{ scale: 0.97 }}
@@ -124,7 +173,7 @@ export default function Hero({ onOpenTourModal }: HeroProps) {
             >
               <Link
                 href="/apply"
-                className="inline-flex w-full sm:w-auto items-center justify-center gap-2 bg-[#F4B51B] hover:bg-[#eab01a] text-[#09285F] font-bold text-[13.5px] sm:text-[14.5px] px-5 sm:px-7 py-2.5 sm:py-3.5 rounded-full shadow-[0_4px_16px_rgba(244,181,27,0.35)] transition-all duration-200 text-center"
+                className="inline-flex w-full sm:w-auto items-center justify-center gap-2 bg-[#F4B51B] hover:bg-[#eab01a] text-[#09285F] font-bold text-[13.5px] sm:text-[14.5px] px-5 sm:px-7 py-2.5 sm:py-3.5 rounded-full shadow-sm hover:shadow-md transition-all duration-200 text-center"
               >
                 <span>Apply for Admission</span>
                 <ArrowRight size={17} strokeWidth={2.6} className="text-[#09285F]" />
@@ -244,7 +293,7 @@ export default function Hero({ onOpenTourModal }: HeroProps) {
                   strokeWidth={1.9}
                 />
                 <div className="text-base min-[360px]:text-lg sm:text-3xl font-black text-[#09285F] leading-none tracking-tight">
-                  5+
+                  <CountUp to={5} suffix="+" duration={1.2} />
                 </div>
                 <div className="text-[8.5px] min-[360px]:text-[9.5px] sm:text-[12.5px] font-bold text-[#09285F] tracking-tight mt-1 leading-tight">
                   Academic<br />Programs
@@ -262,7 +311,7 @@ export default function Hero({ onOpenTourModal }: HeroProps) {
                   strokeWidth={1.9}
                 />
                 <div className="text-base min-[360px]:text-lg sm:text-3xl font-black text-[#09285F] leading-none tracking-tight">
-                  4,500+
+                  <CountUp to={4500} suffix="+" duration={1.8} />
                 </div>
                 <div className="text-[8.5px] min-[360px]:text-[9.5px] sm:text-[12.5px] font-bold text-[#09285F] tracking-tight mt-1 leading-tight">
                   Students
@@ -280,7 +329,7 @@ export default function Hero({ onOpenTourModal }: HeroProps) {
                   strokeWidth={1.9}
                 />
                 <div className="text-base min-[360px]:text-lg sm:text-3xl font-black text-[#09285F] leading-none tracking-tight">
-                  50+
+                  <CountUp to={50} suffix="+" duration={1.4} />
                 </div>
                 <div className="text-[8.5px] min-[360px]:text-[9.5px] sm:text-[12.5px] font-bold text-[#09285F] tracking-tight mt-1 leading-tight">
                   Expert<br />Faculty
@@ -298,7 +347,7 @@ export default function Hero({ onOpenTourModal }: HeroProps) {
                   strokeWidth={1.9}
                 />
                 <div className="text-base min-[360px]:text-lg sm:text-3xl font-black text-[#09285F] leading-none tracking-tight">
-                  95%
+                  <CountUp to={95} suffix="%" duration={1.6} />
                 </div>
                 <div className="text-[8.5px] min-[360px]:text-[9.5px] sm:text-[12.5px] font-bold text-[#09285F] tracking-tight mt-1 leading-tight">
                   Graduate<br />Employment

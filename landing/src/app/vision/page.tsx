@@ -208,7 +208,7 @@ export default function AboutVisionPage() {
                   <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}>
                     <Link
                       href="/#programs"
-                      className="inline-flex items-center gap-1.5 bg-[#F4B51B] hover:bg-[#eab01a] text-[#09285F] font-extrabold text-xs sm:text-[13px] px-6 py-2.5 sm:py-3 rounded-full shadow-[0_4px_14px_rgba(244,181,27,0.3)] transition-colors text-center cursor-pointer"
+                      className="inline-flex items-center gap-1.5 bg-[#F4B51B] hover:bg-[#eab01a] text-[#09285F] font-extrabold text-xs sm:text-[13px] px-6 py-2.5 sm:py-3 rounded-full shadow-sm hover:shadow-md transition-all text-center cursor-pointer"
                     >
                       <span>Explore Programs</span>
                       <ArrowRight size={13} strokeWidth={2.4} />

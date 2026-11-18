@@ -1088,7 +1088,7 @@ function ApplyFormContent() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="inline-flex items-center justify-center gap-2.5 bg-[#F4B51B] hover:bg-[#eab01a] text-[#09285F] font-extrabold text-sm sm:text-base px-10 py-4 rounded-full shadow-[0_4px_20px_rgba(244,181,27,0.35)] transition-all duration-200 cursor-pointer disabled:opacity-60 active:scale-98"
+                  className="inline-flex items-center justify-center gap-2.5 bg-[#F4B51B] hover:bg-[#eab01a] text-[#09285F] font-extrabold text-sm sm:text-base px-10 py-4 rounded-full shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer disabled:opacity-60 active:scale-98"
                 >
                   {isSubmitting ? (
                     <>
