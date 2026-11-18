@@ -6,6 +6,7 @@ import Hero from "@/components/Hero";
 import ProgramsSection from "@/components/ProgramsSection";
 import LinkAccreditation from "@/components/LinkAccreditation";
 import WhyChooseSection from "@/components/WhyChooseSection";
+import LeadershipMessageSection from "@/components/LeadershipMessageSection";
 import CampusFacilitiesSection from "@/components/CampusFacilitiesSection";
 import EventsNoticeSection from "@/components/EventsNoticeSection";
 import Footer from "@/components/Footer";
@@ -33,8 +34,8 @@ export default function Home() {
       {/* 5. Section 3: Why Choose DIET (Exact Redesign: Split Hero + 6 Cards) */}
       <WhyChooseSection onOpenTourModal={() => setTourOpen(true)} />
 
-      {/* 6. Section 4: Campus Facilities & Student Life (Temporarily removed per request) */}
-      {/* <CampusFacilitiesSection onOpenTourModal={() => setTourOpen(true)} /> */}
+      {/* 6. Section 4: Leadership Messages (Chairman, CEO, ED Messages from diet.ac) */}
+      <LeadershipMessageSection />
 
       {/* 7. Section 5: News, Events & Official Notice Bulletin */}
       <EventsNoticeSection />
