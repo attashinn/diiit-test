@@ -150,16 +150,16 @@ export default function LinkAccreditation() {
                 delay: index * 0.03,
                 ease: [0.22, 1, 0.36, 1],
               }}
-              whileHover={{ y: -4, scale: 1.03, transition: { duration: 0.18 } }}
-              className="group bg-white rounded-2xl p-4 sm:p-6 flex flex-col items-center justify-center border border-gray-200/80 hover:border-[#0A44B6]/40 shadow-[0_2px_12px_rgba(0,0,0,0.03)] hover:shadow-[0_12px_32px_rgba(9,40,95,0.1)] transition-all duration-200 relative min-h-[130px] sm:min-h-[145px] lg:min-h-[160px]"
+              whileHover={{ y: -3, transition: { duration: 0.18 } }}
+              className="group bg-white rounded-2xl p-4 sm:p-6 flex flex-col items-center justify-center border border-gray-200/90 hover:border-[#0A44B6] transition-all duration-200 relative min-h-[130px] sm:min-h-[145px] lg:min-h-[160px]"
             >
-              {/* Logo Container (Enlarged & Always Full Color) */}
+              {/* Logo Container (Enlarged & Always Full Color, No Shadow) */}
               <div className="relative w-full h-16 sm:h-20 lg:h-24 flex items-center justify-center px-1">
                 <Image
                   src={item.image}
                   alt={item.name}
                   fill
-                  className="object-contain transition-transform duration-300 transform group-hover:scale-108"
+                  className="object-contain transition-transform duration-300 transform group-hover:scale-105"
                   sizes="(max-width: 640px) 180px, (max-width: 1024px) 240px, 280px"
                   priority={index < 6}
                 />
