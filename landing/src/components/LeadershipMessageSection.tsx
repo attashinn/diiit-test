@@ -8,8 +8,7 @@ import { X, ArrowRight, Quote, ExternalLink, Award } from "lucide-react";
 interface LeadershipMessage {
   id: string;
   roleBadge: string;
-  badgeBg: string;
-  accentColor: string;
+  badgeStyle: string;
   name: string;
   designation: string;
   organization: string;
@@ -25,8 +24,7 @@ const leaders: LeadershipMessage[] = [
   {
     id: "chairman",
     roleBadge: "Chairman",
-    badgeBg: "bg-[#09285F] text-white",
-    accentColor: "border-t-[#09285F]",
+    badgeStyle: "bg-[#09285F] text-[#F4B51B]",
     name: "Dr. Md. Sabur Khan",
     designation: "Chairman",
     organization: "Daffodil Family & DIET",
@@ -43,15 +41,14 @@ const leaders: LeadershipMessage[] = [
   },
   {
     id: "ceo",
-    roleBadge: "Chief Executive Officer",
-    badgeBg: "bg-[#0A44B6] text-white",
-    accentColor: "border-t-[#0A44B6]",
+    roleBadge: "CEO",
+    badgeStyle: "bg-[#0A44B6] text-white",
     name: "Mohammad Nuruzzaman",
-    designation: "CEO",
+    designation: "Chief Executive Officer (CEO)",
     organization: "Daffodil Family",
     image: "/diet/leaders/ceo-dr-nuruzzaman.webp",
     quoteBengali:
-      "শিক্ষার্থীদের ব্যক্তিগত ও প্রাতিষ্ঠানিক সকল চ্যালেঞ্জ মোকাবেলা করতে সক্ষম হয়ে গড়ে উঠার জন্য DIET একটি আদর্শ প্ল্যাটফর্ম। আমরা কারিগরি বাজারের চাহিদাসম্পন্ন পাঠ্যক্রম পরিচালনা করছি।",
+      "ডিপ্লোমা শিক্ষার্থীদের সমস্ত চ্যালেঞ্জ মোকাবেলা করতে সক্ষম করে তোলার পাশাপাশি তাদের আধুনিক আইটি ও কারিগরি প্রতিভা বিকাশে আমরা প্রতিশ্রুতিবদ্ধ।",
     quoteEnglish:
       "DIET is the dedicated platform for diploma students to develop market-driven skills, bridging academia, emerging technologies, and corporate challenges.",
     fullBengali:
@@ -63,16 +60,15 @@ const leaders: LeadershipMessage[] = [
   {
     id: "ed",
     roleBadge: "Executive Director",
-    badgeBg: "bg-slate-800 text-white",
-    accentColor: "border-t-slate-800",
+    badgeStyle: "bg-slate-900 text-white",
     name: "K M Hasan Ripon",
-    designation: "Executive Director",
+    designation: "Executive Director (ED)",
     organization: "DIET & BSDF",
     image: "/diet/leaders/ed-km-hasan-ripon.webp",
     quoteBengali:
-      "প্রযুক্তির এই যুগে কারিগরি শিক্ষার কোন বিকল্প নেই। আধুনিক ল্যাব ও ব্যবহারিক প্রশিক্ষণের মাধ্যমে আমরা শিক্ষার্থীদের কেবল সার্টিফিকেট নয়, শতভাগ কর্মসংস্থান নিশ্চিতে প্রতিশ্রুতিবদ্ধ।",
+      "প্রযুক্তির এই যুগে কারিগরি শিক্ষার কোন বিকল্প নেই। আধুনিক ল্যাব ও ব্যবহারিক প্রশিক্ষণের মাধ্যমে আমরা শতভাগ কর্মসংস্থান নিশ্চিতে কাজ করছি।",
     quoteEnglish:
-      "There is no substitute for hands-on technical education. DIET delivers rigorous practical training across 6 engineering disciplines with dedicated placement support.",
+      "There is no substitute for hands-on technical education. DIET delivers rigorous practical training across 6 engineering disciplines with guaranteed placement linkage.",
     fullBengali:
       "প্রযুক্তির এই যুগে কারিগরি শিক্ষার কোনো বিকল্প নেই। দেশকে এগিয়ে নিয়ে যেতে এবং পৃথিবীর সাথে তাল মেলাতে কারিগরি শিক্ষার অবদান অনস্বীকার্য। ড্যাফোডিল ইনস্টিটিউট আধুনিক ল্যাব, ডিজিটাল ক্লাসরুম ও অভিজ্ঞ শিক্ষকবৃন্দের মাধ্যমে বিশ্বমানের প্রকৌশলী তৈরিতে কাজ করে যাচ্ছে। আমরা শিক্ষার্থীদের কেবল সার্টিফিকেট প্রদানেই সীমাবদ্ধ নই, কোর্স শেষে ১০০% কর্মসংস্থান ও ইন্ডাস্ট্রিয়াল অ্যাটাচমেন্ট নিশ্চিত করতে প্রতিশ্রুতিবদ্ধ।",
     fullEnglish:
@@ -85,78 +81,80 @@ export default function LeadershipMessageSection() {
   const [selectedLeader, setSelectedLeader] = useState<LeadershipMessage | null>(null);
 
   return (
-    <section id="leadership" className="w-full py-16 sm:py-24 bg-slate-50/70 border-t border-slate-200/70">
+    <section id="leadership" className="w-full py-16 sm:py-24 bg-[#FAFAFA] border-t border-slate-200/80">
       <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-slate-200 text-[#09285F] text-[11px] font-bold uppercase tracking-wider mb-3 shadow-xs">
             <Award size={13} className="text-[#F4B51B]" />
-            <span>Leadership &bull; Governance</span>
+            <span>Institutional Leadership</span>
           </div>
 
-          <h2 className="text-3xl sm:text-4xl font-black text-[#09285F] tracking-tight">
+          <h2 className="text-3xl sm:text-4xl lg:text-[40px] font-black text-[#09285F] tracking-tight">
             Messages from Our Leadership
           </h2>
 
-          <p className="text-sm sm:text-base text-slate-600 mt-2.5 font-normal leading-relaxed">
-            Strategic guidance, educational philosophy, and future commitments from the leaders shaping Bangladesh&apos;s premier engineering polytechnic.
+          <p className="text-sm sm:text-base text-slate-500 mt-2.5 font-normal leading-relaxed">
+            Guiding philosophy, strategic vision, and future commitments from the pioneers steering DIET toward global engineering excellence.
           </p>
         </div>
 
-        {/* 3 Prestigious Executive Cards */}
+        {/* 3 Refined Framed Portrait Executive Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-7 lg:gap-8">
           {leaders.map((leader) => (
             <div
               key={leader.id}
-              className={`bg-white rounded-2xl border border-slate-200/90 border-t-4 ${leader.accentColor} shadow-sm hover:shadow-xl transition-all duration-300 p-6 sm:p-7 flex flex-col justify-between group`}
+              className="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200/90 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group"
             >
               <div>
-                {/* Header: Photo + Name + Role Badge */}
-                <div className="flex items-center gap-4 mb-5">
-                  <div className="relative w-16 h-16 sm:w-18 sm:h-18 rounded-2xl overflow-hidden shrink-0 border border-slate-200/80 shadow-xs bg-slate-100">
-                    <Image
-                      src={leader.image}
-                      alt={leader.name}
-                      fill
-                      className="object-cover object-top transition-transform duration-300 group-hover:scale-105"
-                      sizes="80px"
-                    />
-                  </div>
-
-                  <div className="min-w-0">
+                {/* Framed Large Portrait Container */}
+                <div className="relative aspect-[4/3] w-full rounded-2xl overflow-hidden bg-slate-100 mb-5 shadow-xs border border-slate-100">
+                  <Image
+                    src={leader.image}
+                    alt={leader.name}
+                    fill
+                    className="object-cover object-top transition-transform duration-500 group-hover:scale-103"
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                  />
+                  {/* Subtle Role Tag */}
+                  <div className="absolute top-3 left-3 z-10">
                     <span
-                      className={`text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-md inline-block mb-1.5 ${leader.badgeBg}`}
+                      className={`text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full shadow-xs ${leader.badgeStyle}`}
                     >
                       {leader.roleBadge}
                     </span>
-                    <h3 className="text-base sm:text-lg font-bold text-slate-900 group-hover:text-[#0A44B6] transition-colors leading-snug truncate">
-                      {leader.name}
-                    </h3>
-                    <p className="text-xs text-slate-500 font-medium truncate">
-                      {leader.designation} &bull; {leader.organization}
-                    </p>
                   </div>
+                </div>
+
+                {/* Identity */}
+                <div className="mb-4">
+                  <h3 className="text-xl font-bold text-[#09285F] group-hover:text-[#0A44B6] transition-colors leading-snug">
+                    {leader.name}
+                  </h3>
+                  <p className="text-xs text-[#0A44B6] font-semibold mt-0.5">
+                    {leader.designation} &bull; <span className="text-slate-500 font-normal">{leader.organization}</span>
+                  </p>
                 </div>
 
                 {/* Divider */}
                 <div className="h-px bg-slate-100 w-full mb-4" />
 
-                {/* Bengali Excerpt */}
-                <div className="relative">
-                  <Quote size={20} className="text-[#0A44B6]/20 fill-[#0A44B6]/10 mb-2" />
+                {/* Bengali Quote */}
+                <div className="flex gap-2.5 items-start">
+                  <Quote size={16} className="text-[#F4B51B] fill-[#F4B51B] shrink-0 mt-0.5" />
                   <p className="text-xs sm:text-[13px] text-slate-700 leading-relaxed font-normal">
-                    &ldquo;{leader.quoteBengali}&rdquo;
+                    {leader.quoteBengali}
                   </p>
                 </div>
 
                 {/* English Context Line */}
-                <p className="text-[11.5px] text-slate-400 italic mt-3 font-normal line-clamp-2">
+                <p className="text-[11.5px] text-slate-400 italic mt-3 pl-6 font-normal line-clamp-2">
                   {leader.quoteEnglish}
                 </p>
               </div>
 
-              {/* Bottom Action: Read Full Statement */}
+              {/* Bottom Action */}
               <div className="mt-6 pt-4 border-t border-slate-100">
                 <button
                   type="button"
