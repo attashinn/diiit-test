@@ -5,7 +5,7 @@ from decimal import Decimal, InvalidOperation
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count, Q
-from django.http import JsonResponse
+from django.http import Http404, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.views.decorators.http import require_POST
@@ -56,6 +56,31 @@ def courses_public(request):
 
 
 # ==========================================================================
+# PROFILE HELPERS (Support Admin / Superuser previews without 404s)
+# ==========================================================================
+def _get_student_profile(request):
+    try:
+        return StudentProfile.objects.select_related("user", "program").get(user=request.user)
+    except StudentProfile.DoesNotExist:
+        if request.user.is_admin_role or request.user.is_superuser:
+            sp = StudentProfile.objects.select_related("user", "program").first()
+            if sp:
+                return sp
+        raise Http404("No StudentProfile matches the given query.")
+
+
+def _get_faculty_profile(request):
+    try:
+        return FacultyProfile.objects.select_related("user", "department").get(user=request.user)
+    except FacultyProfile.DoesNotExist:
+        if request.user.is_admin_role or request.user.is_superuser:
+            fp = FacultyProfile.objects.select_related("user", "department").first()
+            if fp:
+                return fp
+        raise Http404("No FacultyProfile matches the given query.")
+
+
+# ==========================================================================
 # DASHBOARD ROUTER
 # ==========================================================================
 @login_required
@@ -64,11 +89,11 @@ def dashboard(request):
     if user.is_admin_role or user.is_superuser:
         return render(request, "dashboard/admin_dashboard.html", services.admin_dashboard())
     if user.is_faculty:
-        fp = get_object_or_404(FacultyProfile, user=user)
+        fp = _get_faculty_profile(request)
         ctx = services.faculty_dashboard(fp)
         ctx["faculty"] = fp
         return render(request, "dashboard/faculty_dashboard.html", ctx)
-    sp = get_object_or_404(StudentProfile, user=user)
+    sp = _get_student_profile(request)
     ctx = services.student_dashboard(sp)
     ctx["student"] = sp
     ctx["prediction"] = ai.student_prediction(sp)
@@ -487,7 +512,7 @@ def event_delete(request, pk):
 # ==========================================================================
 @role_required(Role.FACULTY)
 def faculty_courses(request):
-    fp = get_object_or_404(FacultyProfile, user=request.user)
+    fp = _get_faculty_profile(request)
     courses = Course.objects.filter(faculty=fp).annotate(n=Count("enrollments"))
     return render(request, "dashboard/faculty_courses.html", {"courses": courses})
 
@@ -686,7 +711,7 @@ def faculty_grade(request, pk):
 # ==========================================================================
 @role_required(Role.STUDENT)
 def student_courses(request):
-    sp = get_object_or_404(StudentProfile, user=request.user)
+    sp = _get_student_profile(request)
     enrollments = Enrollment.objects.filter(student=sp).select_related(
         "course__department", "course__faculty__user")
     return render(request, "dashboard/student_courses.html", {"enrollments": enrollments})
@@ -694,7 +719,7 @@ def student_courses(request):
 
 @role_required(Role.STUDENT)
 def student_attendance(request):
-    sp = get_object_or_404(StudentProfile, user=request.user)
+    sp = _get_student_profile(request)
     rows = []
     for e in Enrollment.objects.filter(student=sp).select_related("course"):
         qs = Attendance.objects.filter(enrollment=e)
@@ -709,7 +734,7 @@ def student_attendance(request):
 
 @role_required(Role.STUDENT)
 def student_results(request):
-    sp = get_object_or_404(StudentProfile, user=request.user)
+    sp = _get_student_profile(request)
     results = Result.objects.filter(student=sp).select_related("exam__course")
     return render(request, "dashboard/student_results.html",
                   {"results": results, "stats": services.student_stats(sp)})
@@ -717,7 +742,7 @@ def student_results(request):
 
 @role_required(Role.STUDENT)
 def student_assignments(request):
-    sp = get_object_or_404(StudentProfile, user=request.user)
+    sp = _get_student_profile(request)
     course_ids = Enrollment.objects.filter(student=sp).values_list("course_id", flat=True)
     assignments = Assignment.objects.filter(course_id__in=course_ids).select_related("course")
     subs = {s.assignment_id: s for s in Submission.objects.filter(student=sp)}
@@ -728,7 +753,7 @@ def student_assignments(request):
 @role_required(Role.STUDENT)
 @require_POST
 def submit_assignment(request, pk):
-    sp = get_object_or_404(StudentProfile, user=request.user)
+    sp = _get_student_profile(request)
     assignment = get_object_or_404(Assignment, pk=pk)
     content = request.POST.get("content", "").strip()
     Submission.objects.update_or_create(
@@ -741,7 +766,7 @@ def submit_assignment(request, pk):
 
 @role_required(Role.STUDENT)
 def student_fees(request):
-    sp = get_object_or_404(StudentProfile, user=request.user)
+    sp = _get_student_profile(request)
     invoices = FeeInvoice.objects.filter(student=sp)
     return render(request, "dashboard/student_fees.html", {
         "invoices": invoices, "stats": services.student_stats(sp),
