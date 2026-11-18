@@ -4,10 +4,10 @@ import React, { useState } from "react";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import ProgramsSection from "@/components/ProgramsSection";
+import LinkAccreditation from "@/components/LinkAccreditation";
 import WhyChooseSection from "@/components/WhyChooseSection";
 import CampusFacilitiesSection from "@/components/CampusFacilitiesSection";
 import EventsNoticeSection from "@/components/EventsNoticeSection";
-import PartnersMarquee from "@/components/PartnersMarquee";
 import Footer from "@/components/Footer";
 import TourModal from "@/components/TourModal";
 import SearchModal from "@/components/SearchModal";
@@ -27,17 +27,17 @@ export default function Home() {
       {/* 3. Section 2: Our Programs (6 Diploma Engineering Departments) */}
       <ProgramsSection />
 
-      {/* 4. Section 3: Why Choose DIET (Exact Redesign: Split Hero + 6 Cards) */}
+      {/* 4. Link & Accreditation: Authentic Partner & Regulatory Logos from diet.ac */}
+      <LinkAccreditation />
+
+      {/* 5. Section 3: Why Choose DIET (Exact Redesign: Split Hero + 6 Cards) */}
       <WhyChooseSection onOpenTourModal={() => setTourOpen(true)} />
 
-      {/* 5. Section 4: Campus Facilities & Student Life (Real DIET Lab & Event Photos) */}
+      {/* 6. Section 4: Campus Facilities & Student Life (Real DIET Lab & Event Photos) */}
       <CampusFacilitiesSection />
 
-      {/* 6. Section 5: News, Events & Official Notice Bulletin */}
+      {/* 7. Section 5: News, Events & Official Notice Bulletin */}
       <EventsNoticeSection />
-
-      {/* 8. Section 7: Government Affiliations & Global Partner Marquee */}
-      <PartnersMarquee />
 
       {/* 9. Institutional Footer */}
       <Footer />
