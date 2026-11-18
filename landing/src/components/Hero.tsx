@@ -8,10 +8,6 @@ import {
   Crown,
   ArrowRight,
   Play,
-  Layers,
-  FlaskConical,
-  Briefcase,
-  GraduationCap,
   BookOpen,
   Users,
   Landmark,
@@ -100,170 +96,66 @@ export default function Hero({ onOpenTourModal }: HeroProps) {
         />
       </motion.div>
 
-      {/* Main Hero Content (Left Composition) */}
-      <div className="relative z-10 max-w-[1360px] mx-auto px-3 sm:px-6 lg:px-8 w-full pt-2 sm:pt-6 pb-4 my-auto">
+      {/* Main Hero Content (Streamlined & Clean) */}
+      <div className="relative z-10 max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 w-full pt-4 sm:pt-8 pb-4 my-auto">
         <div className="max-w-[560px] text-left">
-          {/* 1. Positioning Badge with Gold Crown and Trailing Line */}
+          {/* 1. Official Accreditation Badge */}
           <motion.div
-            initial={{ opacity: 0, y: -18 }}
+            initial={{ opacity: 0, y: -14 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="flex items-center gap-2.5 sm:gap-3 mb-3.5 sm:mb-5"
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            className="inline-flex items-center gap-2 px-3 sm:px-3.5 py-1 sm:py-1.5 rounded-full border border-white/20 bg-white/10 backdrop-blur-md text-white text-[11px] sm:text-xs font-semibold mb-4 sm:mb-5"
           >
-            <div className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full border border-white/50 bg-white/10 backdrop-blur-md text-white text-[11px] sm:text-[13px] font-medium">
-              <motion.div
-                animate={{ rotate: [-4, 4, -4] }}
-                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-              >
-                <Crown className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#F4B51B] fill-[#F4B51B] flex-shrink-0" />
-              </motion.div>
-              <span>
-                Bangladesh&apos;s{" "}
-                <span className="text-[#F4B51B] font-bold">No. 1</span>{" "}
-                Skill-Based University
-              </span>
-            </div>
-            {/* Trailing Line */}
-            <motion.div
-              initial={{ scaleX: 0 }}
-              animate={{ scaleX: 1 }}
-              transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-              className="hidden sm:block w-16 md:w-24 h-[1.5px] bg-white/35 rounded-full origin-left"
-            />
+            <span className="w-2 h-2 rounded-full bg-[#F4B51B]" />
+            <span>Govt. Approved &bull; BTEB Code: 50116</span>
           </motion.div>
 
           {/* 2. Main Headline */}
           <motion.h1
-            initial={{ opacity: 0, y: 22 }}
+            initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-            className="text-[30px] min-[390px]:text-[34px] sm:text-5xl lg:text-[56px] font-extrabold text-white leading-[1.08] tracking-[-0.025em] mb-3 sm:mb-5"
+            transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+            className="text-[32px] min-[390px]:text-[36px] sm:text-5xl lg:text-[54px] font-extrabold text-white leading-[1.1] tracking-tight mb-3.5 sm:mb-4"
           >
-            Build Practical
-            <br />
-            Skills for a
-            <br />
+            Build Practical Skills for a{" "}
             <span className="text-[#F4B51B]">Successful Career</span>
           </motion.h1>
 
-          {/* 3. Description */}
+          {/* 3. Concise, High-Value Subtitle */}
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
-            className="text-slate-100 text-[13px] sm:text-[16px] leading-relaxed mb-5 sm:mb-8 max-w-[480px] font-normal antialiased"
+            transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+            className="text-slate-100 text-sm sm:text-base leading-relaxed mb-6 sm:mb-8 font-normal max-w-[480px]"
           >
-            Daffodil Institute of Engineering &amp; Technology (DIET) is
-            Bangladesh&apos;s leading skill-based university, offering
-            industry-focused programs to create job-ready professionals.
+            4-year diploma engineering across 6 technologies with free laptop allotment, government stipends, and guaranteed job placement.
           </motion.p>
 
-          {/* 4. Action Buttons (Stacked on mobile, row on large desktop) */}
+          {/* 4. Action Buttons */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
-            className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-4 mb-7 sm:mb-11"
+            transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            className="flex flex-wrap items-center gap-3"
           >
-            {/* Primary Golden CTA (Clean, No Colored Glow Effect) */}
-            <motion.div
-              whileHover={{ scale: 1.03, y: -2 }}
-              whileTap={{ scale: 0.97 }}
-              transition={{ duration: 0.18 }}
+            {/* Primary Golden CTA */}
+            <Link
+              href="/apply"
+              className="inline-flex items-center justify-center gap-2 bg-[#F4B51B] hover:bg-[#eab01a] text-[#09285F] font-bold text-xs sm:text-sm px-6 py-3 rounded-full shadow-sm hover:shadow-md transition-all text-center"
             >
-              <Link
-                href="/apply"
-                className="inline-flex w-full sm:w-auto items-center justify-center gap-2 bg-[#F4B51B] hover:bg-[#eab01a] text-[#09285F] font-bold text-[13.5px] sm:text-[14.5px] px-5 sm:px-7 py-2.5 sm:py-3.5 rounded-full shadow-sm hover:shadow-md transition-all duration-200 text-center"
-              >
-                <span>Apply for Admission</span>
-                <ArrowRight size={17} strokeWidth={2.6} className="text-[#09285F]" />
-              </Link>
-            </motion.div>
+              <span>Apply for Admission</span>
+              <ArrowRight size={16} strokeWidth={2.4} className="text-[#09285F]" />
+            </Link>
 
             {/* Secondary Tour CTA */}
-            <motion.button
-              whileHover={{ scale: 1.03, y: -2 }}
-              whileTap={{ scale: 0.97 }}
-              transition={{ duration: 0.18 }}
+            <button
               type="button"
               onClick={onOpenTourModal}
-              className="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white font-semibold text-[13.5px] sm:text-[14.5px] px-5 py-2.5 sm:py-3.5 rounded-full border-2 border-white backdrop-blur-sm transition-all duration-200 cursor-pointer text-center"
+              className="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white font-semibold text-xs sm:text-sm px-5 py-3 rounded-full border border-white/30 backdrop-blur-sm transition-all cursor-pointer text-center"
             >
-              <Play size={12} className="fill-white text-white translate-x-[0.5px]" />
+              <Play size={12} className="fill-white text-white" />
               <span>Watch Campus Tour</span>
-            </motion.button>
-          </motion.div>
-
-          {/* 5. Four Feature Highlights with Vertical Dividers */}
-          <motion.div
-            initial={{ opacity: 0, y: 22 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.45, ease: [0.22, 1, 0.36, 1] }}
-            className="grid grid-cols-4 gap-1 sm:gap-3 pt-4 sm:pt-5 border-t border-white/20"
-          >
-            {/* Feature 1 */}
-            <motion.div
-              whileHover={{ y: -3 }}
-              transition={{ duration: 0.2 }}
-              className="min-w-0 flex flex-col items-center text-center pr-1 sm:pr-3 border-r border-white/20 cursor-default"
-            >
-              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl border border-white/30 bg-white/10 flex items-center justify-center text-white mb-1.5 flex-shrink-0 transition-transform duration-200 hover:scale-105">
-                <Layers className="w-4 h-4 sm:w-5 sm:h-5" strokeWidth={1.9} />
-              </div>
-              <span className="text-white text-[9px] min-[360px]:text-[10px] sm:text-[12px] font-medium leading-tight">
-                Industry-Focused
-                <br />
-                Programs
-              </span>
-            </motion.div>
-
-            {/* Feature 2 */}
-            <motion.div
-              whileHover={{ y: -3 }}
-              transition={{ duration: 0.2 }}
-              className="min-w-0 flex flex-col items-center text-center px-0.5 sm:px-3 border-r border-white/20 cursor-default"
-            >
-              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl border border-white/30 bg-white/10 flex items-center justify-center text-white mb-1.5 flex-shrink-0 transition-transform duration-200 hover:scale-105">
-                <FlaskConical className="w-4 h-4 sm:w-5 sm:h-5" strokeWidth={1.9} />
-              </div>
-              <span className="text-white text-[9px] min-[360px]:text-[10px] sm:text-[12px] font-medium leading-tight">
-                Hands-on
-                <br />
-                Training
-              </span>
-            </motion.div>
-
-            {/* Feature 3 */}
-            <motion.div
-              whileHover={{ y: -3 }}
-              transition={{ duration: 0.2 }}
-              className="min-w-0 flex flex-col items-center text-center px-0.5 sm:px-3 border-r border-white/20 cursor-default"
-            >
-              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl border border-white/30 bg-white/10 flex items-center justify-center text-white mb-1.5 flex-shrink-0 transition-transform duration-200 hover:scale-105">
-                <Briefcase className="w-4 h-4 sm:w-5 sm:h-5" strokeWidth={1.9} />
-              </div>
-              <span className="text-white text-[9px] min-[360px]:text-[10px] sm:text-[12px] font-medium leading-tight">
-                Internship &amp;
-                <br />
-                Placement
-              </span>
-            </motion.div>
-
-            {/* Feature 4 */}
-            <motion.div
-              whileHover={{ y: -3 }}
-              transition={{ duration: 0.2 }}
-              className="min-w-0 flex flex-col items-center text-center pl-1 sm:pl-3 cursor-default"
-            >
-              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl border border-white/30 bg-white/10 flex items-center justify-center text-white mb-1.5 flex-shrink-0 transition-transform duration-200 hover:scale-105">
-                <GraduationCap className="w-4 h-4 sm:w-5 sm:h-5" strokeWidth={1.9} />
-              </div>
-              <span className="text-white text-[9px] min-[360px]:text-[10px] sm:text-[12px] font-medium leading-tight">
-                Skilled
-                <br />
-                Graduates
-              </span>
-            </motion.div>
+            </button>
           </motion.div>
         </div>
       </div>
