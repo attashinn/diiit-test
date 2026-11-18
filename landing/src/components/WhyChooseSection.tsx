@@ -3,6 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import {
   Laptop,
   Briefcase,
@@ -10,249 +11,194 @@ import {
   BookOpen,
   ArrowRight,
   ShieldCheck,
-  CheckCircle2,
-  DollarSign,
-  Globe2,
-  ExternalLink,
+  Wrench,
+  Rocket,
+  ArrowUpRight,
 } from "lucide-react";
 
 interface WhyChooseSectionProps {
   onOpenTourModal?: () => void;
 }
 
-const institutionalPillars = [
+const visualPillars = [
   {
-    id: "stipend-books",
-    tag: "Government Benefit & Free Books",
-    title: "Govt. Monthly Stipend & Free Semester Books",
-    bengaliTitle: "নিশ্চিত সরকারি মাসিক উপবৃত্তি ও ফ্রি পাঠ্যবই",
-    description:
-      "Every eligible diploma student receives a guaranteed government monthly financial stipend under BTEB criteria. Furthermore, DIET distributes 100% free semester textbooks through our Central Book Bank, eliminating textbook purchase expenses for families.",
+    id: "laptop",
+    badge: "100% FREE",
+    badgeColor: "bg-[#F4B51B] text-[#09285F]",
+    title: "One Student, One Laptop",
+    subtitle: "Brand-new laptop given to every student from Semester 1 for coding, CAD drafting, and lab simulations.",
+    image: "/diet/campus/facility-computer-labs.webp",
+    span: "lg:col-span-8",
+    aspect: "aspect-[16/9] sm:aspect-[21/9]",
+    icon: Laptop,
+    stats: "Preloaded with AutoCAD & Python",
+  },
+  {
+    id: "labs",
+    badge: "60% PRACTICAL",
+    badgeColor: "bg-blue-600 text-white",
+    title: "Modern Engineering Labs",
+    subtitle: "6 specialized workshops with heavy machinery, microcontrollers, and CAD stations.",
+    image: "/diet/campus/engineering_workshop.webp",
+    span: "lg:col-span-4",
+    aspect: "aspect-[4/3] sm:aspect-[16/10]",
+    icon: Wrench,
+    stats: "6 Department Labs",
+  },
+  {
+    id: "stipend",
+    badge: "GOVT. BENEFIT",
+    badgeColor: "bg-emerald-600 text-white",
+    title: "Monthly Stipend & Free Books",
+    subtitle: "Guaranteed BTEB monthly stipend and complete semester textbooks free from our Central Book Bank.",
+    image: "/diet/campus/facility-digital-library.webp",
+    span: "lg:col-span-4",
+    aspect: "aspect-[4/3] sm:aspect-[16/10]",
     icon: BookOpen,
-    highlights: ["Guaranteed Govt. Stipend", "100% Free Textbooks", "Central Book Bank Access"],
+    stats: "100% Free Course Books",
   },
   {
-    id: "work-scholarship",
-    tag: "Earn While You Learn",
-    title: "Work-Based Scholarship & Paid Campus Roles",
-    bengaliTitle: "শিক্ষার্থীদের জন্য ওয়ার্ক-বেসড স্কলারশিপ",
-    description:
-      "DIET enables students to gain real corporate work experience on campus. Through paid technical apprenticeships in computing laboratories, network maintenance, and department administration, students earn while completing their 4-year diploma.",
-    icon: DollarSign,
-    highlights: ["On-Campus Technical Roles", "Monthly Financial Allowance", "Practical Work Experience"],
-  },
-  {
-    id: "job-placement",
-    tag: "Career Development Cell",
-    title: "Dedicated Job Placement & 200+ Corporate Network",
-    bengaliTitle: "১০০% ইন্টার্নশিপ ও চাকরি প্লেসমেন্ট সাপোর্ট",
-    description:
-      "Our full-time career development center coordinates the mandatory 4-month 8th-semester industrial attachment, CV clinics, and mock interviews. We host the annual Daffodil Job Fair connecting graduates directly with 200+ industry recruiters.",
+    id: "placement",
+    badge: "200+ RECRUITERS",
+    badgeColor: "bg-purple-600 text-white",
+    title: "Guaranteed Placement Cell",
+    subtitle: "4-month full-time industrial attachment and direct recruitment at the annual Daffodil Job Fair.",
+    image: "/diet/campus/tech_seminar.webp",
+    span: "lg:col-span-4",
+    aspect: "aspect-[4/3] sm:aspect-[16/10]",
     icon: Briefcase,
-    highlights: ["4-Month Industrial Attachment", "Annual Daffodil Job Fairs", "200+ Corporate Linkages"],
+    stats: "95% Corporate Placement",
   },
   {
-    id: "diu-pathway",
-    tag: "Higher Education Progression",
-    title: "Direct B.Sc. Pathway at Daffodil International University",
-    bengaliTitle: "ডিআইইউ-তে সরাসরি বিএসসি ইঞ্জিনিয়ারিং সুযোগ",
-    description:
-      "Graduating diploma engineers transition seamlessly into B.Sc. Engineering degrees (CSE, EEE, Civil, Textile) at Daffodil International University (DIU) with guaranteed course credit exemptions and up to 50% exclusive alumni waivers.",
+    id: "diu",
+    badge: "CREDIT TRANSFER",
+    badgeColor: "bg-[#09285F] text-[#F4B51B]",
+    title: "Direct B.Sc. Pathway at DIU",
+    subtitle: "Guaranteed credit waiver into B.Sc. Engineering at Daffodil International University with alumni scholarships.",
+    image: "/diet/campus/campus-hero-students.webp",
+    span: "lg:col-span-4",
+    aspect: "aspect-[4/3] sm:aspect-[16/10]",
     icon: GraduationCap,
-    highlights: ["Course Credit Exemptions", "Reserved DIU Admissions", "Up to 50% Alumni Waivers"],
+    stats: "Up to 50% Tuition Waiver",
   },
 ];
 
 export default function WhyChooseSection({ onOpenTourModal }: WhyChooseSectionProps) {
   return (
-    <section id="about" className="w-full py-16 sm:py-24 bg-[#FAFBFD] border-t border-gray-200/80">
+    <section id="about" className="w-full py-16 sm:py-20 bg-[#FAFBFD] border-t border-gray-100 overflow-hidden">
       <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Section Header */}
-        <div className="max-w-3xl mb-12 sm:mb-16">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-white border border-gray-200 text-[#09285F] text-[11px] sm:text-xs font-bold tracking-wide uppercase mb-3.5">
-            <ShieldCheck size={14} className="text-[#09285F]" />
-            <span>BTEB Approved Institute &bull; Institute Code: 50116</span>
-          </div>
-
-          <h2 className="text-2xl sm:text-3xl lg:text-[40px] font-extrabold text-[#09285F] tracking-tight leading-tight mb-4">
-            Why Choose Daffodil Institute of Engineering &amp; Technology?
-          </h2>
-
-          <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-normal">
-            As a leading polytechnic institute in Dhaka under the Daffodil Education Network, DIET combines 60% hands-on laboratory engineering with authentic student welfare programs, modern digital tool allotment, and proven industry placement.
-          </p>
-        </div>
-
-        {/* Flagship Showcase: One Student, One Laptop Initiative */}
-        <div className="bg-white rounded-3xl border border-gray-200/90 overflow-hidden mb-12 sm:mb-14">
-          <div className="grid grid-cols-1 lg:grid-cols-12 items-stretch">
-            {/* Left Content Column (7 cols) */}
-            <div className="lg:col-span-7 p-6 sm:p-10 lg:p-12 flex flex-col justify-between">
-              <div>
-                <div className="inline-flex items-center gap-2 text-xs font-bold text-[#09285F] uppercase tracking-wider mb-2.5">
-                  <Laptop className="w-4 h-4 text-[#09285F]" />
-                  <span>Flagship Welfare Initiative</span>
-                </div>
-
-                <h3 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-[#09285F] tracking-tight mb-2">
-                  One Student, One Laptop Project
-                </h3>
-                <div className="text-xs sm:text-sm font-semibold text-[#D97706] mb-4">
-                  প্রতিটি শিক্ষার্থীর জন্য ফ্রি ব্র্যান্ড-নিউ ল্যাপটপ
-                </div>
-
-                <p className="text-xs sm:text-[14px] text-slate-600 leading-relaxed mb-6 font-normal">
-                  To ensure every student develops job-ready digital engineering skills, DIET provides every registered diploma student with a personal laptop. Students use their machine for software programming, AutoCAD drafting, circuit simulation (Proteus, Multisim), and lab reports starting from Semester 1.
-                </p>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8">
-                  <div className="flex items-start gap-2.5">
-                    <CheckCircle2 size={16} className="text-[#09285F] flex-shrink-0 mt-0.5" />
-                    <span className="text-xs sm:text-[13px] text-slate-700 font-medium">
-                      Free brand new laptop upon registration
-                    </span>
-                  </div>
-                  <div className="flex items-start gap-2.5">
-                    <CheckCircle2 size={16} className="text-[#09285F] flex-shrink-0 mt-0.5" />
-                    <span className="text-xs sm:text-[13px] text-slate-700 font-medium">
-                      Pre-loaded with licensed engineering software
-                    </span>
-                  </div>
-                  <div className="flex items-start gap-2.5">
-                    <CheckCircle2 size={16} className="text-[#09285F] flex-shrink-0 mt-0.5" />
-                    <span className="text-xs sm:text-[13px] text-slate-700 font-medium">
-                      Dedicated hardware lab support &amp; warranty
-                    </span>
-                  </div>
-                  <div className="flex items-start gap-2.5">
-                    <CheckCircle2 size={16} className="text-[#09285F] flex-shrink-0 mt-0.5" />
-                    <span className="text-xs sm:text-[13px] text-slate-700 font-medium">
-                      High-speed campus Wi-Fi across Dhanmondi
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex flex-wrap items-center gap-3 pt-4 border-t border-gray-100">
-                <Link
-                  href="/apply"
-                  className="inline-flex items-center gap-2 bg-[#09285F] hover:bg-[#071f4a] text-white font-bold text-xs sm:text-[13.5px] px-5 sm:px-6 py-2.5 sm:py-3 rounded-lg transition"
-                >
-                  <span>Apply with Laptop Allotment</span>
-                  <ArrowRight size={15} />
-                </Link>
-                <Link
-                  href="/vision#at-a-glance-table"
-                  className="inline-flex items-center gap-1.5 text-xs sm:text-[13px] font-bold text-[#09285F] hover:text-[#0A44B6] px-3 py-2 transition"
-                >
-                  <span>View All Facilities</span>
-                  <ExternalLink size={13} />
-                </Link>
-              </div>
+        {/* Header (Clean, Punchy, Zero Wall of Text) */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10 sm:mb-12">
+          <div>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-gray-200/80 text-[#09285F] text-[11px] sm:text-xs font-bold tracking-wider uppercase mb-3">
+              <ShieldCheck size={14} className="text-[#09285F]" />
+              <span>BTEB Approved Polytechnic &bull; Code: 50116</span>
             </div>
 
-            {/* Right Photo Column (5 cols) */}
-            <div className="lg:col-span-5 relative min-h-[260px] sm:min-h-[320px] lg:min-h-full bg-slate-100 border-t lg:border-t-0 lg:border-l border-gray-100">
-              <Image
-                src="/diet/campus/facility-computer-labs.webp"
-                alt="DIET Engineering Computer Laboratory"
-                fill
-                className="object-cover object-center"
-                sizes="(max-width: 1024px) 100vw, 42vw"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#09285F]/85 via-transparent to-transparent flex flex-col justify-end p-6 text-white">
-                <div className="font-extrabold text-sm sm:text-base">
-                  Advanced Computing &amp; CAD Workstations
-                </div>
-                <div className="text-xs text-slate-200 mt-0.5">
-                  Dhanmondi Campus &bull; 6 Specialized Engineering Labs
-                </div>
-              </div>
-            </div>
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-[#09285F] tracking-tight">
+              Why Choose DIET?
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-500 mt-1 max-w-xl">
+              Practical engineering education backed by digital equipment, government benefits, and career guarantees.
+            </p>
           </div>
+
+          <Link
+            href="/apply"
+            className="inline-flex items-center gap-2 self-start md:self-auto bg-[#09285F] hover:bg-[#071f4a] text-white text-xs sm:text-sm font-bold px-5 py-2.5 rounded-full transition shadow-xs"
+          >
+            <span>Apply for Admission</span>
+            <ArrowRight size={14} />
+          </Link>
         </div>
 
-        {/* 4 Core Institutional Pillars Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-7 mb-14">
-          {institutionalPillars.map((pillar) => {
-            const Icon = pillar.icon;
+        {/* Visual Bento Grid of Real Institutional Highlights */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-5 sm:gap-6">
+          {visualPillars.map((item, index) => {
+            const Icon = item.icon;
             return (
-              <div
-                key={pillar.id}
-                className="bg-white rounded-2xl p-6 sm:p-8 border border-gray-200/90 flex flex-col justify-between hover:border-gray-300 transition-colors"
+              <motion.div
+                key={item.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-30px" }}
+                transition={{ duration: 0.5, delay: index * 0.05, ease: [0.22, 1, 0.36, 1] }}
+                whileHover={{ y: -4, transition: { duration: 0.2 } }}
+                className={`group relative rounded-3xl overflow-hidden border border-gray-200/80 bg-white ${item.span} flex flex-col justify-end min-h-[280px] sm:min-h-[320px]`}
               >
-                <div>
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="w-11 h-11 rounded-xl bg-slate-100 text-[#09285F] flex items-center justify-center flex-shrink-0">
-                      <Icon size={20} strokeWidth={2.2} />
+                {/* Background Real Campus Photo */}
+                <div className="absolute inset-0 z-0">
+                  <Image
+                    src={item.image}
+                    alt={item.title}
+                    fill
+                    className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  />
+                  {/* Atmospheric Gradient Layer */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#09285F] via-[#09285F]/70 to-[#09285F]/20 group-hover:via-[#09285F]/60 transition-colors duration-300" />
+                </div>
+
+                {/* Top Badge & Stat Chip */}
+                <div className="relative z-10 p-5 sm:p-6 mb-auto flex items-center justify-between gap-2">
+                  <span className={`text-[10.5px] sm:text-[11px] font-black uppercase tracking-wider px-3 py-1 rounded-full shadow-xs ${item.badgeColor}`}>
+                    {item.badge}
+                  </span>
+
+                  <span className="text-[11px] sm:text-xs font-semibold text-white/90 bg-black/30 backdrop-blur-md px-3 py-1 rounded-full border border-white/20">
+                    {item.stats}
+                  </span>
+                </div>
+
+                {/* Bottom Content Overlay (Short, Crisp, Clean) */}
+                <div className="relative z-10 p-5 sm:p-7 text-white">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-7 h-7 rounded-lg bg-white/15 backdrop-blur-md flex items-center justify-center text-white">
+                      <Icon size={16} />
                     </div>
-                    <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
-                      {pillar.tag}
-                    </span>
+                    <h3 className="text-lg sm:text-xl lg:text-2xl font-black text-white tracking-tight">
+                      {item.title}
+                    </h3>
                   </div>
 
-                  <h3 className="text-lg sm:text-xl font-extrabold text-[#09285F] leading-snug mb-1">
-                    {pillar.title}
-                  </h3>
-                  <div className="text-xs font-semibold text-[#D97706] mb-3">
-                    {pillar.bengaliTitle}
-                  </div>
-
-                  <p className="text-xs sm:text-[13.5px] text-slate-600 leading-relaxed mb-6 font-normal">
-                    {pillar.description}
+                  <p className="text-xs sm:text-sm text-slate-200 line-clamp-2 font-normal leading-relaxed max-w-2xl">
+                    {item.subtitle}
                   </p>
                 </div>
-
-                <div className="pt-4 border-t border-gray-100">
-                  <div className="flex flex-wrap gap-2">
-                    {pillar.highlights.map((h) => (
-                      <span
-                        key={h}
-                        className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-slate-700 bg-slate-50 border border-gray-200 px-2.5 py-1 rounded-md"
-                      >
-                        <CheckCircle2 size={12} className="text-emerald-600" />
-                        <span>{h}</span>
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
+              </motion.div>
             );
           })}
         </div>
 
-        {/* Bottom Institutional Strip: Dhanmondi Campus & Global Recruiting Info */}
-        <div className="bg-white rounded-2xl border border-gray-200/90 p-6 sm:p-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-            <div className="lg:col-span-8">
-              <div className="flex items-center gap-2 text-xs font-bold text-[#09285F] uppercase tracking-wider mb-2">
-                <Globe2 className="w-4 h-4 text-[#09285F]" />
-                <span>Global Career &amp; Employment Linkage</span>
-              </div>
-              <h4 className="text-base sm:text-lg font-extrabold text-[#09285F] mb-1.5">
-                Overseas Employment Network &bull; Japan &amp; International Technical Visas
-              </h4>
-              <p className="text-xs sm:text-[13px] text-slate-600 leading-relaxed font-normal">
-                Through Daffodil Japan IT and the Daffodil Group&apos;s licensed Global Recruiting Agency, qualified engineering graduates receive Japanese language training, technical skill matching, and visa facilitation for overseas placement.
-              </p>
-            </div>
+        {/* Bottom Quick Facts Ribbon */}
+        <div className="mt-8 sm:mt-10 p-4 sm:p-5 rounded-2xl bg-white border border-gray-200/80 flex flex-wrap items-center justify-between gap-4 text-xs sm:text-sm text-slate-600">
+          <div className="flex items-center gap-3">
+            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="font-bold text-[#09285F]">
+              Spring 2026 Admissions Now Open
+            </span>
+            <span className="text-slate-300 hidden sm:inline">|</span>
+            <span className="hidden sm:inline text-slate-500">
+              Direct entry for SSC &bull; HSC (Science/Voc) lateral entry to 3rd/4th semester
+            </span>
+          </div>
 
-            <div className="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col gap-2.5 lg:items-end">
-              <Link
-                href="/apply"
-                className="inline-flex items-center justify-center gap-2 bg-[#09285F] hover:bg-[#071f4a] text-white font-bold text-xs sm:text-sm px-5 py-2.5 rounded-lg transition text-center whitespace-nowrap"
-              >
-                <span>Apply for Admission</span>
-                <ArrowRight size={14} />
-              </Link>
-              <Link
-                href="/faculty-members"
-                className="inline-flex items-center justify-center gap-2 bg-slate-50 hover:bg-slate-100 text-slate-700 border border-gray-200 font-semibold text-xs sm:text-sm px-5 py-2.5 rounded-lg transition text-center whitespace-nowrap"
-              >
-                <span>Meet Faculty Mentors</span>
-              </Link>
-            </div>
+          <div className="flex items-center gap-4">
+            <Link
+              href="/faculty-members"
+              className="font-bold text-[#09285F] hover:text-[#0A44B6] inline-flex items-center gap-1 transition"
+            >
+              <span>Meet Faculty (22)</span>
+              <ArrowUpRight size={13} />
+            </Link>
+            <Link
+              href="/#programs"
+              className="font-bold text-[#09285F] hover:text-[#0A44B6] inline-flex items-center gap-1 transition"
+            >
+              <span>View 6 Departments</span>
+              <ArrowUpRight size={13} />
+            </Link>
           </div>
         </div>
 
