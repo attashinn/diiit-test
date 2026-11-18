@@ -200,12 +200,6 @@ export default function CampusFacilitiesSection({ onOpenTourModal }: CampusFacil
         ========================================================= */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 sm:mb-12">
           <div className="max-w-2xl text-left">
-            {/* Tagline Badge */}
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-50 border border-gray-200 text-[#09285F] text-[11px] sm:text-xs font-bold tracking-wider uppercase mb-3">
-              <Sparkles size={14} className="text-[#F4B51B]" />
-              <span>State-of-the-Art Infrastructure &bull; Dhanmondi Campus</span>
-            </div>
-
             {/* Headline with Yellow Accent */}
             <h2 className="text-3xl sm:text-4xl lg:text-[44px] font-black text-[#09285F] tracking-tight leading-[1.14] mb-3">
               Campus Life &amp; <span className="text-[#0A44B6]">Facilities</span>

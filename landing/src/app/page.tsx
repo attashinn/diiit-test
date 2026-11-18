@@ -33,8 +33,8 @@ export default function Home() {
       {/* 5. Section 3: Why Choose DIET (Exact Redesign: Split Hero + 6 Cards) */}
       <WhyChooseSection onOpenTourModal={() => setTourOpen(true)} />
 
-      {/* 6. Section 4: Campus Facilities & Student Life (Real DIET Lab & Event Photos) */}
-      <CampusFacilitiesSection onOpenTourModal={() => setTourOpen(true)} />
+      {/* 6. Section 4: Campus Facilities & Student Life (Temporarily removed per request) */}
+      {/* <CampusFacilitiesSection onOpenTourModal={() => setTourOpen(true)} /> */}
 
       {/* 7. Section 5: News, Events & Official Notice Bulletin */}
       <EventsNoticeSection />
