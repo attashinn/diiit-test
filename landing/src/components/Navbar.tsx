@@ -464,7 +464,7 @@ export default function Navbar({ onOpenSearch }: { onOpenSearch?: () => void }) 
                 <Link
                   href="/apply"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="flex-1 py-2.5 text-center bg-[#0A44B6] text-white text-xs font-bold rounded-lg shadow-sm"
+                  className="flex-1 py-2.5 text-center bg-[#F4B51B] text-[#09285F] hover:bg-[#eab01a] text-xs font-bold rounded-lg shadow-sm transition"
                 >
                   Apply for Admission
                 </Link>

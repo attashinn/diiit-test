@@ -69,7 +69,7 @@ export default function WhyChooseSection({ onOpenTourModal }: WhyChooseSectionPr
 
             {/* Main Title */}
             <h2 className="text-3xl sm:text-4xl lg:text-[44px] font-black text-[#09285F] tracking-tight leading-[1.12] mb-3.5">
-              Why Choose <span className="text-[#0A44B6]">DIET?</span>
+              Why Choose <span className="text-[#F4B51B]">DIET?</span>
             </h2>
 
             {/* Concise 1-sentence value statement */}
@@ -113,10 +113,10 @@ export default function WhyChooseSection({ onOpenTourModal }: WhyChooseSectionPr
             <div className="flex flex-wrap items-center gap-3">
               <Link
                 href="/apply"
-                className="inline-flex items-center gap-2 bg-[#0A44B6] hover:bg-[#083896] text-white text-xs sm:text-sm font-bold px-6 py-3 rounded-full transition shadow-xs"
+                className="inline-flex items-center gap-2 bg-[#F4B51B] hover:bg-[#eab01a] text-[#09285F] text-xs sm:text-sm font-bold px-6 py-3 rounded-full transition shadow-xs hover:shadow-md"
               >
                 <span>Apply for Admission</span>
-                <ArrowRight size={15} />
+                <ArrowRight size={15} strokeWidth={2.4} className="text-[#09285F]" />
               </Link>
               <Link
                 href="/faculty-members"
