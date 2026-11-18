@@ -3,7 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, AnimatePresence } from "framer-motion";
 import {
   Crown,
   ArrowRight,
@@ -67,7 +67,22 @@ interface HeroProps {
   onOpenTourModal: () => void;
 }
 
+const rotatingWords = [
+  "Skill-Based",
+  "Hands-On",
+  "Career-Focused",
+  "Industry-Led",
+];
+
 export default function Hero({ onOpenTourModal }: HeroProps) {
+  const [wordIndex, setWordIndex] = React.useState(0);
+
+  React.useEffect(() => {
+    const timer = setInterval(() => {
+      setWordIndex((prev) => (prev + 1) % rotatingWords.length);
+    }, 2800);
+    return () => clearInterval(timer);
+  }, []);
   return (
     <section className="relative w-full overflow-hidden min-h-[680px] sm:min-h-[760px] lg:h-[840px] flex flex-col justify-between pt-4 sm:pt-10">
       {/* Background Campus Image (Crisp, Natural Campus Architecture with subtle zoom entrance) */}
@@ -110,17 +125,30 @@ export default function Hero({ onOpenTourModal }: HeroProps) {
             <span>Govt. Approved Polytechnic &bull; BTEB Code: 50116</span>
           </motion.div>
 
-          {/* 2. Main Headline Highlighting No. 1 Skill-Based Diploma */}
+          {/* 2. Main Headline with Continuous Rotating Word & Underline */}
           <motion.h1
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-            className="text-[32px] min-[390px]:text-[36px] sm:text-5xl lg:text-[54px] font-black text-white leading-[1.12] tracking-tight mb-3.5 sm:mb-4"
+            className="text-[32px] min-[390px]:text-[36px] sm:text-5xl lg:text-[54px] font-black text-white leading-[1.14] tracking-tight mb-3.5 sm:mb-4"
           >
             Bangladesh&apos;s No. 1{" "}
             <br className="hidden sm:inline" />
             <span className="relative inline-block text-[#F4B51B]">
-              Skill-Based
+              <span className="inline-block overflow-hidden align-bottom pb-1 h-[1.25em]">
+                <AnimatePresence mode="wait">
+                  <motion.span
+                    key={rotatingWords[wordIndex]}
+                    initial={{ y: "100%", opacity: 0 }}
+                    animate={{ y: "0%", opacity: 1 }}
+                    exit={{ y: "-100%", opacity: 0 }}
+                    transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                    className="inline-block"
+                  >
+                    {rotatingWords[wordIndex]}
+                  </motion.span>
+                </AnimatePresence>
+              </span>
               {/* Elegant Curved Underline Accent */}
               <svg
                 className="absolute -bottom-1 sm:-bottom-2 left-0 w-full h-2.5 sm:h-3.5 text-[#F4B51B] overflow-visible pointer-events-none"
