@@ -12,7 +12,6 @@ import EventsNoticeSection from "@/components/EventsNoticeSection";
 import Footer from "@/components/Footer";
 import TourModal from "@/components/TourModal";
 import SearchModal from "@/components/SearchModal";
-import FloatingActions from "@/components/FloatingActions";
 
 export default function Home() {
   const [tourOpen, setTourOpen] = useState(false);
@@ -47,9 +46,6 @@ export default function Home() {
       {/* Interactive Modals */}
       <TourModal isOpen={tourOpen} onClose={() => setTourOpen(false)} />
       <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
-
-      {/* Floating Action Icons & Scroll-to-Top */}
-      <FloatingActions />
     </main>
   );
 }
