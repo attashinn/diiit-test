@@ -104,31 +104,52 @@ export default function Hero({ onOpenTourModal }: HeroProps) {
             initial={{ opacity: 0, y: -14 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            className="inline-flex items-center gap-2 px-3 sm:px-3.5 py-1 sm:py-1.5 rounded-full border border-white/20 bg-white/10 backdrop-blur-md text-white text-[11px] sm:text-xs font-semibold mb-4 sm:mb-5"
+            className="inline-flex items-center gap-2 px-3 sm:px-3.5 py-1 sm:py-1.5 rounded-full border border-white/25 bg-white/10 backdrop-blur-md text-white text-[11px] sm:text-xs font-semibold mb-4 sm:mb-5 shadow-xs"
           >
-            <span className="w-2 h-2 rounded-full bg-[#F4B51B]" />
-            <span>Govt. Approved &bull; BTEB Code: 50116</span>
+            <Crown className="w-3.5 h-3.5 text-[#F4B51B] fill-[#F4B51B] flex-shrink-0" />
+            <span>Govt. Approved Polytechnic &bull; BTEB Code: 50116</span>
           </motion.div>
 
-          {/* 2. Main Headline */}
+          {/* 2. Main Headline Highlighting No. 1 Skill-Based Diploma */}
           <motion.h1
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-            className="text-[32px] min-[390px]:text-[36px] sm:text-5xl lg:text-[54px] font-extrabold text-white leading-[1.1] tracking-tight mb-3.5 sm:mb-4"
+            className="text-[32px] min-[390px]:text-[36px] sm:text-5xl lg:text-[54px] font-black text-white leading-[1.12] tracking-tight mb-3.5 sm:mb-4"
           >
-            Build Practical Skills for a{" "}
-            <span className="text-[#F4B51B]">Successful Career</span>
+            Bangladesh&apos;s No. 1{" "}
+            <br className="hidden sm:inline" />
+            <span className="relative inline-block text-[#F4B51B]">
+              Skill-Based
+              {/* Elegant Curved Underline Accent */}
+              <svg
+                className="absolute -bottom-1 sm:-bottom-2 left-0 w-full h-2.5 sm:h-3.5 text-[#F4B51B] overflow-visible pointer-events-none"
+                viewBox="0 0 175 12"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <motion.path
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: 1 }}
+                  transition={{ duration: 0.8, delay: 0.35, ease: "easeOut" }}
+                  d="M2 9C50 2 115 2 173 9"
+                  stroke="currentColor"
+                  strokeWidth="3.5"
+                  strokeLinecap="round"
+                />
+              </svg>
+            </span>{" "}
+            Diploma Engineering
           </motion.h1>
 
-          {/* 3. Concise, High-Value Subtitle */}
+          {/* 3. Concise Subtitle */}
           <motion.p
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
             className="text-slate-100 text-sm sm:text-base leading-relaxed mb-6 sm:mb-8 font-normal max-w-[480px]"
           >
-            4-year diploma engineering across 6 technologies with free laptop allotment, government stipends, and guaranteed job placement.
+            Build practical skills for a successful engineering career with free laptop allotment, government stipends, and guaranteed job placement.
           </motion.p>
 
           {/* 4. Action Buttons */}
