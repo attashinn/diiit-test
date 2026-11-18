@@ -25,6 +25,7 @@ import {
   Globe,
   Compass,
 } from "lucide-react";
+import { PORTAL_URLS } from "@/lib/config";
 
 interface NavDropdownItem {
   name: string;
@@ -107,12 +108,12 @@ const navItems: NavItem[] = [
 
 const topUtilityLinks = [
   { name: "DIET News", href: "/#news" },
-  { name: "Forum", href: "http://localhost:8000/accounts/login/", isExternal: true },
-  { name: "Students", href: "http://localhost:8000/me/courses/", isExternal: true },
+  { name: "Forum", href: PORTAL_URLS.login, isExternal: true },
+  { name: "Students", href: PORTAL_URLS.studentCourses, isExternal: true },
   { name: "Parents", href: "/#contact" },
-  { name: "Teachers", href: "http://localhost:8000/teach/courses/", isExternal: true },
+  { name: "Teachers", href: PORTAL_URLS.teacherCourses, isExternal: true },
   { name: "Alumni", href: "/#contact" },
-  { name: "Administration", href: "http://localhost:8000/dashboard/", isExternal: true },
+  { name: "Administration", href: PORTAL_URLS.adminDashboard, isExternal: true },
   { name: "Help Desk", href: "/#contact" },
   { name: "Sitemap", href: "/#programs" },
 ];
@@ -121,7 +122,7 @@ const quickApps = [
   {
     title: "Student Portal",
     subtitle: "Course registrations, grades & attendance",
-    href: "http://localhost:8000/me/courses/",
+    href: PORTAL_URLS.studentCourses,
     icon: GraduationCap,
     badge: "Active",
     badgeColor: "bg-emerald-50 text-emerald-700 border-emerald-200",
@@ -130,7 +131,7 @@ const quickApps = [
   {
     title: "Faculty Portal",
     subtitle: "Teaching schedule, grading & classes",
-    href: "http://localhost:8000/teach/courses/",
+    href: PORTAL_URLS.teacherCourses,
     icon: Users,
     badge: "Faculty",
     badgeColor: "bg-blue-50 text-blue-700 border-blue-200",
@@ -139,7 +140,7 @@ const quickApps = [
   {
     title: "Admin Dashboard",
     subtitle: "Staff controls, admissions & departments",
-    href: "http://localhost:8000/dashboard/",
+    href: PORTAL_URLS.adminDashboard,
     icon: ShieldCheck,
     badge: "Admin",
     badgeColor: "bg-purple-50 text-purple-700 border-purple-200",
@@ -469,7 +470,7 @@ export default function Navbar({ onOpenSearch }: { onOpenSearch?: () => void }) 
                   Apply for Admission
                 </Link>
                 <a
-                  href="http://localhost:8000/me/courses/"
+                  href={PORTAL_URLS.studentCourses}
                   onClick={() => setMobileMenuOpen(false)}
                   className="px-3.5 py-2.5 text-center bg-blue-50 text-[#0A44B6] text-xs font-bold rounded-lg border border-blue-200"
                 >

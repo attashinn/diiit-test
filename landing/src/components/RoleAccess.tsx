@@ -2,13 +2,14 @@
 
 import React from "react";
 import { ShieldCheck, GraduationCap, Users, ArrowUpRight, LogIn } from "lucide-react";
+import { PORTAL_URLS } from "@/lib/config";
 
 const portals = [
   {
     title: "Administrator Portal",
     subtitle: "Enterprise Governance & Operations",
     desc: "Oversee university-wide student registrations, faculty management, financial fee structures, and institutional AI analytics.",
-    href: "http://127.0.0.1:8000/dashboard/",
+    href: PORTAL_URLS.adminDashboard,
     icon: ShieldCheck,
     tag: "Superadmin / Staff",
     color: "#09285F",
@@ -18,7 +19,7 @@ const portals = [
     title: "Faculty Teaching Portal",
     subtitle: "Curriculum & Academic Delivery",
     desc: "Manage class attendance, assign course assessments, upload grading marks, publish term papers, and track student performance.",
-    href: "http://127.0.0.1:8000/teach/courses/",
+    href: PORTAL_URLS.teacherCourses,
     icon: Users,
     tag: "Professors & Lecturers",
     color: "#123DB8",
@@ -28,7 +29,7 @@ const portals = [
     title: "Student Academic Hub",
     subtitle: "Personal Student Dashboard",
     desc: "View enrolled courses, track real-time semester attendance, submit assignments, inspect exam results, and verify fee invoices.",
-    href: "http://127.0.0.1:8000/me/courses/",
+    href: PORTAL_URLS.studentCourses,
     icon: GraduationCap,
     tag: "Enrolled Students",
     color: "#F4B51B",
@@ -56,7 +57,7 @@ export default function RoleAccess() {
 
           <div className="mt-4 md:mt-0">
             <a
-              href="http://127.0.0.1:8000/accounts/login/"
+              href={PORTAL_URLS.login}
               className="inline-flex items-center gap-2 bg-[#09285F] hover:bg-[#123DB8] text-white font-bold text-sm px-5 py-2.5 rounded-xl shadow-md transition"
             >
               <LogIn size={16} />

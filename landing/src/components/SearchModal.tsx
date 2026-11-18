@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, X, ArrowRight, BookOpen, Building, GraduationCap } from "lucide-react";
+import { PORTAL_URLS } from "@/lib/config";
 
 interface SearchModalProps {
   isOpen: boolean;
@@ -15,7 +16,7 @@ const quickLinks = [
   { title: "B.Sc. in Civil Engineering", type: "Program", category: "Academics", href: "#departments" },
   { title: "Spring 2027 Admission Deadlines", type: "Notice", category: "Admission", href: "#admission" },
   { title: "Merit-based Tuition Fee Waivers", type: "Scholarship", category: "Finance", href: "#admission" },
-  { title: "Student Academic Dashboard", type: "Portal", category: "System", href: "http://127.0.0.1:8000/accounts/login/" },
+  { title: "Student Academic Dashboard", type: "Portal", category: "System", href: PORTAL_URLS.login },
 ];
 
 export default function SearchModal({ isOpen, onClose }: SearchModalProps) {

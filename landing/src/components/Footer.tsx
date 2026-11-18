@@ -12,6 +12,7 @@ import {
   ExternalLink,
   ShieldCheck,
 } from "lucide-react";
+import { PORTAL_URLS } from "@/lib/config";
 
 export default function Footer() {
   return (
@@ -149,7 +150,7 @@ export default function Footer() {
             <ul className="space-y-2 text-xs sm:text-sm text-slate-300">
               <li>
                 <a
-                  href="http://127.0.0.1:8000/dashboard/"
+                  href={PORTAL_URLS.adminDashboard}
                   className="hover:text-white transition flex items-center gap-1"
                 >
                   <span>Admin Dashboard</span>
@@ -158,7 +159,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="http://127.0.0.1:8000/teach/courses/"
+                  href={PORTAL_URLS.teacherCourses}
                   className="hover:text-white transition flex items-center gap-1"
                 >
                   <span>Faculty Portal</span>
@@ -167,7 +168,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="http://127.0.0.1:8000/me/courses/"
+                  href={PORTAL_URLS.studentCourses}
                   className="hover:text-white transition flex items-center gap-1"
                 >
                   <span>Student Portal</span>
@@ -176,7 +177,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="http://127.0.0.1:8000/accounts/login/"
+                  href={PORTAL_URLS.login}
                   className="hover:text-white transition flex items-center gap-1"
                 >
                   <span>Staff Sign In</span>
