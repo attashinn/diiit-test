@@ -102,21 +102,15 @@ const accreditationPartners: PartnerItem[] = [
 
 export default function LinkAccreditation() {
   return (
-    <section className="w-full py-16 sm:py-20 bg-white border-y border-gray-100 overflow-hidden relative">
+    <section className="w-full py-10 sm:py-14 bg-white border-y border-gray-100 overflow-hidden relative">
       {/* Background Subtle Gradient Accent */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#F9FBFC]/60 via-white to-[#F9FBFC]/40 pointer-events-none" />
 
       <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 18 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-40px" }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="text-center mb-12 sm:mb-14"
-        >
+        <div className="text-center mb-9 sm:mb-11">
           {/* Tagline */}
-          <div className="inline-flex items-center gap-2 mb-2.5">
+          <div className="inline-flex items-center gap-2 mb-2">
             <span className="w-6 h-[3px] bg-[#F4B51B] rounded-full inline-block" />
             <span className="font-extrabold text-[12px] sm:text-[13px] text-[#09285F] uppercase tracking-[0.08em]">
               Affiliations &amp; Global Network
@@ -129,32 +123,24 @@ export default function LinkAccreditation() {
             Link &amp; Accreditation
           </h2>
 
-          <p className="text-xs sm:text-sm text-slate-500 mt-2.5 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-xs sm:text-sm text-slate-500 mt-2 max-w-2xl mx-auto leading-relaxed">
             Approved by Bangladesh Technical Education Board (BTEB) and collaborating with leading industry enterprises, career platforms, and international academic networks.
           </p>
-        </motion.div>
+        </div>
 
-        {/* 12 Partner & Accreditation Cards Grid (Bigger & Full Native Color) */}
-        <div className="grid grid-cols-2 min-[480px]:grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-4 sm:gap-5 lg:gap-6">
+        {/* 12 Partner & Accreditation Cards Grid (Bigger & Full Native Color, No Shadow) */}
+        <div className="grid grid-cols-2 min-[480px]:grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-3.5 sm:gap-4 lg:gap-5">
           {accreditationPartners.map((item, index) => (
             <motion.a
               key={item.id}
               href={item.url}
               target="_blank"
               rel="noopener noreferrer"
-              initial={{ opacity: 0, y: 15 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-20px" }}
-              transition={{
-                duration: 0.45,
-                delay: index * 0.03,
-                ease: [0.22, 1, 0.36, 1],
-              }}
               whileHover={{ y: -3, transition: { duration: 0.18 } }}
-              className="group bg-white rounded-2xl p-4 sm:p-6 flex flex-col items-center justify-center border border-gray-200/90 hover:border-[#0A44B6] transition-all duration-200 relative min-h-[130px] sm:min-h-[145px] lg:min-h-[160px]"
+              className="group bg-white rounded-2xl p-3 sm:p-5 flex flex-col items-center justify-center border border-gray-200/80 hover:border-[#0A44B6] transition-all duration-200 relative min-h-[110px] sm:min-h-[130px] lg:min-h-[145px]"
             >
               {/* Logo Container (Enlarged & Always Full Color, No Shadow) */}
-              <div className="relative w-full h-16 sm:h-20 lg:h-24 flex items-center justify-center px-1">
+              <div className="relative w-full h-14 sm:h-18 lg:h-20 flex items-center justify-center px-1">
                 <Image
                   src={item.image}
                   alt={item.name}
@@ -166,16 +152,16 @@ export default function LinkAccreditation() {
               </div>
 
               {/* External Link Indicator on Hover */}
-              <div className="absolute top-2.5 right-2.5 opacity-0 group-hover:opacity-100 transition-opacity text-slate-400 group-hover:text-[#0A44B6]">
-                <ExternalLink size={13} />
+              <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity text-slate-400 group-hover:text-[#0A44B6]">
+                <ExternalLink size={12} />
               </div>
             </motion.a>
           ))}
         </div>
 
         {/* Verification Ribbon */}
-        <div className="mt-10 sm:mt-12 text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#FAFBFD] border border-gray-200/80 text-[11px] sm:text-xs text-slate-600">
+        <div className="mt-8 sm:mt-10 text-center">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#FAFBFD] border border-gray-200/80 text-[11px] sm:text-xs text-slate-600">
             <ShieldCheck className="w-4 h-4 text-emerald-600" />
             <span className="font-medium">
               100% Recognized Government Curriculum &bull; Code: BTEB-DIET

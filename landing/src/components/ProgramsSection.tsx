@@ -73,7 +73,7 @@ const programs = [
 
 export default function ProgramsSection() {
   return (
-    <section id="programs" className="w-full py-16 sm:py-24 bg-white overflow-hidden">
+    <section id="programs" className="w-full pt-14 sm:pt-20 pb-8 sm:pb-12 bg-white overflow-hidden">
       <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <motion.div
