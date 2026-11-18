@@ -615,14 +615,15 @@ export default function AboutVisionPage() {
           <div className="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="relative bg-[#09285F] text-white rounded-[24px] p-6 sm:p-9 lg:p-10 overflow-hidden border border-[#09285F] flex flex-col lg:flex-row lg:items-center justify-between gap-8">
               {/* Right Side Angled DIET Campus Building Graphic */}
-              <div className="absolute top-0 bottom-0 right-0 w-[200px] sm:w-[280px] lg:w-[360px] h-full pointer-events-none select-none z-0 opacity-80 lg:opacity-100">
+              <div className="absolute top-0 bottom-0 right-0 w-[200px] sm:w-[280px] lg:w-[360px] h-full pointer-events-none select-none z-0 overflow-hidden">
                 <Image
-                  src="/diet/event-tech-fest-building.webp"
+                  src="/diet/event-tech-fest-clean.webp"
                   alt="DIET Campus Building"
                   fill
-                  className="object-cover object-right"
+                  className="object-cover object-center"
                   sizes="(max-width: 1024px) 200px, 360px"
                 />
+                <div className="absolute inset-0 bg-gradient-to-r from-[#09285F] via-[#09285F]/40 to-transparent" />
               </div>
 
               {/* Left Content */}

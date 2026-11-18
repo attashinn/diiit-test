@@ -384,15 +384,16 @@ export default function EventsNoticeSection() {
               }}
               className="relative bg-[#09285F] text-white rounded-[24px] p-4 sm:p-5 overflow-hidden border border-[#09285F] flex flex-col justify-between h-[165px]"
             >
-              {/* Right Side Angled DIET Campus Building Graphic */}
-              <div className="absolute top-0 bottom-0 right-0 w-[140px] sm:w-[170px] h-full pointer-events-none select-none z-0">
+              {/* Right Side Campus Building Graphic with Seamless Gradient Blend */}
+              <div className="absolute top-0 bottom-0 right-0 w-[150px] sm:w-[180px] h-full pointer-events-none select-none z-0 overflow-hidden">
                 <Image
-                  src="/diet/event-tech-fest-building.webp"
-                  alt="DIET Tech Fest Building"
+                  src="/diet/event-tech-fest-clean.webp"
+                  alt="DIET Campus Tech Fest"
                   fill
-                  className="object-cover object-right"
-                  sizes="(max-width: 640px) 140px, 170px"
+                  className="object-cover object-center"
+                  sizes="(max-width: 640px) 150px, 180px"
                 />
+                <div className="absolute inset-0 bg-gradient-to-r from-[#09285F] via-[#09285F]/30 to-transparent" />
               </div>
 
               {/* Left Content */}
