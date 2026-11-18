@@ -81,7 +81,7 @@ export default function LeadershipMessageSection() {
   const [selectedLeader, setSelectedLeader] = useState<LeadershipMessage | null>(null);
 
   return (
-    <section id="leadership" className="w-full py-16 sm:py-24 bg-[#FAFAFA] border-t border-slate-200/80">
+    <section id="leadership" className="w-full py-16 sm:py-24 bg-[#FAFAFA] border-t border-slate-200/80 scroll-mt-24">
       <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}

@@ -54,7 +54,7 @@ const keyAdvantages = [
 
 export default function WhyChooseSection({ onOpenTourModal }: WhyChooseSectionProps) {
   return (
-    <section id="about" className="w-full pt-12 sm:pt-16 pb-16 sm:pb-20 bg-white border-t border-gray-100 overflow-hidden">
+    <section id="about" className="w-full pt-12 sm:pt-16 pb-16 sm:pb-20 bg-white border-t border-gray-100 overflow-hidden scroll-mt-24">
       <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8">
         
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">

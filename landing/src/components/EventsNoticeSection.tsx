@@ -116,16 +116,11 @@ export default function EventsNoticeSection() {
   };
 
   return (
-    <section id="events" className="w-full py-16 sm:py-20 bg-white border-t border-gray-100 overflow-hidden">
+    <section id="news" className="w-full py-16 sm:py-20 bg-white border-t border-gray-100 overflow-hidden scroll-mt-24">
+      <span id="events" className="block -mt-24 pt-24 invisible" />
       <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 25 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-60px" }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-7 sm:mb-8"
-        >
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-7 sm:mb-8">
           <div>
             {/* Top Kicker with Gold Bar */}
             <div className="flex items-center gap-2 mb-2">
@@ -147,11 +142,7 @@ export default function EventsNoticeSection() {
           </div>
 
           {/* View All Updates Button */}
-          <motion.div
-            whileHover={{ scale: 1.04, y: -2 }}
-            whileTap={{ scale: 0.96 }}
-            className="flex-shrink-0"
-          >
+          <div className="flex-shrink-0">
             <Link
               href="#events"
               className="inline-flex items-center gap-2 border border-[#09285F] text-[#09285F] hover:bg-[#09285F] hover:text-white rounded-full px-5 sm:px-6 py-2 sm:py-2.5 font-bold text-xs sm:text-[13px] transition-all duration-200"
@@ -159,8 +150,8 @@ export default function EventsNoticeSection() {
               <span>View All Updates</span>
               <ArrowRight size={14} strokeWidth={2.4} />
             </Link>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
 
         {/* 3 Filter Tabs (Pill Buttons) */}
         <div className="flex flex-wrap items-center gap-2.5 sm:gap-3 mb-7 sm:mb-8">
@@ -198,12 +189,8 @@ export default function EventsNoticeSection() {
             {/* 1. Large Featured News Card */}
             <motion.div
               onClick={() => setSelectedNews(featuredNews)}
-              initial={{ opacity: 0, y: 25 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-40px" }}
-              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
               whileHover={{
-                y: -5,
+                y: -4,
                 boxShadow: "0 20px 35px -10px rgba(0, 0, 0, 0.18)",
                 transition: { duration: 0.22 },
               }}
@@ -260,10 +247,6 @@ export default function EventsNoticeSection() {
                 <motion.div
                   key={news.id}
                   onClick={() => setSelectedNews(news)}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-30px" }}
-                  transition={{ duration: 0.45, delay: idx * 0.08, ease: [0.22, 1, 0.36, 1] }}
                   whileHover={{
                     y: -4,
                     borderColor: "rgba(18, 61, 184, 0.35)",
@@ -310,11 +293,7 @@ export default function EventsNoticeSection() {
           {/* Right Column (5 cols): Important Notices Box + Upcoming Event Banner */}
           <div className="lg:col-span-5 flex flex-col gap-4 sm:gap-5">
             {/* 1. Important Notices Box */}
-            <motion.div
-              initial={{ opacity: 0, y: 25 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-40px" }}
-              transition={{ duration: 0.6, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+            <div
               className="bg-white rounded-[24px] border border-gray-200/90 p-4 sm:p-5 flex flex-col justify-between h-[270px] sm:h-[275px] shadow-sm"
             >
               {/* Header */}
@@ -369,48 +348,35 @@ export default function EventsNoticeSection() {
                   </motion.div>
                 ))}
               </div>
-            </motion.div>
+            </div>
 
             {/* 2. Upcoming Event Banner Card */}
             <motion.div
-              initial={{ opacity: 0, y: 25 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-40px" }}
-              transition={{ duration: 0.6, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
               whileHover={{
-                y: -4,
-                boxShadow: "0 20px 35px -10px rgba(9, 40, 95, 0.3)",
-                transition: { duration: 0.22 },
+                y: -3,
+                transition: { duration: 0.2 },
               }}
-              className="relative bg-[#09285F] text-white rounded-[24px] p-4 sm:p-5 overflow-hidden border border-[#09285F] flex flex-col justify-between h-[165px]"
+              className="relative bg-gradient-to-br from-[#09285F] via-[#0B357E] to-[#09285F] text-white rounded-[24px] p-5 sm:p-6 overflow-hidden border border-[#123DB8]/40 flex items-center justify-between h-[165px]"
             >
-              {/* Right Side Campus Building Graphic with Seamless Gradient Blend */}
-              <div className="absolute top-0 bottom-0 right-0 w-[150px] sm:w-[180px] h-full pointer-events-none select-none z-0 overflow-hidden">
-                <Image
-                  src="/diet/event-tech-fest-clean.webp"
-                  alt="DIET Campus Tech Fest"
-                  fill
-                  className="object-cover object-center"
-                  sizes="(max-width: 640px) 150px, 180px"
-                />
-                <div className="absolute inset-0 bg-gradient-to-r from-[#09285F] via-[#09285F]/30 to-transparent" />
-              </div>
+              {/* Subtle Tech Circle Watermark in Background */}
+              <div className="absolute -right-6 -bottom-6 w-36 h-36 rounded-full bg-white/5 pointer-events-none" />
+              <div className="absolute right-12 -top-10 w-28 h-28 rounded-full bg-[#F4B51B]/5 pointer-events-none" />
 
               {/* Left Content */}
-              <div className="relative z-10 max-w-[210px] sm:max-w-[230px]">
-                {/* Badge */}
+              <div className="relative z-10 flex-1 min-w-0 pr-3">
+                {/* Badge with Live Indicator */}
                 <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full border border-white/20 bg-white/10 text-[10.5px] font-bold text-white mb-2">
-                  <Calendar size={11} className="text-[#F4B51B]" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                   <span>Upcoming Event</span>
                 </div>
 
                 {/* Event Title */}
-                <h3 className="text-lg sm:text-[20px] font-black text-white leading-tight mb-2">
+                <h3 className="text-lg sm:text-[20px] font-black text-white leading-tight mb-2 truncate">
                   DIET Tech Fest 2026
                 </h3>
 
                 {/* Date & Location */}
-                <div className="space-y-0.5 text-[11px] text-slate-200 mb-2.5">
+                <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-slate-200 mb-3">
                   <div className="flex items-center gap-1.5">
                     <Calendar size={11} className="text-[#F4B51B]" />
                     <span>Nov 20 &ndash; Nov 22, 2026</span>
@@ -422,9 +388,7 @@ export default function EventsNoticeSection() {
                 </div>
 
                 {/* Action CTA Button */}
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
+                <button
                   type="button"
                   onClick={() =>
                     setSelectedNews({
@@ -436,11 +400,24 @@ export default function EventsNoticeSection() {
                         "Annual technical symposium featuring robotics battles, project showcase, codeathon, and seminar sessions by corporate leaders.",
                     })
                   }
-                  className="inline-flex items-center gap-1.5 bg-[#F4B51B] hover:bg-[#eab01a] text-[#09285F] font-extrabold text-[11px] px-3.5 py-1.5 rounded-full transition-colors cursor-pointer"
+                  className="inline-flex items-center gap-1.5 bg-[#F4B51B] hover:bg-[#eab01a] text-[#09285F] font-extrabold text-[11px] px-4 py-1.5 rounded-full transition-colors cursor-pointer"
                 >
                   <span>Event Details</span>
                   <ArrowRight size={11} strokeWidth={2.4} />
-                </motion.button>
+                </button>
+              </div>
+
+              {/* Right Side: Modern Minimalist Event Date Block */}
+              <div className="relative z-10 shrink-0 hidden sm:flex flex-col items-center justify-center w-20 h-22 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 text-center shadow-inner">
+                <span className="text-[10px] font-black uppercase tracking-wider text-[#F4B51B]">
+                  NOV
+                </span>
+                <span className="text-3xl font-black text-white leading-none my-0.5">
+                  20
+                </span>
+                <span className="text-[9px] font-bold text-blue-200 uppercase tracking-wider">
+                  2026
+                </span>
               </div>
             </motion.div>
           </div>

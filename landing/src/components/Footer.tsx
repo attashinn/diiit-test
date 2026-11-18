@@ -16,7 +16,7 @@ import { PORTAL_URLS } from "@/lib/config";
 
 export default function Footer() {
   return (
-    <footer id="contact" className="w-full bg-[#09285F] text-white pt-16 pb-12 border-t border-[#123DB8]/40">
+    <footer id="contact" className="w-full bg-[#09285F] text-white pt-16 pb-12 border-t border-[#123DB8]/40 scroll-mt-24">
       <div className="max-w-[1340px] mx-auto px-4 md:px-8">
         {/* Main Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-12 pb-14 border-b border-white/10">
