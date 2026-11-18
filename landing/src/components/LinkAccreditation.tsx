@@ -134,8 +134,8 @@ export default function LinkAccreditation() {
           </p>
         </motion.div>
 
-        {/* 12 Partner & Accreditation Cards Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4 lg:gap-5">
+        {/* 12 Partner & Accreditation Cards Grid (Bigger & Full Native Color) */}
+        <div className="grid grid-cols-2 min-[480px]:grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-4 sm:gap-5 lg:gap-6">
           {accreditationPartners.map((item, index) => (
             <motion.a
               key={item.id}
@@ -147,26 +147,27 @@ export default function LinkAccreditation() {
               viewport={{ once: true, margin: "-20px" }}
               transition={{
                 duration: 0.45,
-                delay: index * 0.04,
+                delay: index * 0.03,
                 ease: [0.22, 1, 0.36, 1],
               }}
-              whileHover={{ y: -4, transition: { duration: 0.18 } }}
-              className="group bg-white rounded-2xl p-4 sm:p-5 flex flex-col items-center justify-center border border-gray-100 hover:border-[#123DB8]/30 shadow-[0_2px_10px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_24px_rgba(9,40,95,0.08)] transition-all duration-200 relative min-h-[110px] sm:min-h-[125px]"
+              whileHover={{ y: -4, scale: 1.03, transition: { duration: 0.18 } }}
+              className="group bg-white rounded-2xl p-4 sm:p-6 flex flex-col items-center justify-center border border-gray-200/80 hover:border-[#0A44B6]/40 shadow-[0_2px_12px_rgba(0,0,0,0.03)] hover:shadow-[0_12px_32px_rgba(9,40,95,0.1)] transition-all duration-200 relative min-h-[130px] sm:min-h-[145px] lg:min-h-[160px]"
             >
-              {/* Logo Container */}
-              <div className="relative w-full h-12 sm:h-14 flex items-center justify-center">
+              {/* Logo Container (Enlarged & Always Full Color) */}
+              <div className="relative w-full h-16 sm:h-20 lg:h-24 flex items-center justify-center px-1">
                 <Image
                   src={item.image}
                   alt={item.name}
                   fill
-                  className="object-contain filter grayscale group-hover:grayscale-0 transition-all duration-300 transform group-hover:scale-105"
-                  sizes="(max-width: 640px) 140px, (max-width: 1024px) 180px, 200px"
+                  className="object-contain transition-transform duration-300 transform group-hover:scale-108"
+                  sizes="(max-width: 640px) 180px, (max-width: 1024px) 240px, 280px"
+                  priority={index < 6}
                 />
               </div>
 
               {/* External Link Indicator on Hover */}
-              <div className="absolute top-2.5 right-2.5 opacity-0 group-hover:opacity-100 transition-opacity text-slate-400 group-hover:text-[#123DB8]">
-                <ExternalLink size={12} />
+              <div className="absolute top-2.5 right-2.5 opacity-0 group-hover:opacity-100 transition-opacity text-slate-400 group-hover:text-[#0A44B6]">
+                <ExternalLink size={13} />
               </div>
             </motion.a>
           ))}
