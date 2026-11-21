@@ -165,6 +165,18 @@ class Command(BaseCommand):
         admin.is_staff = True
         admin.is_superuser = True
         admin.save()
+        StudentProfile.objects.get_or_create(
+            user=admin, defaults={
+                "roll_no": "ADM-STU-001",
+                "program": list(prog_map.values())[0],
+                "current_semester": 1,
+            })
+        FacultyProfile.objects.get_or_create(
+            user=admin, defaults={
+                "employee_id": "ADM-FAC-001",
+                "department": list(dept_map.values())[0],
+                "designation": "System Director",
+            })
         self.stdout.write(self.style.SUCCESS("Admin login:  admin / demo1234"))
 
         # --- Faculty --------------------------------------------------------
