@@ -120,6 +120,22 @@
               <span class="small text-secondary">New student or prospective admission?</span>
               <a href="{% url 'accounts:signup' %}" class="small fw-semibold text-primary ms-1">Create Student Account</a>
             </div>
+            <script>
+            function fillDemo(username, password) {
+              const u = document.getElementById('id_username');
+              const p = document.getElementById('id_password');
+              if (u) {
+                u.value = username;
+                u.dispatchEvent(new Event('input', { bubbles: true }));
+                u.dispatchEvent(new Event('change', { bubbles: true }));
+              }
+              if (p) {
+                p.value = password;
+                p.dispatchEvent(new Event('input', { bubbles: true }));
+                p.dispatchEvent(new Event('change', { bubbles: true }));
+              }
+            }
+            </script>
           </div>
         </div>
       </div>
@@ -128,13 +144,21 @@
 </div>
 {% endblock %}
 
-{% block extra_js %}
+{% block extra_scripts %}
 <script>
 function fillDemo(username, password) {
   const u = document.getElementById('id_username');
   const p = document.getElementById('id_password');
-  if (u) u.value = username;
-  if (p) p.value = password;
+  if (u) {
+    u.value = username;
+    u.dispatchEvent(new Event('input', { bubbles: true }));
+    u.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+  if (p) {
+    p.value = password;
+    p.dispatchEvent(new Event('input', { bubbles: true }));
+    p.dispatchEvent(new Event('change', { bubbles: true }));
+  }
 }
 </script>
 {% endblock %}
