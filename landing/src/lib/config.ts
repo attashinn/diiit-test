@@ -7,7 +7,7 @@
  */
 
 export const PORTAL_BASE_URL =
-  process.env.NEXT_PUBLIC_PORTAL_URL?.replace(/\/$/, "") || "http://localhost:8000";
+  process.env.NEXT_PUBLIC_PORTAL_URL?.replace(/\/$/, "") || "https://diet-portal-backend.onrender.com";
 
 export const PORTAL_URLS = {
   base: PORTAL_BASE_URL,

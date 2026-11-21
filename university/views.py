@@ -1,4 +1,5 @@
 import json
+import os
 from datetime import date, timedelta
 from decimal import Decimal, InvalidOperation
 
@@ -27,6 +28,8 @@ from .models import (
 # ==========================================================================
 # PUBLIC API & LANDING REDIRECT
 # ==========================================================================
+FRONTEND_URL = os.environ.get("FRONTEND_URL", "").rstrip("/")
+
 def home(request):
     if request.GET.get("format") == "json" or request.headers.get("accept") == "application/json":
         return JsonResponse({
@@ -40,19 +43,27 @@ def home(request):
         })
     if request.user.is_authenticated:
         return redirect("university:dashboard")
-    return redirect("http://localhost:3001/")
+    if FRONTEND_URL:
+        return redirect(FRONTEND_URL)
+    return redirect("accounts:login")
 
 
 def about(request):
-    return redirect("http://localhost:3001/#about")
+    if FRONTEND_URL:
+        return redirect(f"{FRONTEND_URL}/#about")
+    return redirect("accounts:login")
 
 
 def contact(request):
-    return redirect("http://localhost:3001/#contact")
+    if FRONTEND_URL:
+        return redirect(f"{FRONTEND_URL}/#contact")
+    return redirect("accounts:login")
 
 
 def courses_public(request):
-    return redirect("http://localhost:3001/#departments")
+    if FRONTEND_URL:
+        return redirect(f"{FRONTEND_URL}/#departments")
+    return redirect("university:admin_courses")
 
 
 # ==========================================================================
