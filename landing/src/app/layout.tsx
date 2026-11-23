@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   description:
     "Bangladesh's No. 1 Skill-Based University. Offering industry-focused engineering and technology programs to create job-ready professionals.",
   icons: {
-    icon: "/daffodil-crest.svg",
+    icon: "/diet-icon.png",
   },
 };
 

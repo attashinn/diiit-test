@@ -22,23 +22,16 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-12 pb-14 border-b border-white/10">
           {/* Brand Info (Col 1-4) */}
           <div className="lg:col-span-4 space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="relative w-12 h-12 flex-shrink-0">
+            <div className="flex items-center">
+              <Link href="/" aria-label="Daffodil Institute of Engineering & Technology Home">
                 <Image
-                  src="/daffodil-crest.svg"
-                  alt="DIET Crest"
-                  fill
-                  className="object-contain"
+                  src="/diet-logo-white-web.png"
+                  alt="DIET Polytechnic - Daffodil Institute of Engineering And Technology"
+                  width={180}
+                  height={120}
+                  className="h-14 sm:h-16 w-auto object-contain"
                 />
-              </div>
-              <div className="flex flex-col text-left">
-                <span className="font-extrabold text-[15px] leading-tight text-white tracking-[0.01em]">
-                  DAFFODIL INSTITUTE
-                </span>
-                <span className="font-bold text-[10px] leading-tight text-[#F4B51B] tracking-[0.07em]">
-                  OF ENGINEERING &amp; TECHNOLOGY
-                </span>
-              </div>
+              </Link>
             </div>
 
             <p className="text-xs sm:text-sm text-slate-300 leading-relaxed max-w-sm pt-2">

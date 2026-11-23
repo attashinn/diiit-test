@@ -229,24 +229,17 @@ export default function Navbar({ onOpenSearch }: { onOpenSearch?: () => void }) 
         <div className="w-full bg-white border-b border-gray-100">
           <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 h-[68px] sm:h-[76px] lg:h-[80px] flex items-center justify-between gap-3 sm:gap-4">
             
-            {/* Left: Brand Identity (Enlarged Official Crest & Typography) */}
-            <Link href="/" className="flex items-center gap-2.5 sm:gap-3.5 group flex-shrink-0 py-1">
-              <div className="relative w-11 h-11 sm:w-13 sm:h-13 lg:w-[54px] lg:h-[54px] flex-shrink-0 transition-transform duration-200 group-hover:scale-105 drop-shadow-sm">
+            {/* Left: Brand Identity (Official DIET Logo) */}
+            <Link href="/" className="flex items-center group flex-shrink-0 py-1" aria-label="Daffodil Institute of Engineering & Technology Home">
+              <div className="relative h-11 sm:h-13 lg:h-[62px] flex items-center transition-transform duration-200 group-hover:scale-[1.02]">
                 <Image
-                  src="/daffodil-crest.svg"
-                  alt="DIET Crest"
-                  fill
-                  className="object-contain"
+                  src="/diet-logo-web.png"
+                  alt="DIET Polytechnic - Daffodil Institute of Engineering And Technology"
+                  width={160}
+                  height={107}
+                  className="h-11 sm:h-13 lg:h-[60px] w-auto object-contain"
                   priority
                 />
-              </div>
-              <div className="flex flex-col text-left select-none justify-center">
-                <span className="font-black text-[14px] sm:text-[17px] lg:text-[18.5px] leading-tight text-[#09285F] tracking-tight whitespace-nowrap">
-                  DAFFODIL INSTITUTE
-                </span>
-                <span className="font-bold text-[8.5px] sm:text-[10px] lg:text-[10.5px] leading-tight text-[#D97706] tracking-[0.06em] mt-0.5 whitespace-nowrap">
-                  OF ENGINEERING &amp; TECHNOLOGY
-                </span>
               </div>
             </Link>
 
